@@ -347,36 +347,58 @@ section .gcard:has(.tx-row), section .gcard:has(.ap-row), section .gcard:has(.tk
 section .gcard:has(.tx-row), section .gcard:has(.ap-row), section .gcard:has(.tk-row), section .gcard:has(.ca-row) { background:var(--card) !important; border:1px solid var(--border) !important; border-radius:var(--radius-card) !important; box-shadow:var(--shadow-sm) !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
 
 /* commission approvals — nearest closing first, action only when viewer must sign */
-.ca-row { display:flex; align-items:center; gap:10px; min-height:58px; padding:8px 0; color:var(--foreground); text-decoration:none; transition:opacity 120ms cubic-bezier(0.23,1,0.32,1); }
-.ca-row + .ca-row { border-top:1px solid var(--border); }
-.ca-main { min-width:0; flex:1; align-self:stretch; display:flex; align-items:center; color:var(--foreground); text-decoration:none; border-radius:var(--radius-sm); transition:opacity 120ms cubic-bezier(0.23,1,0.32,1); }
+.commission-rail { display:flex; align-items:stretch; gap:10px; overflow-x:auto; padding:2px 0 4px; scrollbar-width:none; scroll-snap-type:x proximity; overscroll-behavior-inline:contain; -webkit-overflow-scrolling:touch; }
+.commission-rail::-webkit-scrollbar { display:none; }
+.ca-row { position:relative; display:flex; flex:none; flex-direction:column; justify-content:flex-start; gap:8px; width:166px; min-height:120px; padding:32px 12px 10px; color:var(--foreground); text-decoration:none; border:1px solid var(--border); border-radius:14px; background:var(--card); box-shadow:var(--shadow-xs); overflow:hidden; scroll-snap-align:start; touch-action:manipulation; -webkit-tap-highlight-color:transparent; transition:opacity 120ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); }
+.ca-row[role="link"] { cursor:pointer; }
+.ca-row[role="link"]:active { opacity:.82; transform:scale(.992); }
+.ca-status-strip { position:absolute; left:0; right:0; top:0; height:20px; display:flex; align-items:center; justify-content:center; gap:5px; padding:0 8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:color-mix(in srgb,var(--muted) 76%,var(--card)); color:var(--muted-foreground); font:700 9.5px/1 var(--font); letter-spacing:0; text-transform:none; }
+.ca-status-strip::before { content:""; width:5px; height:5px; flex:none; border-radius:999px; background:var(--warning); }
+.ca-status-strip.with-team::before { background:#60a5fa; }
+.ca-status-strip.with-group::before { background:#a78bfa; }
+.ca-body { display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; gap:12px; min-width:0; flex:1; }
+.ca-main { min-width:0; flex:none; align-self:stretch; display:flex; align-items:flex-start; color:var(--foreground); text-decoration:none; border-radius:var(--radius-sm); transition:opacity 120ms cubic-bezier(0.23,1,0.32,1); }
 .ca-main:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 .ca-action:focus-visible { outline:2px solid #8f93ff; outline-offset:2px; }
-.ca-copy { min-width:0; display:flex; flex-direction:column; gap:3px; }
-.ca-address { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:500 15px/1.25 var(--font); letter-spacing:var(--tracking-tight); }
-.ca-close { font:500 12px/1.25 var(--font); color:var(--muted-foreground); }
+.ca-copy { min-width:0; display:flex; flex-direction:column; gap:5px; padding:2px 0; }
+.ca-address { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 14px/1.2 var(--font); letter-spacing:var(--tracking-tight); }
+.ca-close { display:flex; align-items:center; gap:6px; font:500 13px/1.25 var(--font); color:var(--muted-foreground); white-space:nowrap; }
+.ca-close svg { flex:none; opacity:.8; }
+.ca-meta-dot { color:var(--muted-foreground); opacity:.8; }
+.ca-owner-text { font-weight:600; color:var(--muted-foreground); }
 .ca-status { flex:none; border:0; color:var(--muted-foreground); white-space:nowrap; }
 .ca-row-chev { flex:none; display:inline-flex; color:var(--muted-foreground); }
-.ca-action { position:relative; flex:none; height:30px; display:inline-flex; align-items:center; justify-content:center; padding:0 12px; border:0; border-radius:999px; background:#5A5FF2; color:#fff; box-shadow:none; font:600 12px/1 var(--font); letter-spacing:-.01em; text-decoration:none; white-space:nowrap; transition:transform 140ms cubic-bezier(0.23,1,0.32,1), background 140ms ease; }
+.ca-controls { flex:none; display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:8px; border-top:1px solid var(--border); }
+.ca-action { position:relative; flex:none; height:26px; display:inline-flex; align-items:center; justify-content:center; padding:0 10px; border:0; border-radius:999px; background:#5A5FF2; color:#fff; box-shadow:none; font:600 11px/1 var(--font); letter-spacing:0; text-decoration:none; white-space:nowrap; transition:transform 140ms cubic-bezier(0.23,1,0.32,1), background 140ms ease; }
+.ca-action-secondary { background:var(--muted); color:var(--muted-foreground); }
 .ca-action::before { content:""; position:absolute; inset:-10px -4px; }
 .ca-action:hover { background:#6b70f4; }
 .ca-action:active { transform:scale(.98); }
 .commission-card { position:relative; overflow:hidden; }
 .commission-card:active { transform:none; }
+.commission-card .ca-status::before { content:none; }
+.ca-status.tracker-trigger { position:relative; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; gap:5px; min-height:26px; padding:0 8px; border:1px solid var(--border); border-radius:999px; color:var(--muted-foreground); background:color-mix(in srgb,var(--muted) 34%,transparent); font-size:12px; }
+.track-ring { --track-progress:0%; position:relative; width:14px; height:14px; flex:none; border-radius:999px; background:conic-gradient(var(--warning) var(--track-progress), color-mix(in srgb,var(--warning) 25%,transparent) 0); }
+.track-ring::after { content:""; position:absolute; inset:2.5px; border-radius:999px; background:var(--card); }
+.track-count { font:600 12px/1 var(--font); color:var(--muted-foreground); font-variant-numeric:tabular-nums; }
+.track-chev { width:12px; height:12px; margin-left:-2px; display:inline-flex; align-items:center; justify-content:center; color:var(--muted-foreground); opacity:.78; }
+.track-chev svg { width:12px; height:12px; }
+.ca-status.tracker-trigger::after { content:""; position:absolute; left:50%; top:50%; width:100%; min-width:44px; height:44px; transform:translate(-50%,-50%); }
+.ca-status.tracker-trigger:active { opacity:.78; transform:scale(.98); background:color-mix(in srgb,var(--muted) 58%,transparent); }
+.ca-status.tracker-trigger:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 .commission-card .ca-row[href]:active,
 .commission-card .ca-main:active,
 .commission-card .card-foot-link:active { opacity:.82; }
 .commission-card .ca-row[href]:active .cf-chev,
 .commission-card .card-foot-link:active .cf-chev { transform:translateX(2px); }
-section .gcard.commission-card { padding:2px 14px 4px; background:var(--card) !important; border-color:var(--border) !important; box-shadow:var(--shadow-sm) !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-.commission-card .ca-row + .ca-row, .commission-card .card-foot-link { border-color:var(--border); }
-.commission-card .ca-status::before { content:""; width:6px; height:6px; border-radius:999px; background:currentColor; }
+section .gcard.commission-card { padding:0; background:transparent !important; border:0 !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+.commission-card .card-foot-link { margin-top:8px; padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); box-shadow:var(--shadow-sm); }
 .commission-card .ca-status.waiting { color:var(--warning); background:rgba(245,158,11,.10); }
 .commission-card .ca-status.processing { color:#9ca7ff; background:rgba(143,156,255,.10); }
 .commission-card .ca-row-chev,
 .commission-card .card-foot-link .cf-chev { color:var(--muted-foreground); opacity:.8; transition:transform 140ms cubic-bezier(0.23,1,0.32,1); }
 .commission-card .card-foot-link:hover .cf-chev { color:var(--muted-foreground); }
-.commission-card .card-foot-link { padding:9px 0 3px; transition:color 140ms ease, opacity 120ms cubic-bezier(0.23,1,0.32,1); }
+.commission-card .card-foot-link { transition:color 140ms ease, opacity 120ms cubic-bezier(0.23,1,0.32,1); }
 .screen:not(.dark) section .gcard.commission-card { border-color:var(--border) !important; box-shadow:var(--shadow-sm) !important; }
 .screen:not(.dark) .ca-action { color:#fff; background:#5A5FF2; box-shadow:none; }
 @media (prefers-reduced-transparency: reduce) {
@@ -385,6 +407,7 @@ section .gcard.commission-card { padding:2px 14px 4px; background:var(--card) !i
 @media (prefers-reduced-motion: reduce) {
   .commission-card .ca-row[href]:active .cf-chev,
   .commission-card .card-foot-link:active .cf-chev { transform:none; }
+  .tracker-home-sheet, .tracker-home-scrim { transition:none !important; }
 }
 @media (prefers-contrast: more) {
   section .gcard.commission-card { border-color:var(--foreground) !important; }
@@ -575,6 +598,7 @@ html[data-accent="green"] .drw-head .avatar { background:#1E3A2F; color:#EEF2EA;
 .sheet-scrim { position:absolute; inset:0; z-index:11; background:rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:opacity 240ms ease; }
 .sheet-scrim.open { opacity:1; pointer-events:auto; }
 .sheet { position:absolute; z-index:12; left:0; right:0; bottom:0; max-height:93%; display:flex; flex-direction:column; background:var(--card); color:var(--card-foreground); border:1px solid var(--border); border-bottom:0; border-radius:22px 22px 0 0; transform:translateY(103%); transition:transform 300ms cubic-bezier(0.23,1,0.32,1); box-shadow:0 -12px 40px rgba(0,0,0,0.45); }
+.sheet[hidden] { display:none !important; }
 .sheet.open { transform:translateY(0); }
 .sheet-grab { display:flex; justify-content:center; padding:10px 0 4px; touch-action:none; cursor:grab; flex:none; }
 .sheet-grab i { width:38px; height:4px; border-radius:999px; background:var(--muted-foreground); opacity:0.4; }
@@ -710,6 +734,25 @@ html[data-accent="green"] .drw-head .avatar { background:#1E3A2F; color:#EEF2EA;
 .sheet-cta button:active { transform:scale(0.98); background:color-mix(in oklab, var(--primary) 90%, #000); }
 .screen:not(.dark) .sheet { box-shadow:0 -12px 40px rgba(10,10,10,0.18); }
 @media (prefers-reduced-motion: reduce) { .sheet { transition:none; } .sheet-scrim { transition:none; } }
+
+/* Commission tracker — Radius Sheet + Steps pattern, condensed for Home. */
+.tracker-home-scrim { z-index:13; }
+.tracker-home-sheet { z-index:14; max-height:78%; }
+.tracker-home-body { padding:2px 18px calc(14px + env(safe-area-inset-bottom)); }
+.tracker-home-list { margin:0; padding:0; list-style:none; }
+.tracker-home-list li { display:grid; grid-template-columns:28px minmax(0,1fr) auto; align-items:center; gap:8px; min-height:52px; color:var(--foreground); }
+.tracker-home-list li + li { border-top:1px solid var(--border); }
+.tracker-home-mark { width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; color:var(--warning); }
+.tracker-home-mark::before { content:""; width:18px; height:18px; border:2px solid currentColor; border-radius:999px; }
+.tracker-home-list li.done { color:var(--muted-foreground); }
+.tracker-home-list li.done .tracker-home-mark { color:var(--success); font-size:21px; }
+.tracker-home-list li.done .tracker-home-mark::before { display:none; }
+.tracker-home-list li > span:nth-child(2) { min-width:0; font:500 15px/1.3 var(--font); }
+.tracker-home-state { padding-left:8px; color:var(--warning); font:500 12px/1.2 var(--font); white-space:nowrap; }
+.tracker-home-list li.done .tracker-home-state { color:var(--success); }
+.tracker-home-summary { margin:10px 0 2px; padding:12px 13px; border:1px solid color-mix(in srgb,var(--warning) 38%,transparent); border-radius:14px; background:color-mix(in srgb,rgba(245,158,11,.10) 55%,var(--card)); }
+.tracker-home-summary b { display:block; margin-bottom:4px; color:var(--foreground); font:600 15px/1.3 var(--font); }
+.tracker-home-summary p { margin:0; color:var(--warning); font:500 13px/1.45 var(--font); text-wrap:pretty; }
 
 /* shortcuts — icon-only tiles, Radius status tints, 4-across */
 .sc-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
@@ -1184,31 +1227,47 @@ section[data-sec].sec-hidden { display:none; }
       </section>
 
       <!-- 4. COMMISSION APPROVALS -->
-      <section class="stagger" data-sec="commissions" data-name="Commissions" style="animation-delay:140ms">
+      <section class="stagger" id="commissionTracker" data-sec="commissions" data-name="Commissions" style="animation-delay:140ms">
         <div class="sec-head"><h2>Commissions</h2></div>
         <div class="gcard commission-card">
-          <div class="ca-row">
-            <a class="ca-main" href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012" aria-label="118 Maple St, closes September 12, review and approve commission">
-              <span class="ca-copy"><span class="ca-address">118 Maple St</span><span class="ca-close">Closes Sep 12</span></span>
-            </a>
-            <a class="ca-action" href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012">Review</a>
+          <div class="commission-rail" aria-label="Commission approvals">
+            <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012" aria-label="118 Maple St, closes September 12, Agent pending, review and approve commission">
+              <span class="ca-status-strip">With agent</span>
+              <div class="ca-body">
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">118 Maple St</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 12</span></span></span>
+                <span class="ca-controls">
+                  <button class="ca-status tracker-trigger" type="button" data-commission-tracker="maple" aria-label="Open tracker for 118 Maple Street: 1 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:16.667%" aria-hidden="true"></span><span class="track-count">1/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                  <a class="ca-action" href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012">Review</a>
+                </span>
+              </div>
+            </div>
+            <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;status=agent_confirmed&amp;addr=42%20Oak%20Ln&amp;price=980000&amp;side=seller&amp;close=Close%20Sep%2015" aria-label="Open commission breakdown for 42 Oak Lane, closes September 15, Team lead pending">
+              <span class="ca-status-strip with-team">With team lead</span>
+              <div class="ca-body">
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">42 Oak Ln</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 15</span></span></span>
+                <span class="ca-controls">
+                  <button class="ca-status tracker-trigger" type="button" data-commission-tracker="oak" aria-label="Open tracker for 42 Oak Lane: 2 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:33.333%" aria-hidden="true"></span><span class="track-count">2/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                  <a class="ca-action ca-action-secondary" href="Commission breakdown.html?from=home&amp;status=agent_confirmed&amp;addr=42%20Oak%20Ln&amp;price=980000&amp;side=seller&amp;close=Close%20Sep%2015">View</a>
+                </span>
+              </div>
+            </div>
+            <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;status=lead_confirmed&amp;addr=640%20Alma%20St&amp;price=1275000&amp;side=seller&amp;close=Close%20Sep%2020" aria-label="Open commission breakdown for 640 Alma Street, closes September 20, Group lead pending">
+              <span class="ca-status-strip with-group">With group lead</span>
+              <div class="ca-body">
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">640 Alma St</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 20</span></span></span>
+                <span class="ca-controls">
+                  <button class="ca-status tracker-trigger" type="button" data-commission-tracker="alma" aria-label="Open tracker for 640 Alma Street: 3 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:50%" aria-hidden="true"></span><span class="track-count">3/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                  <a class="ca-action ca-action-secondary" href="Commission breakdown.html?from=home&amp;status=lead_confirmed&amp;addr=640%20Alma%20St&amp;price=1275000&amp;side=seller&amp;close=Close%20Sep%2020">View</a>
+                </span>
+              </div>
+            </div>
           </div>
-          <a class="ca-row" href="Commission breakdown.html?from=home&amp;status=agent_confirmed&amp;addr=42%20Oak%20Ln&amp;price=980000&amp;side=seller&amp;close=Close%20Sep%2015" aria-label="42 Oak Lane, closes September 15, team lead pending">
-            <span class="ca-main"><span class="ca-copy"><span class="ca-address">42 Oak Ln</span><span class="ca-close">Closes Sep 15</span></span></span>
-            <span class="ca-status waiting">Team lead pending</span>
-            <span class="ca-row-chev cf-chev" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span>
-          </a>
-          <a class="ca-row" href="Commission breakdown.html?from=home&amp;status=lead_confirmed&amp;addr=640%20Alma%20St&amp;price=1275000&amp;side=seller&amp;close=Close%20Sep%2020" aria-label="640 Alma Street, closes September 20, group lead pending">
-            <span class="ca-main"><span class="ca-copy"><span class="ca-address">640 Alma St</span><span class="ca-close">Closes Sep 20</span></span></span>
-            <span class="ca-status processing">Group lead pending</span>
-            <span class="ca-row-chev cf-chev" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span>
-          </a>
-          <a href="CDA Settings.html" class="card-foot-link" aria-label="Open commission settings">
-            <span>Commission settings</span>
+          <a href="Commissions.html" class="card-foot-link destination-card" aria-label="Open all commissions">
+            <span>All commissions</span>
             <span class="cf-chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
           </a>
         </div>
-        <div class="sec-empty"><span class="e-t"><i class="ph ph-check-circle" aria-hidden="true"></i>No commissions need attention</span><a class="e-cta" href="CDA Settings.html">Commission settings<i class="ph ph-caret-right" aria-hidden="true"></i></a></div>
+        <div class="sec-empty"><span class="e-t"><i class="ph ph-check-circle" aria-hidden="true"></i>No commissions need attention</span><a class="e-cta" href="Commissions.html">All commissions<i class="ph ph-caret-right" aria-hidden="true"></i></a></div>
       </section>
 
       <!-- 5. APPOINTMENTS -->
@@ -1451,7 +1510,7 @@ section[data-sec].sec-hidden { display:none; }
 
     <!-- Client snapshot — bottom sheet -->
     <div class="sheet-scrim" id="sheetScrim"></div>
-    <div class="sheet" id="clientSheet" role="dialog" aria-modal="true">
+    <div class="sheet" id="clientSheet" role="dialog" aria-modal="true" hidden>
       <div class="sheet-grab" id="sheetGrab"><i></i></div>
       <div class="sheet-head">
         <span class="avatar" id="shAvatar">SR</span>
@@ -1462,6 +1521,20 @@ section[data-sec].sec-hidden { display:none; }
       <div class="sh-tabs" id="shTabs" role="tablist" aria-label="Client detail"></div>
       <div class="sheet-body" id="sheetBody"></div>
       <div class="sheet-cta"><button id="sheetCta">View full profile</button></div>
+    </div>
+
+    <!-- Commission tracker: same six-step payment path as Commission breakdown. -->
+    <div class="sheet-scrim tracker-home-scrim" id="commissionTrackerScrim" hidden></div>
+    <div class="sheet tracker-home-sheet" id="commissionTrackerSheet" role="dialog" aria-modal="true" aria-labelledby="commissionTrackerTitle" aria-describedby="commissionTrackerSummary" hidden>
+      <div class="sheet-grab" id="commissionTrackerGrab"><i></i></div>
+      <div class="sheet-head">
+        <div><h2 class="sh-name" id="commissionTrackerTitle">Commission tracker</h2><div class="sh-sub" id="commissionTrackerMeta"></div></div>
+        <button class="sheet-x" type="button" id="commissionTrackerClose" aria-label="Close commission tracker"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="sheet-body tracker-home-body">
+        <ol class="tracker-home-list" id="commissionTrackerList" aria-label="Commission payment progress"></ol>
+        <div class="tracker-home-summary" id="commissionTrackerSummary"><b>What’s holding up payment</b><p id="commissionTrackerCopy"></p></div>
+      </div>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -1859,7 +1932,75 @@ section[data-sec].sec-hidden { display:none; }
       shName=document.getElementById('shName'),
       shSub=document.getElementById('shSub'),
       shBody=document.getElementById('sheetBody'),
-      shGrab=document.getElementById('sheetGrab');
+      shGrab=document.getElementById('sheetGrab'),
+      clientSheetCloseTimer=null;
+  var trackerButtons=document.querySelectorAll('[data-commission-tracker]'),
+      trackerSheet=document.getElementById('commissionTrackerSheet'),
+      trackerScrim=document.getElementById('commissionTrackerScrim'),
+      trackerClose=document.getElementById('commissionTrackerClose'),
+      trackerGrab=document.getElementById('commissionTrackerGrab'),
+      trackerMeta=document.getElementById('commissionTrackerMeta'),
+      trackerList=document.getElementById('commissionTrackerList'),
+      trackerCopy=document.getElementById('commissionTrackerCopy'),
+      trackerTrigger=null,
+      trackerCloseTimer=null,
+      trackerOpenTimer=null;
+  var TRACKER_LABELS=['Checklist compliant','Agent CDA approved','Team lead CDA approved','Group lead CDA approved','Commission received','Agent payment'];
+  var HOME_TRACKERS={
+    maple:{ address:'118 Maple St', complete:1, current:'Needs review', copy:'Waiting on your approval, Team lead approval, Group lead approval, commission funds and agent payment.' },
+    oak:{ address:'42 Oak Ln', complete:2, current:'Pending', copy:'Waiting on Team lead approval, Group lead approval, commission funds and agent payment.' },
+    alma:{ address:'640 Alma St', complete:3, current:'Pending', copy:'Waiting on Group lead approval, commission funds and agent payment.' }
+  };
+  function renderCommissionTracker(key){
+    var data=HOME_TRACKERS[key]; if(!data) return;
+    trackerMeta.textContent=data.address+' · '+data.complete+' of 6 complete';
+    trackerCopy.textContent=data.copy;
+    trackerList.innerHTML=TRACKER_LABELS.map(function(label,index){
+      var done=index<data.complete;
+      return '<li class="'+(done?'done':'')+'"><span class="tracker-home-mark" aria-hidden="true">'+(done?'<i class="ph ph-check"></i>':'')+'</span><span>'+label+'</span><span class="tracker-home-state">'+(done?'Complete':(index===data.complete?data.current:'Pending'))+'</span></li>';
+    }).join('');
+  }
+  function openCommissionTracker(trigger){
+    trackerTrigger=trigger;
+    renderCommissionTracker(trigger.getAttribute('data-commission-tracker'));
+    clearTimeout(trackerCloseTimer); clearTimeout(trackerOpenTimer);
+    var clientSheetOpen=sheet.classList.contains('open');
+    if(clientSheetOpen) closeSheet();
+    trackerOpenTimer=setTimeout(function(){
+      trackerScrim.hidden=false; trackerSheet.hidden=false;
+      requestAnimationFrame(function(){ trackerScrim.classList.add('open'); trackerSheet.classList.add('open'); });
+      trackerTrigger.setAttribute('aria-expanded','true');
+      trackerClose.focus();
+    },clientSheetOpen?300:0);
+  }
+  function closeCommissionTracker(restoreFocus){
+    clearTimeout(trackerOpenTimer);
+    trackerScrim.classList.remove('open'); trackerSheet.classList.remove('open');
+    if(trackerTrigger) trackerTrigger.setAttribute('aria-expanded','false');
+    clearTimeout(trackerCloseTimer);
+    trackerCloseTimer=setTimeout(function(){ trackerScrim.hidden=true; trackerSheet.hidden=true; },300);
+    if(restoreFocus!==false && trackerTrigger) trackerTrigger.focus();
+  }
+  [].forEach.call(trackerButtons,function(button){ button.addEventListener('click',function(){ openCommissionTracker(button); }); });
+  trackerScrim.addEventListener('click',function(){ closeCommissionTracker(); });
+  trackerClose.addEventListener('click',function(){ closeCommissionTracker(); });
+  document.addEventListener('keydown',function(e){
+    if(trackerSheet.hidden) return;
+    if(e.key==='Escape'){ closeCommissionTracker(); return; }
+    if(e.key!=='Tab') return;
+    var focusable=trackerSheet.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if(!focusable.length) return;
+    var first=focusable[0], last=focusable[focusable.length-1];
+    if((e.shiftKey && document.activeElement===first) || (!e.shiftKey && document.activeElement===last)){ e.preventDefault(); (e.shiftKey?last:first).focus(); }
+  });
+  (function(){
+    var startY=0, deltaY=0, dragging=false;
+    trackerGrab.addEventListener('pointerdown',function(e){ dragging=true; startY=e.clientY; deltaY=0; trackerSheet.style.transition='none'; trackerGrab.setPointerCapture(e.pointerId); });
+    trackerGrab.addEventListener('pointermove',function(e){ if(!dragging) return; deltaY=Math.max(0,e.clientY-startY); trackerSheet.style.transform='translateY('+deltaY+'px)'; });
+    function finish(){ if(!dragging) return; dragging=false; trackerSheet.style.transition=''; trackerSheet.style.transform=''; if(deltaY>80) closeCommissionTracker(); }
+    trackerGrab.addEventListener('pointerup',finish);
+    trackerGrab.addEventListener('pointercancel',finish);
+  })();
   function esc(s){ return s; }
   function block(icon,label,count,inner){
     return '<div class="sh-block"><div class="sh-lb"><span class="blk-ic">'+icon+'</span><span class="blk-lb">'+label+'</span>'+(count?'<span class="cnt">'+count+'</span>':'')+'</div>'+inner+'</div>';
@@ -1938,9 +2079,15 @@ section[data-sec].sec-hidden { display:none; }
     shBody.innerHTML=b;
     shBody.scrollTop=0;
     var srow=document.querySelector('.pc-row[data-client="'+id+'"] .pc-new'); if(srow) srow.remove();
-    scrim.classList.add('open'); sheet.classList.add('open');
+    clearTimeout(clientSheetCloseTimer);
+    sheet.hidden=false; scrim.classList.add('open');
+    requestAnimationFrame(function(){ sheet.classList.add('open'); });
   }
-  function closeSheet(){ scrim.classList.remove('open'); sheet.classList.remove('open'); }
+  function closeSheet(){
+    scrim.classList.remove('open'); sheet.classList.remove('open');
+    clearTimeout(clientSheetCloseTimer);
+    clientSheetCloseTimer=setTimeout(function(){ sheet.hidden=true; },300);
+  }
   shBody.addEventListener('click',function(e){
     var all=e.target.closest('.fd-all');
     if(all){ toast.textContent='Opens the full activity log'; toast.classList.add('show');
@@ -2329,13 +2476,26 @@ document.addEventListener('click', function (e) {
   if (b) toast('This prototype focuses on commission workflow.');
 });
 
+document.addEventListener('click', function(e){
+  var row = e.target.closest('.ca-row[data-href]');
+  if (!row || e.target.closest('a, button')) return;
+  location.href = row.dataset.href;
+});
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  var row = e.target.closest('.ca-row[data-href]');
+  if (!row || e.target.closest('a, button')) return;
+  e.preventDefault();
+  location.href = row.dataset.href;
+});
+
 /* Keep retained Home cards visible without linking to pruned prototype pages. */
 document.addEventListener('click', function(e){
   var link = e.target.closest('a[href]');
   if (!link) return;
   var href = link.getAttribute('href') || '';
   if (!/\.html(?:[?#]|$)/.test(href)) return;
-  if (/^(Commission breakdown|CDA Settings|Implemented Home)\.html/.test(href)) return;
+  if (/^(Commission breakdown|Commissions|CDA Settings|Implemented Home)\.html/.test(href)) return;
   e.preventDefault();
   toast('This prototype focuses on commission workflow.');
 });
