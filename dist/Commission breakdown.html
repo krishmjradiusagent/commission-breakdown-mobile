@@ -510,6 +510,8 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .poprow { display:flex; align-items:baseline; gap:10px; padding:4px 0; }
 .poprow .pk { min-width:0; flex:1; font:500 13px/1.35 var(--font); color:var(--muted-foreground); text-wrap:pretty; }
 .poprow .pv { flex:none; font:600 13px/1.3 var(--font); font-variant-numeric:tabular-nums; color:var(--foreground); }
+.poprow.head, .poprow.tot { align-items:center; }
+.poprow.head > .pk, .poprow.head > .pv, .poprow.tot > .pk, .poprow.tot > .pv { line-height:1.3; margin-block:0; align-self:center; }
 .poprow.head { margin-bottom:4px; padding:7px 9px; border-radius:var(--radius-sm); background:var(--tint-gold-bg); }
 .poprow.head .pk, .poprow.head .pv { color:var(--tint-gold-fg); font-weight:600; }
 .poprow.tot { margin-top:5px; padding:7px 9px; border-radius:var(--radius-sm); background:var(--tint-green-bg); }
@@ -615,8 +617,8 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .cm .ch > time { flex:none; margin-left:auto; padding-left:4px; font:500 13px/1 var(--font); color:var(--muted-foreground); font-variant-numeric:tabular-nums; }
 .cm .ct { font:400 15px/1.45 var(--font); color:var(--foreground); text-wrap:pretty; }
 .cm .ct .mention { font-weight:600; color:var(--tint-indigo-fg); }
-.cm.act .ch b { color:var(--muted-foreground); }
-.cm.act .ct { color:var(--muted-foreground); }
+.cm.feed-activity .ch b { color:var(--muted-foreground); }
+.cm.feed-activity .ct { color:var(--muted-foreground); }
 .aclines { list-style:none; margin:2px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
 .aclines li { display:flex; align-items:flex-start; gap:10px; }
 .aclines .ct { flex:1; min-width:0; }
@@ -765,6 +767,15 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .activity-compose { flex:none; position:relative; display:flex; align-items:flex-end; gap:8px; margin:8px -2px -4px; padding:10px 2px 2px; background:linear-gradient(to bottom, transparent, var(--card) 20%); }
 .sheet .activity-compose textarea { flex:1; min-width:0; min-height:36px; height:36px; max-height:120px; margin:0; padding:7px 10px; }
 .activity-compose .send { flex:none; width:44px; height:44px; border:0; border-radius:999px; background:var(--primary); color:#fff; font-size:18px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+.activity-filters { display:none; gap:6px; padding:4px 0 12px; }
+.activity-page .activity-filters { display:flex; }
+.activity-filter { flex:1; min-height:32px; border:1px solid var(--border); border-radius:999px; background:transparent; color:var(--muted-foreground); font:600 12px/1 var(--font); cursor:pointer; }
+.activity-filter[aria-pressed="true"] { border-color:color-mix(in srgb,var(--primary) 45%,transparent); background:var(--tint-indigo-bg); color:var(--tint-indigo-fg); }
+.activity-filter:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.activity-page .detail-scroll { padding-bottom:calc(84px + env(safe-area-inset-bottom)); }
+.activity-page .activity-compose { position:absolute; left:12px; right:12px; bottom:max(12px, calc(8px + env(safe-area-inset-bottom))); margin:0; padding:8px; border:1px solid rgba(255,255,255,.12); border-radius:24px; background:rgba(28,28,30,.86); box-shadow:0 8px 30px rgba(0,0,0,.45); backdrop-filter:blur(30px) saturate(180%); -webkit-backdrop-filter:blur(30px) saturate(180%); }
+.screen.light .activity-page .activity-compose { border-color:rgba(10,10,10,.08); background:rgba(255,255,255,.88); box-shadow:0 8px 30px rgba(0,0,0,.14); }
+.activity-page .activity-compose textarea { flex:1; min-width:0; min-height:38px; height:38px; max-height:120px; margin:0; padding:8px 12px; resize:none; }
 .sheet textarea { width:100%; min-height:72px; margin-top:8px; padding:8px 12px; border-radius:var(--radius-input); border:1px solid var(--input); background:var(--background); color:var(--foreground); font:400 var(--text-body)/var(--leading-body) var(--font); resize:vertical; box-shadow:var(--shadow-xs); }
 .sheet textarea:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
 .sheet label:not(.fld) { display:block; font:600 13px/1.2 var(--font); color:var(--muted-foreground); }
@@ -1056,6 +1067,13 @@ button.ybd-r:active { opacity:.7; }
   transition:transform 120ms var(--ease-out),background 140ms var(--ease-out); }
 .screen.light .plan-select-value { border-color:rgba(10,10,10,.10); background:rgba(10,10,10,.045); box-shadow:inset 0 1px 0 rgba(255,255,255,.6); }
 .ybd-card.editing .plan-select-value { border-color:rgba(122,126,255,.38); background:var(--tint-indigo-bg); }
+.group-plan-controls { margin:8px 0 12px; border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; }
+.group-plan-controls .ybd-r { padding:12px; gap:10px; }
+.group-plan-controls .ybd-r + .ybd-r { border-top:1px solid var(--border); }
+.group-plan-controls .plan-select-value { flex:0 1 55%; min-width:0; max-width:200px; min-height:38px; justify-content:space-between; }
+.group-plan-controls .plan-select-value .v { flex:1; white-space:normal; font-size:13px; }
+.group-plan-controls .k b { font-size:13px; }
+.group-plan-controls .k em { font-size:12px; }
 .screen.light .ybd-card.editing .plan-select-value { border-color:rgba(55,48,163,.24); background:var(--tint-indigo-bg); }
 .ybd-plan-anchor > button.ybd-r:active { opacity:1; }
 .ybd-plan-anchor > button.ybd-r:active .plan-select-value { transform:scale(.97); }
@@ -1065,6 +1083,12 @@ button.ybd-r:active { opacity:.7; }
    transaction-level Sale price and Gross commission, before side charges. */
 .ybd-side-anchor { position:relative; z-index:4; }
 .ybd-side-anchor.open { z-index:8; }
+.ybd-fbh > .ybd-side-anchor { flex:none; margin-left:auto; }
+.ybd-fbh .ybd-side-select { width:auto; padding:0; min-height:44px; }
+.ybd-fbh .ybd-side-select > .k { display:none; }
+.ybd-fbh .ybd-side-select .plan-select-value { min-height:34px; justify-content:center; }
+.ybd-fbh .ybd-side-select .v.txt { font-size:13px; }
+
 .ybd-side-select { gap:10px; }
 .ybd-side-select .k { flex:1; }
 .ybd-side-select .plan-select-value { max-width:190px; }
@@ -1232,6 +1256,9 @@ button.ybd-r:active { opacity:.7; }
   font-variant-numeric:tabular-nums; color:var(--foreground); }
 /* A deduction carries its sign and amount in red; its label stays neutral. */
 .ybd-det .d-fees .d.neg > b, .ybd-det .d.grp-static.neg > b { color:var(--tint-red-fg); }
+.screen .ybd-det .d.positive-amount > b,
+.screen .pv.positive-amount,
+.screen .svv.positive-amount { color:var(--tint-green-fg); }
 /* Deduction labels establish money out. Amounts stay unsigned, while red stays
    reserved for attention states rather than ordinary fees. */
 /* one glyph, and only when something needs attention */
@@ -1244,17 +1271,21 @@ button.ybd-r:active { opacity:.7; }
 .ybd-det .d.team-share-fee { column-gap:14px; }
 .ybd-det .d.team-share-fee > b { min-width:88px; }
 .ybd-det .d span.fee-subtext.team-share { white-space:nowrap; letter-spacing:-.01em; }
-.ybd-det .d-fees.team-fee-list { max-height:calc(100dvh - 470px); overflow-y:auto; overscroll-behavior:contain;
-  scrollbar-width:thin; scrollbar-color:var(--muted-foreground) transparent; }
-.ybd-det .d-fees.team-fee-list::-webkit-scrollbar { width:5px; }
-.ybd-det .d-fees.team-fee-list::-webkit-scrollbar-thumb { border-radius:999px; background:var(--muted-foreground); }
-.team-side-rosters { display:grid; gap:10px; margin:12px 0 4px; }
-.team-side-card { overflow:hidden; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); }
-.team-side-card-head { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:0 12px; border-bottom:1px solid var(--border); }
-.team-side-card-head b { font:600 15px/1.25 var(--font); }
-.team-side-card-head span { flex:none; color:var(--muted-foreground); font:500 13px/1.2 var(--font); }
-.team-side-card .agentlist { display:block; padding:0 12px; }
-.team-side-card .agentrow { padding-left:0; padding-right:0; }
+.ybd-det .d-fees.team-fee-list { max-height:none; overflow:visible; overscroll-behavior:auto; }
+.team-side-rosters { display:grid; gap:18px; margin:16px 0 4px; }
+.team-side-card { min-width:0; }
+.team-side-card-head { display:flex; align-items:baseline; gap:12px; padding:0 0 10px; }
+.team-side-card-head b { font:600 17px/1.25 var(--font); }
+.team-side-card-head .team-side-meta { margin-left:auto; max-width:170px; text-align:right; color:var(--muted-foreground); font:500 12px/1.35 var(--font); }
+.team-side-section { border-top:1px solid var(--border); padding-top:12px; }
+.team-side-section-title { margin:0 0 10px; font:600 13px/1.2 var(--font); color:var(--muted-foreground); }
+.team-side-listing { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.team-side-listing b { min-width:0; font:500 15px/1.3 var(--font); }
+.team-side-pill { flex:none; display:inline-flex; align-items:center; min-height:22px; padding:3px 8px; border:1px solid rgba(122,126,255,.34); border-radius:var(--radius-badge); background:var(--tint-indigo-bg); color:var(--tint-indigo-fg); font:650 12px/1 var(--font); white-space:nowrap; }
+.team-side-person { display:grid; grid-template-columns:minmax(0, 1fr) auto; align-items:end; gap:4px 12px; }
+.team-side-person b { min-width:0; font:500 16px/1.3 var(--font); }
+.team-side-person span { color:var(--muted-foreground); font:500 13px/1.35 var(--font); }
+.team-side-person .team-side-pay { grid-column:2; grid-row:1 / span 2; align-self:center; color:var(--foreground); font:600 16px/1.25 var(--font); font-variant-numeric:tabular-nums; text-align:right; }
 .ybd-det .d .private-fee { flex:none; display:grid; place-items:center; width:22px; height:22px;
   border-radius:999px; background:var(--tint-indigo-bg); color:var(--tint-indigo-fg); padding:0; line-height:0; }
 .ybd-det .d .private-fee i { grid-area:1/1; display:grid; place-items:center; width:22px; height:22px; font-size:12px; line-height:1; }
@@ -1344,6 +1375,109 @@ button.ybd-r:active { opacity:.7; }
    panel fills the phone instead of inheriting the summary card's bounds. */
 .detail-page { position:absolute; inset:calc(44px + env(safe-area-inset-top)) 0 0; z-index:24;
   display:flex; flex-direction:column; min-height:0; background:transparent; color:var(--foreground); }
+#transactionSummary { margin:0 -4px 16px; }
+#transactionSummary .fin-row, .detail-fin-card .fin-row { flex-direction:row; align-items:center; justify-content:space-between; gap:12px; min-height:44px; padding:10px 12px; }
+#transactionSummary .fin-row > b, .detail-fin-card .fin-row > b { flex:none; margin-left:auto; text-align:right; }
+
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #transactionSummary { margin-inline:0; margin-bottom:8px; }
+/* This header has one line, unlike the two-line side headers. */
+#commissionsStackCard > .side { min-height:48px; padding:10px 14px; align-items:center; }
+#commissionsStackCard > .side .sb { justify-content:center; gap:2px; }
+#commissionsStackCard > .side .st { line-height:24px; }
+#commissionsStackCard > .side .sidechev { display:flex; align-items:center; justify-content:center; line-height:1; }
+.detail-head:has(.detail-header-options) { grid-template-columns:44px minmax(0,1fr) auto; }
+.detail-header-options { display:flex; align-items:center; gap:4px; }
+.decision-dock .arow > .dock-icon { flex:0 0 44px; width:44px; min-width:44px; height:46px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+.decision-dock .arow > .dock-icon i { font-size:20px; line-height:1; }
+#detailPage > #detailActions { display:none; }
+#detailPage > .detail-scroll { padding-bottom:calc(var(--bar-h, 164px) + 40px + env(safe-area-inset-bottom)); }
+.activity-page { z-index:26; background:var(--background); }
+.activity-page .detail-scroll { padding:12px 16px calc(84px + env(safe-area-inset-bottom)); }
+#dockAddMenu { position:absolute; right:0; bottom:calc(100% + 8px); width:200px; padding:6px; border:1px solid var(--border); border-radius:16px; background:var(--card); box-shadow:var(--shadow-md); }
+#dockAddMenu[hidden], #dockAddMenu button[hidden] { display:none; }
+.decision-dock .arow > #dockAddBtn[aria-expanded="true"] { background:#5A5FF2; color:#fff; border-color:#5A5FF2; box-shadow:none; }
+#dockAddMenu button { display:flex; align-items:center; width:100%; min-height:44px; padding:0 12px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 14px/1.3 var(--font); text-align:left; cursor:pointer; }
+#dockAddMenu button:hover, #dockAddMenu button:focus-visible { background:var(--muted); }
+#dockAddMenu button { gap:10px; }
+#dockAddMenu button > i { flex:none; font-size:18px; line-height:1; color:var(--muted-foreground); }
+#dockAddMenu button > span { min-width:0; }
+/* Team leads review the existing detail content inside the transaction shell. */
+/* Match Agent Your Breakdown summary and fee typography. Team split already
+   reuses the same .ybd-det row, amount, badge, and fee-subtext styles. */
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow .sk b { font:500 13px/1.3 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow .svv { font:600 15px/1.3 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="presplit"] .sk b { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="presplit"] .svv { font:500 13px/1.35 var(--font); color:var(--tint-red-fg); }
+
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #deds1 > .ssub,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #deds2 > .ssub { border-top:0; }
+
+/* Keep separate fee and info buttons while placing info beside its label. */
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow.referral-info-inline { display:grid; grid-template-columns:max-content 28px minmax(0,1fr); align-items:center; min-height:38px; column-gap:6px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .referral-info-inline .srow { display:contents; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .referral-info-inline .sk { grid-column:1; grid-row:1; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .referral-info-inline .fee-wire-info { grid-column:2; grid-row:1; width:28px; min-height:38px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .referral-info-inline .svv { grid-column:3; grid-row:1; justify-self:end; }
+/* Continue the same statement hierarchy through totals and participants. */
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain { min-height:40px; padding:4px 0; margin:0; border-top:0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain .sk b { font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain .svv { font:500 14px/1.3 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain .svv.neg { color:var(--tint-red-fg); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .ssub:not(.team-pre-heading),
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain.tot { position:relative; margin-top:8px; padding-top:12px; border-top:0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .ssub:not(.team-pre-heading) { padding-bottom:4px; padding-left:0; font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .ssub:not(.team-pre-heading)::before,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain.tot::after { content:''; position:absolute; top:0; left:-14px; right:-14px; height:1px; background:rgba(255,255,255,.08); }
+.screen.light:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .ssub:not(.team-pre-heading)::before,
+.screen.light:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .srow.plain.tot::after { background:rgba(10,10,10,.09); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .agentrow { min-height:56px; padding:8px 0; border-top:0; align-items:center; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .agentrow .ab b { font:500 13px/1.35 var(--font); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .agentrow .ab em { font:500 11px/1.35 var(--font); color:var(--muted-foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .agentrow .ap { font:500 13px/1.35 var(--font); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .addrow { min-height:44px; padding:4px 0; border-top:0; align-items:center; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .addrow .ab b { font:500 13px/1.35 var(--font); }
+
+/* Lead statement line items use the same hierarchy as the other fees. */
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #leadDetailBreakdown .srow.plain:not(.tot) .sk b { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #leadDetailBreakdown .srow.plain:not(.tot) .svv { font:500 13px/1.35 var(--font); }
+/* Agent summary rows are 38px; standalone fees are 40px. */
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="credit"] .srow { min-height:38px; padding:6px 0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="presplit"] .srow { min-height:40px; padding:4px 0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #buyingTeamSplit { padding:0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #buyingTeamSplit > .agent-split,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .team-pre-heading { position:relative; margin-top:8px; padding:12px 0 4px; min-height:40px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #buyingTeamSplit > .agent-split::after,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .team-pre-heading::after { content:''; position:absolute; top:0; left:-14px; right:-14px; height:1px; background:rgba(255,255,255,.08); }
+.screen.light:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #buyingTeamSplit > .agent-split::after,
+.screen.light:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .team-pre-heading::after { background:rgba(10,10,10,.09); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .team-pre-heading { display:flex; align-items:center; gap:10px; font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) .team-pre-heading > span { flex:1; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) .team-pre-heading em { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) .team-pre-heading > b { font:500 14px/1.3 var(--font); color:var(--tint-red-fg); }
+
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #scroll { padding-inline:16px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #ybd { display:none; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #commissionWallet { margin:0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #ybdCard { padding:6px 16px; border-radius:var(--radius-card); }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #ybdFbh { align-items:stretch; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #ybdFbh > .ybd-r.head { min-height:44px; align-items:center; padding-block:8px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #ybdFbh > .ybd-r.head .k { justify-content:center; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailPage > .detail-scroll { padding-top:0; padding-inline:0; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides { padding-top:0; }
+
+#ybdEditBtn, #ybdAddFeeBtn { display:none; }
+.screen[data-role="dual_role"] #detailEditBtn { display:none; }
+#agentCommissionOverview > .ybd-card + .ybd-card { margin-top:12px; }
+.agent-overview-link { width:100%; display:flex; align-items:center; gap:10px; background:transparent; border:0; color:inherit; text-align:left; cursor:pointer; }
+.agent-overview-link .ab { flex:1; min-width:0; }
+.agent-overview-link:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailPage { position:relative; inset:auto; z-index:auto; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailPage > .detail-head,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailPage .detail-fin-card { display:none; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailCloseBtn,
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailActions { display:none; }
+.screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #detailPage > .detail-scroll { flex:none; overflow:visible; }
 .agent-detail-page { z-index:25; background:var(--background); }
 .agent-detail-page .ybd-det { padding:8px 0 14px; }
 .agent-detail-page .agent-detail-net { font-weight:700; border-top:1px solid var(--border); margin-top:8px; padding-top:16px; }
@@ -1398,6 +1532,33 @@ button.ybd-r:active { opacity:.7; }
 .detail-head { flex:none; display:grid; grid-template-columns:44px minmax(0,1fr) 44px; align-items:center;
   min-height:56px; padding:0 12px; border-bottom:1px solid var(--border); background:rgba(18,18,20,.98); }
 .screen.light .detail-head { background:rgba(252,252,253,.98); }
+.activity-page > .detail-head > .detail-title { grid-column:2; }
+.activity-page > .detail-head > .detail-control { grid-column:3; justify-self:end; }
+/* Shared compact feed and glass composer for sheet and fullscreen. */
+:is(#activitySheet, #activityPage) .cm { gap:8px; padding:12px 0; border-top:0; }
+:is(#activitySheet, #activityPage) .cm .ch { display:grid; grid-template-columns:14px minmax(0,1fr) auto; align-items:center; gap:4px 6px; }
+:is(#activitySheet, #activityPage) .cm .ch b { font-size:12px; white-space:normal; overflow-wrap:anywhere; color:var(--foreground); }
+:is(#activitySheet, #activityPage) .cm .ch > time { font-size:11px; }
+:is(#activitySheet, #activityPage) .cm .ct { font-size:13px; line-height:1.5; overflow-wrap:anywhere; color:var(--foreground); }
+:is(#activitySheet, #activityPage) .cm .cb { gap:5px; }
+:is(#activitySheet, #activityPage) .cm .acic { width:22px; padding-top:1px; }
+:is(#activitySheet, #activityPage) .cm .acic i { font-size:16px; }
+:is(#activitySheet, #activityPage) .cm .ch { gap:4px 6px; }
+:is(#activitySheet, #activityPage) .cm .feed-author { display:inline-flex; align-items:center; gap:6px; min-width:0; }
+:is(#activitySheet, #activityPage) .cm .feed-author .ini { flex:none; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; font-size:9px; }
+:is(#activitySheet, #activityPage) .cm .feed-kind { display:inline-flex; align-items:center; gap:4px; flex:none; color:var(--muted-foreground); font:400 11px/1.3 var(--font); }
+:is(#activitySheet, #activityPage) .cm .feed-kind i { width:14px; font-size:14px; line-height:1; text-align:center; }
+:is(#activitySheet, #activityPage) .cm .ct { padding:0; }
+:is(#activitySheet, #activityPage) .daysep { padding:9px 0 4px; font-size:11px; }
+:is(#activitySheet, #activityPage) .aclines { gap:6px; }
+:is(#activitySheet, #activityPage) .aclines time { font-size:11px; }
+:is(#activitySheet, #activityPage) .activity-compose { align-items:flex-end; gap:8px; margin:8px 0 0; padding:0; border:0; background:transparent; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+#activityPage .activity-compose { margin:0; }
+:is(#activitySheet, #activityPage) .activity-compose textarea { box-sizing:border-box; flex:1; min-width:0; height:44px; min-height:44px; max-height:120px; margin:0; padding:11px 14px; border:1px solid var(--glass-border-strong); border-radius:22px; background:color-mix(in srgb, var(--card) 65%, transparent); color:var(--foreground); font:400 16px/20px var(--font); resize:none; box-shadow:inset 0 1px 0 var(--glass-hover); backdrop-filter:blur(24px) saturate(180%); -webkit-backdrop-filter:blur(24px) saturate(180%); }
+:is(#activitySheet, #activityPage) .activity-compose textarea::placeholder { font-size:13px; color:var(--muted-foreground); }
+:is(#activitySheet, #activityPage) .activity-compose .send { width:44px; height:44px; box-shadow:none; }
+:is(#activitySheet, #activityPage) .activity-compose .send i { font-size:20px; line-height:1; }
+:is(#activitySheet, #activityPage) .activity-compose :is(textarea, .send):focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 .detail-title { min-width:0; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   text-align:center; font:600 17px/1.3 var(--font); letter-spacing:-.01em; }
 .detail-control { position:relative; width:36px; height:36px; padding:0; border:0; border-radius:999px;
@@ -1709,6 +1870,66 @@ body { position:relative; gap:0; }
 #agentAllocSheet .foot.allocation-actions .rds-btn { flex:1; height:auto; min-height:46px; padding:0 18px; border-radius:999px; font-size:15px; }
 #agentAllocCancel { background:var(--muted); color:var(--foreground); border:1px solid var(--border); }
 
+.screen .personal-overview #sec-sides .dedrow .sk b { font:500 13px/1.3 var(--font); color:var(--foreground); }
+.screen .personal-overview #sec-sides .dedrow .svv { font:600 15px/1.3 var(--font); color:var(--foreground); }
+.screen .personal-overview #sec-sides .dedrow[data-kind="presplit"] .sk b { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen .personal-overview #sec-sides .dedrow[data-kind="presplit"] .svv { font:500 13px/1.35 var(--font); color:var(--tint-red-fg); }
+
+.screen .personal-overview #sec-sides .dedrow,
+.screen .personal-overview #deds1 > .ssub,
+.screen .personal-overview #deds2 > .ssub { border-top:0; }
+
+/* Keep separate fee and info buttons while placing info beside its label. */
+.screen .personal-overview #sec-sides .dedrow.referral-info-inline { display:grid; grid-template-columns:max-content 28px minmax(0,1fr); align-items:center; min-height:38px; column-gap:6px; }
+.screen .personal-overview #sec-sides .referral-info-inline .srow { display:contents; }
+.screen .personal-overview #sec-sides .referral-info-inline .sk { grid-column:1; grid-row:1; }
+.screen .personal-overview #sec-sides .referral-info-inline .fee-wire-info { grid-column:2; grid-row:1; width:28px; min-height:38px; }
+.screen .personal-overview #sec-sides .referral-info-inline .svv { grid-column:3; grid-row:1; justify-self:end; }
+/* Continue the same statement hierarchy through totals and participants. */
+.screen .personal-overview #sec-sides .srow.plain { min-height:40px; padding:4px 0; margin:0; border-top:0; }
+.screen .personal-overview #sec-sides .srow.plain .sk b { font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen .personal-overview #sec-sides .srow.plain .svv { font:500 14px/1.3 var(--font); color:var(--foreground); }
+.screen .personal-overview #sec-sides .srow.plain .svv.neg { color:var(--tint-red-fg); }
+.screen .personal-overview #sec-sides .ssub:not(.team-pre-heading),
+.screen .personal-overview #sec-sides .srow.plain.tot { position:relative; margin-top:8px; padding-top:12px; border-top:0; }
+.screen .personal-overview #sec-sides .ssub:not(.team-pre-heading) { padding-bottom:4px; padding-left:0; font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen .personal-overview #sec-sides .ssub:not(.team-pre-heading)::before,
+.screen .personal-overview #sec-sides .srow.plain.tot::after { content:''; position:absolute; top:0; left:-14px; right:-14px; height:1px; background:rgba(255,255,255,.08); }
+.screen.light .personal-overview #sec-sides .ssub:not(.team-pre-heading)::before,
+.screen.light .personal-overview #sec-sides .srow.plain.tot::after { background:rgba(10,10,10,.09); }
+.screen .personal-overview #sec-sides .agentrow { min-height:56px; padding:8px 0; border-top:0; align-items:center; }
+.screen .personal-overview #sec-sides .agentrow .ab b { font:500 13px/1.35 var(--font); }
+.screen .personal-overview #sec-sides .agentrow .ab em { font:500 11px/1.35 var(--font); color:var(--muted-foreground); }
+.screen .personal-overview #sec-sides .agentrow .ap { font:500 13px/1.35 var(--font); }
+.screen .personal-overview #sec-sides .addrow { min-height:44px; padding:4px 0; border-top:0; align-items:center; }
+.screen .personal-overview #sec-sides .addrow .ab b { font:500 13px/1.35 var(--font); }
+
+/* Lead statement line items use the same hierarchy as the other fees. */
+.screen .personal-overview #leadDetailBreakdown .srow.plain:not(.tot) .sk b { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen .personal-overview #leadDetailBreakdown .srow.plain:not(.tot) .svv { font:500 13px/1.35 var(--font); }
+/* Agent summary rows are 38px; standalone fees are 40px. */
+.screen .personal-overview #sec-sides .dedrow[data-kind="credit"] .srow { min-height:38px; padding:6px 0; }
+.screen .personal-overview #sec-sides .dedrow[data-kind="presplit"] .srow { min-height:40px; padding:4px 0; }
+.screen .personal-overview #buyingTeamSplit { padding:0; }
+.screen .personal-overview #buyingTeamSplit > .agent-split,
+.screen .personal-overview #sec-sides .team-pre-heading { position:relative; margin-top:8px; padding:12px 0 4px; min-height:40px; }
+.screen .personal-overview #buyingTeamSplit > .agent-split::after,
+.screen .personal-overview #sec-sides .team-pre-heading::after { content:''; position:absolute; top:0; left:-14px; right:-14px; height:1px; background:rgba(255,255,255,.08); }
+.screen.light .personal-overview #buyingTeamSplit > .agent-split::after,
+.screen.light .personal-overview #sec-sides .team-pre-heading::after { background:rgba(10,10,10,.09); }
+.screen .personal-overview #sec-sides .team-pre-heading { display:flex; align-items:center; gap:10px; font:500 14px/1.35 var(--font); color:var(--foreground); }
+.screen .personal-overview .team-pre-heading > span { flex:1; }
+.screen .personal-overview .team-pre-heading em { font:500 13px/1.35 var(--font); color:var(--muted-foreground); }
+.screen .personal-overview .team-pre-heading > b { font:500 14px/1.3 var(--font); color:var(--tint-red-fg); }
+
+
+.personal-overview #restMetrics1,
+.personal-overview #leadDetailBreakdown,
+.personal-overview .side-summary,
+.personal-overview [data-award],
+.personal-overview [data-addagent],
+.personal-overview [data-addded$="presplit"],
+.personal-overview #noAgent2 { display:none !important; }
 </style>
 </head>
 <body>
@@ -1741,6 +1962,10 @@ body { position:relative; gap:0; }
 
     <div class="scroll" id="scroll">
 
+      <div class="fin-card" id="transactionSummary" data-count="1" aria-label="Transaction summary">
+        <div class="fin-row"><span><i class="ph ph-house-line fin-icon" aria-hidden="true"></i>Sale price</span><b id="summaryPrice">$1,150,000</b></div>
+      </div>
+
       <!-- your breakdown — the reader's own money, before the side's -->
       <div class="ybd" id="ybd">
         <div class="commission-wallet" id="commissionWallet">
@@ -1752,15 +1977,17 @@ body { position:relative; gap:0; }
           <div class="detail-page" id="detailPage" role="dialog" aria-modal="true" aria-labelledby="detailPageTitle" data-data-state="ready" hidden>
             <div class="detail-head">
               <button class="detail-control" type="button" id="detailCloseBtn" aria-label="Back to breakdown"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
-              <h2 class="detail-title" id="detailPageTitle">Detailed breakdown</h2>
-              <button class="detail-control edit" type="button" id="detailEditBtn" aria-label="Edit detailed breakdown"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button>
+              <h2 class="detail-title" id="detailPageTitle">Commission Overview</h2>
+              <div class="detail-header-options"><button class="detail-control" type="button" id="detailMoreBtn" aria-label="More actions"><i class="ph ph-dots-three" aria-hidden="true"></i></button>
+              <button class="detail-control edit" type="button" id="detailEditBtn" aria-label="Edit detailed breakdown"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button></div>
             </div>
             <div class="detail-scroll">
           <div class="parity-state" id="detailState"><strong>Breakdown unavailable</strong><span id="detailStateCopy">Try again.</span></div>
-          <div class="fin-card detail-fin-card" data-count="2" aria-label="Commission summary">
+          <div class="fin-card detail-fin-card" data-count="1" aria-label="Sale price">
             <div class="fin-row"><span><i class="ph ph-house-line fin-icon" aria-hidden="true"></i>Sale price</span><b id="detailFinPrice">$1,150,000</b></div>
-            <div class="fin-row"><span><span class="fin-badge" data-mark="$" aria-hidden="true"><i class="ph ph-seal"></i></span>Gross commission</span><b id="detailFinGross">$23,000</b></div>
           </div>
+          <div id="agentCommissionOverview" hidden></div>
+          <div id="detailGroupPlans" hidden></div>
           <div id="sec-sides">
       <div class="card sides">
         <div class="side">
@@ -1792,7 +2019,7 @@ body { position:relative; gap:0; }
           </button>
           <button class="addrow" type="button" aria-haspopup="dialog" data-addded="mine|presplit">
             <i class="ph ph-plus-circle lead" aria-hidden="true"></i>
-            <span class="ab"><b>Add pre-split deduction</b></span>
+            <span class="ab"><b>Add fee before the split</b></span>
           </button>
           <div class="srow tot plain">
             <span class="sk"><b>Gross after deductions</b></span>
@@ -1852,6 +2079,14 @@ body { position:relative; gap:0; }
         <button class="addrow" type="button" id="addAgentBuying" aria-haspopup="dialog" data-addagent="Buying side" data-agent-side="other"><i class="ph ph-plus-circle lead" aria-hidden="true"></i><span class="ab"><b>Add agent</b></span></button>
         </div>
       </div>
+      <section class="card sides" id="commissionsStackCard" aria-label="Commissions">
+        <div class="side">
+          <button class="sgo" type="button" aria-expanded="false" aria-controls="commissionsStackBody" aria-label="Toggle commissions"></button>
+          <span class="sb"><span class="st">Commissions</span><span class="sm">There are 4 commissions.</span></span>
+          <i class="ph ph-caret-right sidechev" aria-hidden="true"></i>
+        </div>
+        <div class="sidebody" id="commissionsStackBody" hidden><div class="ybd-det" id="detailedCommissions"></div></div>
+      </section>
       </div>
             </div>
             <div class="detail-actions" id="detailActions">
@@ -1890,7 +2125,9 @@ body { position:relative; gap:0; }
                 <button class="cda-regen-go" type="button" id="cdaRegenGo">Regenerate — Full transparency + CDA</button>
               </div>
             </div>
-            <button class="ghost" type="button" id="msgBtn" aria-label="Comment"><i class="ph ph-chat-circle-dots" aria-hidden="true"></i><span>Comment</span></button>
+            <button class="ghost dock-icon" type="button" id="msgBtn" aria-label="Comment" title="Comment"><i class="ph ph-chat-circle-dots" aria-hidden="true"></i></button>
+            <button class="ghost dock-icon" type="button" id="dockEditBtn" aria-label="Edit breakdown" title="Edit breakdown" aria-pressed="false"><i class="ph ph-pencil-simple" aria-hidden="true"></i></button>
+            <button class="ghost dock-icon" type="button" id="dockAddBtn" aria-label="Add fee" title="Add fee"><i class="ph ph-plus" aria-hidden="true"></i></button>
           </div>
           <div class="state" id="stateMsg" hidden><i class="ph-fill ph-check-circle" aria-hidden="true"></i><span id="stateTxt"></span></div>
         </div>
@@ -1947,11 +2184,18 @@ Thanks</textarea></div>
     <div class="sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreSheetT" hidden>
       <div class="grab" aria-hidden="true"></div>
       <div class="sh-name" id="moreSheetT">Other options<span class="sh-sub" id="moreSub">Commission breakdown</span></div>
-      <button class="act" type="button" id="moreDetailed"><i class="ph ph-list-magnifying-glass" aria-hidden="true"></i><span class="lbl"><b>Detailed breakdown</b></span></button>
+      <button class="act" type="button" id="moreDetailed"><i class="ph ph-list-magnifying-glass" aria-hidden="true"></i><span class="lbl"><b>Commission Overview</b></span></button>
       <a class="act" id="moreWire" href="Wire instructions.html"><i class="ph ph-bank" aria-hidden="true"></i><span class="lbl"><b>Wire instructions</b></span></a>
       <button class="act" type="button" id="moreCda" hidden><i class="ph ph-download-simple" aria-hidden="true"></i><span class="lbl"><b>Download CDA</b></span></button>
       <a class="act" href="CDA Settings.html"><i class="ph ph-gear" aria-hidden="true"></i><span class="lbl"><b>Commission settings</b></span></a>
+      <button class="act" type="button" id="moreCapProgress"><i class="ph ph-chart-bar" aria-hidden="true"></i><span class="lbl"><b>Cap progress</b></span></button>
       <button class="act" type="button" id="moreTracker"><i class="ph ph-chart-line-up" aria-hidden="true"></i><span class="lbl"><b>Commission tracker</b></span></button>
+    </div>
+
+    <div class="sheet" id="capProgressSheet" role="dialog" aria-modal="true" aria-labelledby="capProgressTitle" hidden>
+      <div class="grab" aria-hidden="true"></div>
+      <div class="sh-name" id="capProgressTitle" tabindex="-1">Cap progress<span class="sh-sub">Mark Perez</span></div>
+      <div id="capProgressBody" style="overflow-y:auto; min-height:0; padding:0 4px 12px"></div>
     </div>
 
     <!-- one tracker state at a time; switch variants from Design tweaks -->
@@ -2025,8 +2269,12 @@ Thanks</textarea></div>
             <button type="button" class="ddbtn rds-combobox__trigger" id="ddFeePayerBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="ddFeePayerList" aria-labelledby="dedFeePayerLbl"><span id="ddFeePayerVal">Agent</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
             <div class="ddlist rds-combobox__panel" id="ddFeePayerList" role="listbox" aria-labelledby="dedFeePayerLbl" hidden>
               <button class="rds-command__item" type="button" role="option" data-feepayer="Agent" aria-selected="true">Agent<i class="ph ph-check" aria-hidden="true"></i></button>
-              <button class="rds-command__item" type="button" role="option" data-feepayer="Both" aria-selected="false">Both<i class="ph ph-check" aria-hidden="true"></i></button>
+              <button class="rds-command__item" type="button" role="option" data-feepayer="Agent + Team" aria-selected="false">Agent + Team<i class="ph ph-check" aria-hidden="true"></i></button>
+              <button class="rds-command__item" type="button" role="option" data-feepayer="Agent + Group" aria-selected="false">Agent + Group<i class="ph ph-check" aria-hidden="true"></i></button>
+              <button class="rds-command__item" type="button" role="option" data-feepayer="Group + Team" aria-selected="false">Group + Team<i class="ph ph-check" aria-hidden="true"></i></button>
+              <button class="rds-command__item" type="button" role="option" data-feepayer="All" aria-selected="false">All<i class="ph ph-check" aria-hidden="true"></i></button>
               <button class="rds-command__item" type="button" role="option" data-feepayer="Team" aria-selected="false">Team<i class="ph ph-check" aria-hidden="true"></i></button>
+              <button class="rds-command__item" type="button" role="option" data-feepayer="Group" aria-selected="false">Group<i class="ph ph-check" aria-hidden="true"></i></button>
             </div>
           </div>
         </div>
@@ -2038,10 +2286,11 @@ Thanks</textarea></div>
           <label class="fld rds-field"><span>Agent share</span><span class="amt suffix"><input class="rds-input" type="text" inputmode="decimal" id="feeAgentPct" placeholder="100"><i aria-hidden="true">%</i></span></label>
         </div>
         <label class="fld rds-field" id="fTeamFeeShare" hidden><span>Team share</span><span class="amt suffix"><input class="rds-input" type="text" inputmode="decimal" id="feeTeamPct" placeholder="100"><i aria-hidden="true">%</i></span></label>
+        <label class="fld rds-field" id="fGroupFeeShare" hidden><span>Group share</span><span class="amt suffix"><input class="rds-input" type="text" inputmode="decimal" id="feeGroupPct" placeholder="100"><i aria-hidden="true">%</i></span></label>
         <div class="fld rds-field" id="fFeeStage" hidden><span>Deduction stage</span>
           <div class="seg kind rds-toggle-group" role="radiogroup" aria-label="Deduction stage">
-            <button class="rds-toggle" type="button" role="radio" data-feestage="presplit" aria-checked="false">Pre-split</button>
-            <button class="rds-toggle" type="button" role="radio" data-feestage="postsplit" aria-checked="true">Post-split</button>
+            <button class="rds-toggle" type="button" role="radio" data-feestage="presplit" aria-checked="false">Before split</button>
+            <button class="rds-toggle" type="button" role="radio" data-feestage="postsplit" aria-checked="true">After split</button>
           </div>
         </div>
         <div class="fld rds-field" id="fPayTo"><span id="dedPayToLbl">Payable to</span>
@@ -2226,6 +2475,25 @@ Thanks</textarea></div>
       </div>
     </div>
 
+    <div class="detail-page activity-page" id="activityPage" role="dialog" aria-modal="true" aria-labelledby="activityPageTitle" hidden>
+      <div class="detail-head">
+        <h2 class="detail-title" id="activityPageTitle">Activity &amp; comments</h2>
+        <button class="detail-control" type="button" id="activityPageBack" aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button>
+      </div>
+      <div class="detail-scroll">
+        <div class="activity-filters" role="group" aria-label="Filter activity">
+          <button class="activity-filter" type="button" data-activity-filter="all" aria-pressed="true">All</button>
+          <button class="activity-filter" type="button" data-activity-filter="comments" aria-pressed="false">Comments</button>
+          <button class="activity-filter" type="button" data-activity-filter="activity" aria-pressed="false">Activity</button>
+        </div>
+        <ul class="feedlist" id="activityPageFeed"></ul>
+      </div>
+      <div class="activity-compose">
+        <textarea class="rds-input rds-textarea" id="activityPageInput" rows="1" placeholder="Add a comment" aria-label="Add a comment"></textarea>
+        <button class="send" type="button" id="activityPageSend" aria-label="Post comment"><i class="ph ph-arrow-up" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
     <!-- top-level financial editor -->
     <div class="sheet" id="financeSheet" role="dialog" aria-modal="true" aria-labelledby="financeSheetT" data-dirty-guard hidden>
       <div class="grab" aria-hidden="true"></div>
@@ -2384,6 +2652,21 @@ Thanks</textarea></div>
   /* A fee's direction is semantic, not inferred from its name. New positive
      adjustments can set direction:'addition'; ordinary fees remain deductions. */
   var feeDisplay = function (fee, value) { return fee && fee.direction === 'addition' ? cur(value) : neg(value); };
+  function amountTone(value, fee) {
+    var text = String(value);
+    if (fee && fee.direction !== 'addition') return ' neg';
+    if (text.charAt(0) === '\u2212') return ' neg';
+    return /^\$/.test(text) && Number(text.replace(/[$,]/g, '')) > 0 ? ' positive-amount' : '';
+  }
+  function deductionsFirst(rows) {
+    function addition(row) {
+      var fee = row.post || row;
+      if (fee.direction) return fee.direction === 'addition';
+      return row.v != null && !/^[−-]/.test(String(row.v));
+    }
+    return rows.filter(function (row) { return !addition(row); }).concat(rows.filter(addition));
+  }
+
   /* sections moved to the \u2022\u2022\u2022 pages left their writes behind \u2014 swallow them */
   var $id = function (i) { return document.getElementById(i) || document.createElement('span'); };
 
@@ -2432,7 +2715,7 @@ Thanks</textarea></div>
         { id: 'p8', n: 'Vendor Referral Fee', a: 500, p: 'Agent', wire: true, info: 'Escrow to contact vendor directly for payment instructions.', payTo: 'external', payee: 'Referral Partner' }
       ],
       postSeq = 10, radSeq = 2,
-      PAYICON = { Agent: 'ph-user', Both: 'ph-users', Team: 'ph-buildings' },
+      PAYICON = { Agent: 'ph-user', Both: 'ph-users', Team: 'ph-buildings', Group: 'ph-users-three' },
       PLANS = [
         { name: '80/20 Standard', split: 80 },
         { name: '70/30 Standard', split: 70 },
@@ -2499,7 +2782,7 @@ Thanks</textarea></div>
         { id:'technology', n:'Team technology fee', a:75 }
       ],
       groupSplitPct = 25,
-      postDed = POSTDEDS.reduce(function (t, d) { return t + (d.p === 'Team' ? 0 : (d.direction === 'addition' ? -d.a : d.a) * (d.p === 'Both' ? (d.agentPct == null ? 100 : d.agentPct) / 100 : 1)); }, 0),
+      postDed = POSTDEDS.reduce(function (t, d) { return t + (d.direction === 'addition' ? -d.a : d.a) * feeShare(d, 'Agent'); }, 0),
       sideDed, otherDed, offTop, preSplit, sideGross, otherGross, basis, split, postCap, net, teamNet, radiusNet, groupNet, agentsPaid = 0;
   function sumDeds(k, kind) {
     return DEDS[k].reduce(function (t, d) {
@@ -2534,7 +2817,23 @@ Thanks</textarea></div>
       if (CAPS['Mark Perez'].group_team) CAPS['Mark Perez'].group_team.fee = team.formula;
     }
   }
+  function feePayers(payer) {
+    if (payer === 'Both') return ['Agent', 'Team'];
+    return payer === 'All' ? ['Agent', 'Group', 'Team'] : String(payer || 'Agent').split(' + ');
+  }
+  function feeShare(fee, payer) {
+    var payers = feePayers(fee.p);
+    if (payers.indexOf(payer) < 0) return 0;
+    if (payers.length === 1) return 1;
+    var value = fee[payer.toLowerCase() + 'Pct'];
+    // Preserve the existing seeded Agent + Team allocation when shares are absent.
+    return (value == null ? (payer === 'Agent' ? 100 : 0) : value) / 100;
+  }
+  function groupFeeTotal() {
+    return POSTDEDS.reduce(function (total, fee) { return total + (fee.direction === 'addition' ? -fee.a : fee.a) * feeShare(fee, 'Group'); }, 0);
+  }
   function compute() {
+    postDed = POSTDEDS.reduce(function (total, fee) { return total + (fee.direction === 'addition' ? -fee.a : fee.a) * feeShare(fee, 'Agent'); }, 0);
     syncPostCapSchedule();
     /* two stages, and they genuinely differ:
        off the top reduces the side gross everyone splits;
@@ -2553,7 +2852,7 @@ Thanks</textarea></div>
       - PAYRADIUS.reduce(function (t, d) { return t + (d.direction === 'addition' ? -d.a : d.a); }, 0));
     teamNet = (basis - split) + teamPostCap + teamAdminFee;
     radiusNet = radiusFee + postCap + 649;
-    groupNet = teamNet * groupSplitPct / 100;
+    groupNet = teamNet * groupSplitPct / 100 - groupFeeTotal();
     computeAgents();
     if (groupPreview === 'no_payout') groupNet = 0;
   }
@@ -2569,18 +2868,24 @@ Thanks</textarea></div>
   }
   function relationshipCanEdit(key) {
     if (role === 'team_lead') return true;
-    if (role === 'group_lead' || role === 'group_lead_agent') return key === 'agent_group_lead';
+    if (role === 'group_lead' || role === 'group_lead_agent') return key === 'agent_group_lead' || key === 'group_team';
     if (role === 'group_agent') return key === 'agent_group_lead';
     return key === 'agent_team';
+  }
+  function visibleCapRecords(caps) {
+    caps = caps || {};
+    if (agentFinancialView()) return role === 'group_agent' ? [] : [caps.internal_team].filter(Boolean);
+    return [caps.radius, caps.internal_team, caps.group_team, caps.agent_group].filter(Boolean);
   }
   function capCardsFor(name, s) {
     var caps = CAPS[name];
     if (!caps) return null;
+    if (agentFinancialView()) return visibleCapRecords(caps);
     return usesGroupRelationships(s)
       ? [caps.radius, caps.agent_group, caps.group_team].filter(Boolean)
       : [caps.radius, caps.internal_team].filter(Boolean);
   }
-  function relationshipCardsFor(name, s) {
+  function relationshipCardsFor(name, s, includeAll) {
     var post = s.postCap || {};
     function card(key, label, commissionPlan, formula, cap) {
       var postPlan = post[key] || null,
@@ -2598,6 +2903,11 @@ Thanks</textarea></div>
       };
     }
     var caps = CAPS[name] || {};
+    if (includeAll) return [
+      card('group_team', 'Group to Team', s.groupPlan, 'Group master plan', caps.group_team),
+      card('agent_group_lead', 'Agent to Group', s.subPlan || s.plan, 'Agent group relationship', caps.agent_group),
+      card('agent_team', 'Agent to Team', s.plan, 'Direct team relationship', caps.internal_team)
+    ];
     if (usesGroupRelationships(s)) return [
       card('group_team', 'Group to Team', s.groupPlan, 'Group master plan', caps.group_team),
       card('agent_group_lead', 'Agent to Group', s.subPlan || s.plan, 'Agent share inside ' + TEAM, caps.agent_group)
@@ -2621,7 +2931,7 @@ Thanks</textarea></div>
     function dedDet(d) {
       var o = [{ k: 'Fee amount', v: cur(d.a) }];
       if (n > 1) o.push({ k: 'Your share', v: pctLbl(share) + ' · ' + cur(d.a * share) });
-      o.push({ k: 'Paid by', v: d.p });
+      o.push({ k: 'Paid by', v: d.p === 'Both' ? 'Agent + Team' : d.p });
       if (d.payee) o.push({ k: 'Paid to', v: d.payee });
       if (d.wire) o.push({ k: 'Payment', v: 'Wire' });
       if (d.info) o.push({ note: d.info });
@@ -2650,8 +2960,8 @@ Thanks</textarea></div>
       { k: 'Percentage charge', v: cur(aGross * selectedPostCap('group').rate) },
       { k: 'Flat charge', v: cur(selectedPostCap('group').flat) }
     ] });
-    POSTDEDS.filter(function (d) { return d.p !== 'Team'; }).forEach(function (d) {
-      var agentFee = d.a * (d.p === 'Both' ? (d.agentPct == null ? 100 : d.agentPct) / 100 : 1);
+    POSTDEDS.filter(function (d) { return feeShare(d, 'Agent') > 0; }).forEach(function (d) {
+      var agentFee = d.a * feeShare(d, 'Agent');
       rows.push({ k: d.n, pay: d.p, v: feeDisplay(d, agentFee * share), amt: agentFee * share, underSplit:true, post: d, list: 'post', det: dedDet(d) });
     });
     rows.push({ addpost: 'post' });
@@ -2678,7 +2988,7 @@ Thanks</textarea></div>
     agentsPaid = ss;
     radiusNet = sr + PAYRADIUS.reduce(function (t, d) { return t + d.a; }, 0);
     teamNet = (basis - preSplit - ss) + st + teamAdminFee;
-    groupNet = teamNet * groupSplitPct / 100;
+    groupNet = teamNet * groupSplitPct / 100 - groupFeeTotal();
   }
   function groupMemberRecords() {
     if (groupPreview === 'no_payout' || groupPreview === 'no_members') return [];
@@ -2692,8 +3002,8 @@ Thanks</textarea></div>
       [['Dana Whitfield', '$10,120'], ['Luis Ramos', '$8,640']].forEach(function (member, index) {
         members.push({ name:member[0], role:'Group member', id:'preview-gm-' + index,
           pay:member[1], side:'preview', allocationStatic:true, rows:[
-            { k:'Pre-split deductions', v:cur(0) },
-            { k:'Post-split deductions', v:cur(0) },
+            { k:'Fees before the split', v:cur(0) },
+            { k:'Fees after the split', v:cur(0) },
             { k:'Payable to Radius', v:cur(0) },
             { k:'Net commission', v:member[1], tot:true }
           ] });
@@ -2703,16 +3013,16 @@ Thanks</textarea></div>
   }
   /* Team lead has downstream share and role fees. Group lead receives the
      group payout from the side summary; agent deductions do not belong to it. */
-  function teamLeadFees() { return teamPostCap + teamAdminFee + POSTDEDS.reduce(function (sum, d) { return sum + (d.p === 'Agent' ? 0 : d.a * (d.p === 'Both' ? (d.teamPct == null ? 0 : d.teamPct) / 100 : 1)); }, 0); }
-  function teamLeadTakeHome() { return Math.max(0, teamNet - groupNet - teamLeadFees()); }
+  function teamLeadFees() { return teamPostCap + teamAdminFee + POSTDEDS.reduce(function (sum, d) { return sum + (d.direction === 'addition' ? -d.a : d.a) * feeShare(d, 'Team'); }, 0); }
+  function teamLeadTakeHome() { return Math.max(0, teamNet - (groupNet + groupFeeTotal()) - teamLeadFees()); }
   function groupLeadTakeHome() { return groupNet; }
   function agentRowEl(o, isFirst) {
     var row = document.createElement('div');
     row.className = 'agentrow' + (isFirst ? ' first' : '');
     if (o.rows) {
       var navigate = document.createElement('button'); navigate.type = 'button'; navigate.className = 'agent-open'; navigate.setAttribute('data-agent-open', '');
-      navigate.setAttribute('aria-haspopup', 'dialog'); navigate.setAttribute('aria-controls', 'agentDetailPage');
-      navigate.setAttribute('aria-label', 'View breakdown for ' + o.name); row.appendChild(navigate);
+      navigate.setAttribute('aria-controls', usesLeadLayout() ? 'agentDetailPage' : 'ybd');
+      navigate.setAttribute('aria-label', usesLeadLayout() ? 'Open ' + o.name + '’s Breakdown' : 'Open Your Breakdown'); row.appendChild(navigate);
       row.agentBreakdown = o;
     }
     if (o.only) row.setAttribute('data-only', o.only);
@@ -2722,7 +3032,7 @@ Thanks</textarea></div>
     ini.textContent = initials(o.name);
     var ab = document.createElement('span'); ab.className = 'ab';
     var b = document.createElement('b'); b.textContent = o.name;
-    var em = document.createElement('em'); em.textContent = o.role;
+    var em = document.createElement('em'); em.textContent = usesLeadLayout() ? o.role.split(' · ')[0] : o.role;
     var ml = document.createElement('span'); ml.className = 'meta-line'; ml.appendChild(b);
     if (o.allocation != null) {
       var al = document.createElement(o.allocationStatic ? 'span' : 'button');
@@ -2925,7 +3235,7 @@ Thanks</textarea></div>
         el = document.createElement('button'); el.type = 'button'; el.className = 'addrow post';
         el.setAttribute('aria-haspopup', 'dialog'); el.setAttribute('data-addpost', r.addpost);
         var ai = document.createElement('i'); ai.className = 'ph ph-plus-circle lead'; ai.setAttribute('aria-hidden', 'true');
-        var ab = document.createElement('span'); ab.className = 'ab'; var abb = document.createElement('b'); abb.textContent = r.addpost === 'radius' ? 'Add Radius fee' : 'Add post-split deduction'; ab.appendChild(abb);
+        var ab = document.createElement('span'); ab.className = 'ab'; var abb = document.createElement('b'); abb.textContent = r.addpost === 'radius' ? 'Add Radius fee' : 'Add fee after the split'; ab.appendChild(abb);
         el.appendChild(ai); el.appendChild(ab); d.appendChild(el); return;
       }
       var canEdit = !!r.post;
@@ -2985,7 +3295,7 @@ Thanks</textarea></div>
         v = document.createElement('button'); v.type = 'button'; v.setAttribute('aria-haspopup', 'dialog');
         v.setAttribute('data-editpost', r.post.id); v.setAttribute('data-list', r.list); v.setAttribute('aria-label', 'Edit ' + r.k + ', ' + r.v);
       } else v = document.createElement('span');
-      v.className = 'pv' + (String(r.v).charAt(0) === '\u2212' ? ' neg' : '') + (canEdit ? ' edit' : ''); v.textContent = r.v;
+      v.className = 'pv' + amountTone(r.v, r.post) + (canEdit ? ' edit' : ''); v.textContent = r.v;
       p.appendChild(v);
       if (canEdit) {
         var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'prm'; rm.tabIndex = -1;
@@ -3015,8 +3325,86 @@ Thanks</textarea></div>
       d.setAttribute('role', 'listitem');
       d.style.setProperty('--calc-order', index);
       var k = document.createElement('span'); k.className = 'pk'; k.textContent = r.k;
-      var v = document.createElement('span'); v.className = 'pv' + (String(r.v).charAt(0) === '\u2212' ? ' neg' : ''); v.textContent = r.v;
+      var v = document.createElement('span'); v.className = 'pv' + amountTone(r.v); v.textContent = r.v;
       d.appendChild(k); d.appendChild(v); h.appendChild(d);
+    });
+  }
+  function renderAgentCommissionOverview() {
+    var old = document.getElementById('agentCommissionOverview'), own = agentFinancialView();
+    old.hidden = true; old.textContent = '';
+    document.getElementById('sec-sides').hidden = false;
+    detailPage && detailPage.classList.toggle('personal-overview', own);
+    var summary = document.querySelector('#commissionsStackBody').previousElementSibling.querySelector('.sm');
+    if (summary) summary.textContent = own ? 'There are 3 commissions.' : 'There are 4 commissions.';
+    if (!own) return;
+    var person = breakdownAgent();
+    ['mine', 'other'].forEach(function (side, index) {
+      var number = index + 1, other = side === 'other', roster = other ? AG.other : AG.mine,
+          participant = roster.filter(function (agent) { return agent.me; })[0],
+          show = !!participant && (!other || role === 'dual_role'),
+          card = document.getElementById('sbody' + number).closest('.card.sides');
+      card.hidden = !show;
+      if (!show) return;
+      var share = Number(participant.allocation == null ? 100 / roster.length : participant.allocation) / 100,
+          grossAmount = (other ? otherGross : sideGross) * share,
+          credits = DEDS[side].filter(function (d) { return d.kind === 'credit'; }),
+          after = grossAmount - credits.reduce(function (sum, d) { return sum + d.amt * share; }, 0),
+          payout = other ? (otherGross - otherDed) * share : myChain().net;
+      document.getElementById('s' + number + 'Val').textContent = cur(grossAmount);
+      document.getElementById('s' + number + 'Sub').textContent = person.name;
+      document.getElementById('m' + number + 'Gross').textContent = cur(grossAmount);
+      document.getElementById('m' + number + 'After').textContent = cur(after);
+      document.getElementById('x' + number + 'Basis').textContent = cur(after);
+      document.getElementById('m' + number + 'Agents').textContent = cur(payout);
+      var deductions = document.getElementById('deds' + number); deductions.textContent = '';
+      credits.forEach(function (d) { var row = dedRow(side, d); row.querySelector('.svv').textContent = cur(d.amt * share); deductions.appendChild(row); });
+      var list = document.getElementById('agentList' + number); list.hidden = false; list.textContent = '';
+      var member = agentRowEl({ name:person.name, role:role === 'group_agent' ? 'Group member' : participant.role || 'Primary agent',
+        pay:cur(payout), allocation:share * 100, side:side, rows:[] }, true);
+      var navigate = member.querySelector('[data-agent-open]'), allocation = member.querySelector('[data-agentalloc]');
+      function returnToOwn(event) {
+        event.preventDefault(); event.stopPropagation();
+        if (role === 'dual_role') dualSide = (other ? coopTitle : myTitle) === 'Buying side' ? 'buying' : 'listing';
+        closeDetailed(); renderYbd(); scrollEl.scrollTop = 0;
+      }
+      navigate.addEventListener('click', returnToOwn);
+      if (allocation) {
+        allocation.removeAttribute('data-agentalloc'); allocation.removeAttribute('aria-haspopup'); allocation.disabled = false;
+        allocation.setAttribute('aria-label', 'View your breakdown'); allocation.addEventListener('click', returnToOwn);
+      }
+      list.appendChild(member);
+      var title = document.getElementById('agentListTitle' + number);
+      if (title) { title.hidden = false; title.textContent = 'Agent'; }
+    });
+    var commissions = document.getElementById('detailedCommissions'); commissions.textContent = '';
+    agentDetailLine(commissions, 'Radius commission', cur(radiusNet));
+    agentDetailLine(commissions, 'Team commission', cur(teamNet));
+    agentDetailLine(commissions, 'Group commission', cur(groupNet));
+  }
+  function syncFinancialVisibility() {
+    var restricted = agentFinancialView();
+    ['m1Team', 'r1Rad', 'r1Team', 'r1Group'].forEach(function (id) {
+      var value = document.getElementById(id), row = value && value.closest('.side-metric');
+      if (row) row.hidden = restricted;
+    });
+    var title = document.querySelector('#sec-commissions .sec-title');
+    if (title && restricted) title.textContent = 'Your commission';
+  }
+  function agentFinancialView() {
+    return !leadMemberSelection && (role === 'agent' || role === 'group_agent' || role === 'dual_role');
+  }
+  function canViewInternalCommission(key) {
+    return key === 'Net' || !agentFinancialView();
+  }
+  function renderDetailedCommissions() {
+    var host = document.getElementById('detailedCommissions');
+    host.textContent = '';
+    [ ['Agent payout', net, 'Net'], ['Radius commission', radiusNet, 'Rad'],
+      ['Team commission', teamNet, 'Team'], ['Group commission', groupNet, 'Group']
+    ].filter(function (item) { return canViewInternalCommission(item[2]); }).forEach(function (item) {
+      var value = cur(item[1]);
+      var row = agentDetailLine(host, item[0], value, null, { infosheet:item[2] });
+      row.setAttribute('data-info-value', value);
     });
   }
   function renderPops() {
@@ -3030,7 +3418,7 @@ Thanks</textarea></div>
     var teamSplit = basis - sumSplit;
     var rows = [{ k: 'Commission basis', v: cur(basis), head: true },
                 { k: 'Team split', v: neg(teamSplit) }];
-    if (preSplit) rows.push({ k: 'Pre-split deductions', v: neg(preSplit) });
+    if (preSplit) rows.push({ k: 'Fees before the split', v: neg(preSplit) });
     rows.push({ k: 'Radius fee', v: neg(sumRad) });
     if (sumPc) rows.push({ k: selectedPostCap('group').name, v: neg(sumPc) });
     if (sumTpc) rows.push({ k: selectedPostCap('team').name, v: neg(sumTpc) });
@@ -3078,8 +3466,22 @@ Thanks</textarea></div>
           sourceValue = document.getElementById(item.value),
           destinationValue = document.getElementById('commissionMap' + item.key + 'Value');
       if (!source || !destination || !sourceValue || !destinationValue) return;
+      var allowed = canViewInternalCommission(item.key);
+      destination.closest('[data-commission-kind]').hidden = !allowed;
+      if (!allowed) { destination.textContent = ''; destinationValue.textContent = ''; return; }
       destinationValue.textContent = sourceValue.textContent;
       destination.textContent = '';
+      if (agentFinancialView() && item.key === 'Net') {
+        destinationValue.textContent = cur(agentNetCommission());
+        var own = document.createElement('div'); own.className = 'calc-list';
+        myChain().rows.filter(function (row) { return row.k && !row.cardhide && !row.relationships && !row.caps && !row.infosheet; }).forEach(function (row) {
+          var line = document.createElement('div'); line.className = 'poprow';
+          var label = document.createElement('span'); label.className = 'pk'; label.textContent = row.k;
+          var amount = document.createElement('span'); amount.className = 'pv'; amount.textContent = row.v;
+          line.appendChild(label); line.appendChild(amount); own.appendChild(line);
+        });
+        destination.appendChild(own); return;
+      }
       var list = source.cloneNode(true);
       list.removeAttribute('id');
       list.hidden = false;
@@ -3135,6 +3537,7 @@ Thanks</textarea></div>
         { k: 'Group lead portion \u00b7 ' + groupSplitPct + '%', v: cur(groupNet) },
         { k: 'Group commission', v: cur(groupNet), tot: true }
       ] };
+    if (role === 'team_lead') { gl.allocation = groupSplitPct; gl.allocationStatic = true; }
     h1.appendChild(agentRowEl(gl, false));
 
 
@@ -3154,14 +3557,13 @@ Thanks</textarea></div>
 
     }
   }
-  var groupLeadCalculationOpen = false;
   function groupLeadCommissionSummary() {
     /* Web treats the Group → Team post-cap fee as money the group pays.
        Keep it separate from the group payout, so the displayed rows reconcile
        without importing agent-only deductions into the group view. */
     if (groupPreview === 'no_payout') return { earnings:0, costs:0, items:0 };
     var groupCost = postCapActiveFor(SCHED['Mark Perez'], 'team') ? teamPostCap : 0;
-    return { earnings:groupNet + groupCost, costs:groupCost, items:groupCost ? 2 : 1 };
+    return { earnings:groupNet + groupCost + groupFeeTotal(), costs:groupCost + groupFeeTotal(), items:1 + (groupCost ? 1 : 0) + POSTDEDS.filter(function (fee) { return feeShare(fee, 'Group') > 0; }).length };
   }
   function renderLeadDetailBreakdown() {
     var host = document.getElementById('leadDetailBreakdown'),
@@ -3174,62 +3576,26 @@ Thanks</textarea></div>
     title.className = 'ssub';
     title.textContent = role === 'team_lead' ? 'Team lead breakdown' : 'Group lead breakdown';
     host.appendChild(title);
-    if (role === 'group_lead') {
-      var groupSummary = groupLeadCommissionSummary();
-      host.appendChild(agentRowEl({
-        name: TEAM, role: 'Group lead · you', pay: cur(groupNet),
-        allocation: groupPreview === 'no_payout' ? null : groupSplitPct, allocationStatic: true, tint: 'gold'
-      }, true));
-      if (groupPreview === 'no_payout') {
-        var noPayout = document.createElement('div'); noPayout.className = 'noagent';
-        noPayout.textContent = 'No group commission on this deal.';
-        host.appendChild(noPayout);
-        return;
-      }
-      var calc = document.createElement('button');
-      calc.type = 'button'; calc.className = 'group-calc-toggle';
-      calc.setAttribute('aria-expanded', String(groupLeadCalculationOpen));
-      calc.setAttribute('aria-controls', 'groupLeadCalculation');
-      var mark = document.createElement('i');
-      mark.className = 'ph ' + (groupLeadCalculationOpen ? 'ph-minus' : 'ph-plus') + ' expand-mark';
-      mark.setAttribute('aria-hidden', 'true');
-      var calcLabel = document.createElement('b'); calcLabel.textContent = 'Group commission · ' + groupSummary.items + (groupSummary.items === 1 ? ' item' : ' items');
-      var calcValue = document.createElement('span'); calcValue.className = 'group-calc-value'; calcValue.textContent = cur(groupNet);
-      calc.appendChild(mark); calc.appendChild(calcLabel); calc.appendChild(calcValue); host.appendChild(calc);
-      var calcBody = document.createElement('div');
-      calcBody.className = 'group-calc-body'; calcBody.id = 'groupLeadCalculation'; calcBody.hidden = !groupLeadCalculationOpen;
-      [['Group earnings', cur(groupSummary.earnings)], ['Group costs', neg(groupSummary.costs)]].filter(function (r) { return r[0] !== 'Group costs' || groupSummary.costs; }).forEach(function (r) {
-        var row = document.createElement('div'); row.className = 'srow plain';
-        var key = document.createElement('span'); key.className = 'sk';
-        var label = document.createElement('b'); label.textContent = r[0]; key.appendChild(label);
-        var value = document.createElement('span'); value.className = 'svv'; value.textContent = r[1];
-        row.appendChild(key); row.appendChild(value); calcBody.appendChild(row);
-      });
-      calc.addEventListener('click', function () {
-        groupLeadCalculationOpen = !groupLeadCalculationOpen;
-        calc.setAttribute('aria-expanded', String(groupLeadCalculationOpen));
-        mark.className = 'ph ' + (groupLeadCalculationOpen ? 'ph-minus' : 'ph-plus') + ' expand-mark';
-        calcBody.hidden = !groupLeadCalculationOpen;
-      });
-      host.appendChild(calcBody);
-      return;
-    }
+    var groupSummary = groupLeadCommissionSummary();
     var rows = role === 'team_lead' ? [
       ['Team commission', cur(teamNet)],
       ['Group share', neg(groupNet)],
-      ['Team lead fees', neg(teamLeadFees())],
-      ['Net to team lead', cur(teamLeadTakeHome()), true]
-    ] : [
-      ['Team commission', cur(teamNet)],
-      ['Group allocation \u00b7 ' + groupSplitPct + '%', cur(groupNet)],
+      ['Team lead fees', neg(teamLeadFees())]
+    ] : groupPreview === 'no_payout' ? [] : [
+      ['Group earnings', cur(groupSummary.earnings)]
+    ].concat(groupSummary.costs ? [['Group costs', neg(groupSummary.costs)]] : []).concat([
       ['Group commission', cur(groupNet), true]
-    ];
+    ]);
+    if (!rows.length) {
+      var empty = document.createElement('div'); empty.className = 'noagent';
+      empty.textContent = 'No group commission on this deal.'; host.appendChild(empty);
+    }
     rows.forEach(function (r) {
       var row = document.createElement('div');
       row.className = 'srow plain' + (r[2] ? ' tot' : '');
       var key = document.createElement('span'); key.className = 'sk';
       var label = document.createElement('b'); label.textContent = r[0]; key.appendChild(label);
-      var value = document.createElement('span'); value.className = 'svv'; value.textContent = r[1];
+      var value = document.createElement('span'); value.className = 'svv' + amountTone(r[1]); value.textContent = r[1];
       row.appendChild(key); row.appendChild(value); host.appendChild(row);
     });
   }
@@ -3435,7 +3801,10 @@ Thanks</textarea></div>
     renderPops();
     renderDeds();
     renderYbd();
+    renderDetailedCommissions();
     renderPostCapBanners();
+    syncFinancialVisibility();
+    renderAgentCommissionOverview();
     if (agentDetailPage && !agentDetailPage.hidden && agentDetailSelection) {
       var selectedRow = Array.prototype.find.call(detailPage.querySelectorAll('.agentrow'), function (row) { return row.agentBreakdown && row.agentBreakdown.id === agentDetailSelection.id; });
       if (selectedRow) openAgentDetail(selectedRow.agentBreakdown, null, true); else closeAgentDetail();
@@ -3484,6 +3853,11 @@ Thanks</textarea></div>
     if (openSheetEl) close(true);
     lastFocus = trigger || document.activeElement;
     openSheetEl = el; sheetDirty = false; el.hidden = false;
+    if (el.id === 'activitySheet') {
+      el.style.transform = '';
+      feedExpanded = false;
+      setActivityFilter('all');
+    }
     /* modal means modal: background is inert, unscrollable and hidden from AT */
     scrollEl.style.overflow = 'hidden';
     bgEls.forEach(function (n) { if (n) n.setAttribute('aria-hidden', 'true'); });
@@ -3562,14 +3936,16 @@ Thanks</textarea></div>
     });
     g.addEventListener('pointermove', function (e) {
       if (y0 === null) return;
-      var dy = Math.max(0, e.clientY - y0);
+      var raw = e.clientY - y0, dy = sheet.id === 'activitySheet' ? Math.max(-120, raw) : Math.max(0, raw);
       sheet.style.transform = 'translateY(' + dy + 'px)';
     });
     g.addEventListener('pointerup', function (e) {
       if (y0 === null) return;
-      var dy = Math.max(0, e.clientY - y0);
+      var raw = e.clientY - y0, dy = Math.max(0, raw);
       y0 = null; sheet.classList.remove('drag');
-      if (dy > 90) { requestClose(); } else { sheet.style.transform = ''; }
+      if (sheet.id === 'activitySheet' && raw < -70) { openActivityPage(g); }
+      else if (dy > 90) { requestClose(); }
+      else { sheet.style.transform = ''; }
     });
   });
   document.addEventListener('click', function (e) {
@@ -3777,7 +4153,15 @@ Thanks</textarea></div>
     ybdInnerStates = [];
     ybdInnerSprings = new WeakMap();
   }
+  var leadMemberSelection = null, leadMemberTrigger = null;
+  function breakdownAgent() {
+    return leadMemberSelection && leadMemberSelection.side === 'mine'
+      ? AG.mine[leadMemberSelection.index]
+      : AG.mine.filter(function (a) { return a.me; })[0] || AG.mine[0];
+  }
   function myChain() {
+    if (leadMemberSelection) return leadMemberSelection.side === 'mine' ? MINE[leadMemberSelection.index]
+      : { rows:leadMemberSelection.rows, net:Number(String(leadMemberSelection.pay).replace(/[^0-9.-]/g, '')) || 0 };
     for (var i = 0; i < AG.mine.length; i++) if (AG.mine[i].me) return MINE[i];
     return MINE[0];
   }
@@ -3791,16 +4175,17 @@ Thanks</textarea></div>
   /* Credits/referrals are visible before the plan. They reduce the basis, so
      hiding them below the split obscures the calculation's first step. */
   function ybdAsmRows() {
-    var s = SCHED['Mark Perez'],
-        agent = AG.mine.filter(function (a) { return a.me; })[0] || AG.mine[0],
+    if (leadMemberSelection && leadMemberSelection.side !== 'mine') return [];
+    var agent = breakdownAgent(), s = SCHED[agent.name] || {},
         share = agent ? Math.max(0, Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation)) / 100 : 1,
         credits = DEDS.mine.filter(function (d) { return d.kind === 'credit'; }),
         rows = [
           { k: 'Sale price', v: cur(price), financial: ybdEditing ? 'price' : null, summary: true },
           { k: 'Gross commission', v: cur(gross), financial: ybdEditing ? 'gross' : null, summary: true }
         ].concat(credits.map(function (d) {
-          return { k: d.type === 'referral' ? 'Referral' : 'Credit', v: cur(d.amt * share), summary: true };
+          return { k: d.type === 'referral' ? 'Referral' : 'Credit', v: cur(d.amt * share), summary: true, creditDed: ybdEditing && !isFinalizedStatus(status) ? 'mine|' + d.id : null };
         }));
+    if (agentFinancialView()) return rows;
     rows.push({ k: 'Commission plan', v: s.plan, txt: true, planStatic: true, nav: ybdEditing ? 'plan' : null, summary: true });
     return rows;
   }
@@ -3817,7 +4202,7 @@ Thanks</textarea></div>
       ch = isDualOtherSide()
         ? { rows: [{ head:'Commission', cardhide:true }, { k:'Gross commission', v:cur(otherGross) }]
           .concat(DEDS.other.map(function (deduction) {
-            return { k:deduction.type === 'referral' ? 'Referral' : 'Credit', v:neg(deduction.amt) };
+            return { k:deduction.type === 'referral' ? 'Referral' : 'Credit', v:neg(deduction.amt), creditDed:deduction.kind === 'credit' && !isFinalizedStatus(status) ? 'other|' + deduction.id : null };
           }))
           .concat([{ k:'Commission basis', sub2:'This side after credits and referrals', v:cur(otherGross - otherDed) },
                    { k:'Your payout', v:cur(otherGross - otherDed), tot:true }]) }
@@ -3833,7 +4218,7 @@ Thanks</textarea></div>
         ]) };
       }
       return [
-        { k: role === 'group_lead_agent' ? 'Your Agent + Group Breakdown' : 'Your Breakdown', full: ch, v: cur(role === 'group_lead_agent' ? agentNetCommission() + groupNet : dualSidePayout()) }
+        { k: leadMemberSelection ? leadMemberSelection.name + '’s Breakdown' : role === 'group_lead_agent' ? 'Your Agent + Group Breakdown' : 'Your Breakdown', full: ch, v: cur(role === 'group_lead_agent' ? agentNetCommission() + groupNet : dualSidePayout()) }
       ];
     }
     if (role === 'team_lead') {
@@ -3852,11 +4237,11 @@ Thanks</textarea></div>
       ].concat(teamDemoFees.map(function (fee) {
         return { k:fee.n, v:neg(fee.a), amt:fee.a, underSplit:true,
           teamFee:'team_demo_' + fee.id, post:{ teamShare:true }, det:[{ k:'Paid by', v:'Team lead' }] };
-      })).concat(POSTDEDS.filter(function (fee) { return fee.p !== 'Agent'; }).map(function (fee) {
-        var teamAmount = fee.a * (fee.p === 'Both' ? (fee.teamPct || 0) / 100 : 1), payer = fee.p === 'Both'
+      })).concat(POSTDEDS.filter(function (fee) { return feeShare(fee, 'Team') > 0; }).map(function (fee) {
+        var teamAmount = fee.a * feeShare(fee, 'Team'), payer = fee.p === 'Both'
           ? (fee.agent === 'co' ? 'Co-agent ' : 'Primary agent ') + (fee.agentPct || 0) + '% · Team ' + (fee.teamPct || 0) + '%'
           : 'Team 100%';
-        return { k:fee.n, v:neg(teamAmount), amt:teamAmount, underSplit:true, post:fee, list:'post', det:[{ k:'Paid by', v:payer }, { k:'Stage', v:fee.stage === 'presplit' ? 'Pre-split' : 'Post-split' }] };
+        return { k:fee.n, v:feeDisplay(fee, teamAmount), amt:teamAmount, underSplit:true, post:fee, list:'post', det:[{ k:'Paid by', v:payer }, { k:'Stage', v:fee.stage === 'presplit' ? 'Before split' : 'After split' }] };
       }));
       ch = { rows: teamContextRows.concat([
         { k: 'Team split', badge: '80%', sub2: 'Team Lead 80% · Co-agent 20%', v: cur(teamNet) },
@@ -3905,8 +4290,9 @@ Thanks</textarea></div>
   /* the map from a chain row to the sheet that owns it — null means the number
      is derived or set by the plan, so there is nothing to open */
   function ybdPreSplitGroup() {
+    if (leadMemberSelection && leadMemberSelection.side !== 'mine') return null;
     var participant = role === 'agent' || role === 'group_agent' || role === 'group_lead_agent' || role === 'dual_role',
-        agent = AG.mine.filter(function (a) { return a.me; })[0] || AG.mine[0],
+        agent = breakdownAgent(),
         share = participant && agent ? Math.max(0, Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation)) / 100 : 1,
         rows = DEDS.mine.filter(function (d) { return d.kind === 'presplit'; }).map(function (d) {
           var amount = d.amt * share;
@@ -3916,10 +4302,12 @@ Thanks</textarea></div>
         });
     if (!rows.length) return null;
     return {
-      key: 'pre', label: 'Pre-split deductions', rows: rows
+      key: 'pre', label: 'Fees before the split', rows: rows
     };
   }
   function ybdFullTarget(r) {
+    if (r.creditDed && !isFinalizedStatus(status)) return { 'data-editded':r.creditDed };
+    if (agentFinancialView()) return null;
     if (r.preDed) return { 'data-editded': 'mine|' + r.preDed };
     /* three seeded deductions carry no id, so there is no sheet to open for
        them — they stay locked rather than becoming a target that does nothing */
@@ -3960,26 +4348,44 @@ Thanks</textarea></div>
     var card = document.createElement('section'); card.className = 'team-side-card';
     var head = document.createElement('div'); head.className = 'team-side-card-head';
     var name = document.createElement('b'); name.textContent = title;
-    var records = teamSideRosterRecords(side), count = document.createElement('span');
-    count.textContent = records.length + (records.length === 1 ? ' agent' : ' agents');
-    head.appendChild(name); head.appendChild(count); card.appendChild(head);
-    var list = document.createElement('div'); list.className = 'agentlist';
+    var records = teamSideRosterRecords(side), countText = records.length + (records.length === 1 ? ' agent' : ' agents'),
+        primary = records[0], section = document.createElement('div');
+    head.appendChild(name);
+    if (side === 'mine') {
+      var meta = document.createElement('span'); meta.className = 'team-side-meta';
+      meta.textContent = neg(sideDed) + ' total deductions · ' + countText;
+      head.appendChild(meta);
+    }
+    card.appendChild(head);
+    section.className = 'team-side-section';
     if (records.length) {
-      var primary = Object.assign({}, records[0]), share = Number(primary.allocation || 0).toFixed(Number(primary.allocation || 0) % 1 ? 2 : 0);
-      primary.role = share + '% of side commission · ' + records.length + (records.length === 1 ? ' agent total' : ' agents total');
-      list.appendChild(agentRowEl(primary, true));
+      if (side === 'mine') {
+        var sectionTitle = document.createElement('p'); sectionTitle.className = 'team-side-section-title'; sectionTitle.textContent = 'Agents';
+        var listing = document.createElement('div'); listing.className = 'team-side-listing';
+        var listingName = document.createElement('b'); listingName.textContent = 'Agent Listings';
+        var pill = document.createElement('span'); pill.className = 'team-side-pill'; pill.textContent = 'Listing side';
+        listing.appendChild(listingName); listing.appendChild(pill);
+        section.appendChild(sectionTitle); section.appendChild(listing);
+      } else {
+        var person = document.createElement('div'); person.className = 'team-side-person';
+        var personName = document.createElement('b'); personName.textContent = primary.name;
+        var personMeta = document.createElement('span'); personMeta.textContent = countText;
+        var personPay = document.createElement('span'); personPay.className = 'team-side-pay'; personPay.textContent = primary.pay;
+        person.appendChild(personName); person.appendChild(personMeta); person.appendChild(personPay);
+        section.appendChild(person);
+      }
     }
     else {
       var empty = document.createElement('p'); empty.className = 'ybd-note'; empty.textContent = 'No agent assigned.';
-      list.appendChild(empty);
+      section.appendChild(empty);
     }
-    card.appendChild(list);
+    card.appendChild(section);
     return card;
   }
   function ybdDualSideSelector() {
     var anchor = document.createElement('div'); anchor.className = 'ybd-side-anchor';
     var trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'ybd-r summary ybd-side-select';
-    trigger.setAttribute('data-dual-side-select', ''); trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('data-dual-side-select', ''); trigger.setAttribute('aria-label', 'Commission side'); trigger.setAttribute('aria-haspopup', 'listbox');
     trigger.setAttribute('aria-expanded', 'false'); trigger.setAttribute('aria-controls', 'ybdSideDrop');
     var key = document.createElement('span'); key.className = 'k';
     var label = document.createElement('b'); label.textContent = 'Commission side'; key.appendChild(label);
@@ -4000,6 +4406,7 @@ Thanks</textarea></div>
   }
   function ybdRowEl(o) {
     var wrap = document.createDocumentFragment();
+    if (o.k === 'Sale price') return wrap;
     if (o.addplan) {
       /* adding a fee is an edit, so its control lives in edit mode. Read mode
          shows what is charged, nothing that changes it. */
@@ -4007,11 +4414,11 @@ Thanks</textarea></div>
       wrap.appendChild(ybdAddBtn('data-addplanadj', '1', 'Add post-commission plan'));
       var note = document.createElement('p');
       note.className = 'ybd-note';
-      note.textContent = 'An adjustment applied after your commission is calculated. It lands in your post-split deductions.';
+      note.textContent = 'This fee is deducted after your share is calculated.';
       wrap.appendChild(note);
       return wrap;
     }
-    var interactive = !!(o.nav || o.post || o.det || o.full || o.asm || o.financial),
+    var interactive = !!(o.creditDed || o.nav || o.post || o.det || o.full || o.asm || o.financial),
         row = document.createElement(interactive ? 'button' : 'div');
     /* one glyph builder for the full breakdown, so its icons match the lower
        rows exactly: 15px Phosphor, muted, labelled for screen readers */
@@ -4043,6 +4450,12 @@ Thanks</textarea></div>
     }
     if (!interactive) { wrap.appendChild(row); return wrap; }
     row.type = 'button';
+    if (o.creditDed) {
+      row.setAttribute('data-editded', o.creditDed);
+      row.setAttribute('aria-label', 'Edit ' + o.k);
+      var pencil = document.createElement('i'); pencil.className = 'ph ph-pencil-simple'; pencil.setAttribute('aria-hidden', 'true');
+      row.appendChild(pencil); wrap.appendChild(row); return wrap;
+    }
     if (o.financial) {
       row.setAttribute('data-editfinancial', o.financial);
       row.setAttribute('aria-label', 'Edit ' + o.k.toLowerCase());
@@ -4063,7 +4476,7 @@ Thanks</textarea></div>
       valueWell.className = 'plan-select-value';
       row.insertBefore(valueWell, valueNode);
       valueWell.appendChild(valueNode); valueWell.appendChild(chev);
-      row.setAttribute('data-plan-dropdown', 'Mark Perez');
+      row.setAttribute('data-plan-dropdown', breakdownAgent().name);
       row.setAttribute('aria-haspopup', 'listbox');
       row.setAttribute('aria-expanded', 'false');
       row.setAttribute('aria-controls', 'ybdPlanDrop');
@@ -4081,7 +4494,7 @@ Thanks</textarea></div>
         var opt = document.createElement('button');
         opt.className = 'rds-command__item'; opt.type = 'button'; opt.setAttribute('role', 'option');
         opt.setAttribute('data-plan-option', p.name);
-        opt.setAttribute('aria-selected', String(p.name === SCHED['Mark Perez'].plan));
+        opt.setAttribute('aria-selected', String(p.name === (SCHED[breakdownAgent().name] || {}).plan));
         var check = document.createElement('i');
         check.className = 'ph-fill ph-check-circle plan-check'; check.setAttribute('aria-hidden', 'true');
         var label = document.createElement('span'); label.textContent = p.name;
@@ -4118,7 +4531,7 @@ Thanks</textarea></div>
         var tgt = ybdEditing ? ybdFullTarget(r) : null,
             agentTarget = r.agentIndex != null,
             l = document.createElement(tgt || agentTarget ? 'button' : 'div');
-        l.className = 'd' + (String(r.v).charAt(0) === '−' ? ' neg' : '') + (r.post && r.post.teamShare ? ' team-share-fee' : '');
+        l.className = 'd' + amountTone(r.v, r.post) + (r.post && r.post.teamShare ? ' team-share-fee' : '');
         if (tgt) { l.type = 'button'; for (var at in tgt) l.setAttribute(at, tgt[at]); }
         var s = document.createElement('span'); s.appendChild(document.createTextNode(r.cardk || r.k));
         if (r.badge) {
@@ -4190,7 +4603,6 @@ Thanks</textarea></div>
       if (role === 'dual_role') {
         var dualSummaryRows = ybdAsmRows();
         dualSummaryRows.filter(function (r) { return r.k === 'Sale price' || r.k === 'Gross commission'; }).forEach(function (r) { det.appendChild(ybdRowEl(r)); });
-        det.appendChild(ybdDualSideSelector());
         if (!isDualOtherSide()) {
           dualSummaryRows.filter(function (r) { return r.k !== 'Sale price' && r.k !== 'Gross commission'; }).forEach(function (r) { det.appendChild(ybdRowEl(r)); });
         }
@@ -4206,7 +4618,8 @@ Thanks</textarea></div>
           if (cur_) groups.push(cur_);
           return;
         }
-        if (r.cardhide || !r.k || typeof r.v !== 'string') return;
+        if (r.cardhide || !r.k || typeof r.v !== 'string' || r.k === 'Sale price') return;
+        if (agentFinancialView() && / split$/.test(r.k)) r = Object.assign({}, r, { badge:null, sub:null, sub2:null, det:null });
         if (r.post && r.post.flag) flagged.push(r);
         if (r.underSplit) splitFees.push(r);
         else if (cur_) cur_.rows.push(r);
@@ -4216,12 +4629,12 @@ Thanks</textarea></div>
       loose.forEach(function (r) {
         var rowIndex = det.children.length;
         ybdFeeEl(r, det);
-        if (r.k === 'Agent split' || r.k === 'Team split') { agentSplitRow = det.children[rowIndex]; agentSplitRow.classList.add('agent-split'); }
+        if (/ split$/.test(r.k)) { agentSplitRow = det.children[rowIndex]; agentSplitRow.classList.add('agent-split'); }
       });
       if (agentSplitRow && splitFees.length) {
         var splitFeeBox = document.createElement('div');
         splitFeeBox.className = 'd-fees' + (role === 'team_lead' && agentSplitRow.textContent.indexOf('Team split') > -1 ? ' team-fee-list' : '');
-        splitFees.forEach(function (r) { ybdFeeEl(r, splitFeeBox); });
+        deductionsFirst(splitFees).forEach(function (r) { ybdFeeEl(r, splitFeeBox); });
         det.insertBefore(splitFeeBox, agentSplitRow.nextSibling);
       }
       /* Each fee belongs to exactly one visible group. Do not manufacture a
@@ -4297,11 +4710,11 @@ Thanks</textarea></div>
             }, false));
           }
         } else {
-          g.rows.forEach(function (r) { ybdFeeEl(r, box); });
+          deductionsFirst(g.rows).forEach(function (r) { ybdFeeEl(r, box); });
         }
         if (g.showEmpty && (!g.rows.length || g.sideContext)) {
           var note = document.createElement('p'); note.className = 'ybd-note';
-          note.textContent = !g.rows.length ? (g.emptyText || 'No pre-split deductions') : 'Side deductions already included before team and group commission.';
+          note.textContent = !g.rows.length ? (g.emptyText || 'No fees before the split') : 'Side deductions already included before team and group commission.';
           box.appendChild(note);
         }
         if (!isStaticList) {
@@ -4319,21 +4732,15 @@ Thanks</textarea></div>
           det.appendChild(gb); det.appendChild(box);
         }
       });
-      if (role === 'team_lead') {
-        var rosters = document.createElement('div'); rosters.className = 'team-side-rosters';
-        rosters.appendChild(ybdTeamSideCard('Listing side', 'mine'));
-        rosters.appendChild(ybdTeamSideCard('Buying side', 'other'));
-        det.appendChild(rosters);
-      }
       var completeBtn = document.createElement('button');
       completeBtn.type = 'button'; completeBtn.className = 'ybd-sep'; completeBtn.id = 'addDetBtn';
       completeBtn.setAttribute('aria-haspopup', 'dialog'); completeBtn.setAttribute('aria-controls', 'detailPage');
       var completeLabel = document.createElement('span'); completeLabel.className = 'ybd-sep-action';
-      completeLabel.appendChild(document.createTextNode('View Detailed Breakdown'));
+      completeLabel.appendChild(document.createTextNode('Commission Overview'));
       var completeIcon = document.createElement('i'); completeIcon.className = 'ph ph-caret-right'; completeIcon.setAttribute('aria-hidden', 'true');
       completeLabel.appendChild(completeIcon); completeBtn.appendChild(completeLabel);
       completeBtn.addEventListener('click', function (e) { e.stopPropagation(); openDetailed(completeBtn); });
-      det.appendChild(completeBtn);
+      if (role !== 'team_lead') det.appendChild(completeBtn);
     } else if (kind === 'asm') {
       ybdAsmRows().forEach(function (r) { det.appendChild(ybdRowEl(r)); });
     } else {
@@ -4343,11 +4750,11 @@ Thanks</textarea></div>
         l.setAttribute('data-editpost', d.id);
         l.setAttribute('data-list', 'post');
         var s = document.createElement('span'); s.textContent = d.n;
-        var a = document.createElement('b'); a.textContent = feeDisplay(d, d.a / n);
+        var a = document.createElement('b'); a.textContent = feeDisplay(d, d.a / n); l.className += amountTone(a.textContent, d);
         var c = document.createElement('i'); c.className = 'ph ph-caret-right chev'; c.setAttribute('aria-hidden', 'true');
         l.appendChild(s); l.appendChild(a); l.appendChild(c); det.appendChild(l);
       });
-      if (ybdEditing) det.appendChild(ybdAddBtn('data-addpost', 'post', 'Add post-split deduction'));
+      if (ybdEditing) det.appendChild(ybdAddBtn('data-addpost', 'post', 'Add fee after the split'));
     }
     row.addEventListener('click', function () {
       var now = row.getAttribute('aria-expanded') !== 'true';
@@ -4394,6 +4801,7 @@ Thanks</textarea></div>
     addFee.title = 'Add fee';
     addFee.addEventListener('click', function (e) { e.stopPropagation(); openCommissionFee(null, addFee); });
     head.appendChild(row); head.appendChild(ed); head.appendChild(addFee);
+    if (role === 'dual_role') head.appendChild(ybdDualSideSelector());
     wrap.appendChild(head);
     wrap.appendChild(det);
     return wrap;
@@ -4415,7 +4823,50 @@ Thanks</textarea></div>
         top = sc.scrollTop + card.getBoundingClientRect().top - sc.getBoundingClientRect().top - pad - 10;
     if (top < sc.scrollTop) sc.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
+  function groupPlanControls(editing) {
+    var fragment = document.createDocumentFragment();
+    if (!editing || (role !== 'group_lead' && role !== 'group_lead_agent')) return fragment;
+    var name = 'Mark Perez', schedule = SCHED[name], box = document.createElement('div');
+    box.className = 'group-plan-controls';
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'Group commission plans');
+    relationshipCardsFor(name, schedule, true).filter(function (plan) {
+      return plan.key === 'group_team' || plan.key === 'agent_group_lead';
+    }).forEach(function (plan) {
+      var row = document.createElement('button'); row.type = 'button'; row.className = 'ybd-r';
+      row.setAttribute('data-plan', name); row.setAttribute('data-plan-rel', plan.key);
+      row.setAttribute('aria-haspopup', 'dialog');
+      row.setAttribute('aria-label', 'Change ' + plan.k + ' commission plan: ' + plan.activePlan);
+      var label = document.createElement('span'); label.className = 'k';
+      var title = document.createElement('b'); title.textContent = plan.key === 'group_team' ? 'Group → Team' : 'Agent → Group';
+      var summary = document.createElement('em'); summary.textContent = plan.state;
+      label.appendChild(title); label.appendChild(summary);
+      var well = document.createElement('span'); well.className = 'plan-select-value';
+      var value = document.createElement('span'); value.className = 'v txt'; value.textContent = plan.activePlan;
+      var caret = document.createElement('i'); caret.className = 'ph ph-caret-down chev'; caret.setAttribute('aria-hidden', 'true');
+      well.appendChild(value); well.appendChild(caret); row.appendChild(label); row.appendChild(well); box.appendChild(row);
+    });
+    fragment.appendChild(box);
+    return fragment;
+  }
+  function renderDetailGroupPlans() {
+    var host = document.getElementById('detailGroupPlans');
+    host.textContent = '';
+    host.appendChild(groupPlanControls(detailEditing));
+    host.hidden = !host.childElementCount;
+  }
   function renderYbd() {
+    var viewerRole = role;
+    try {
+      if (leadMemberSelection) role = 'agent';
+      renderYbdContent();
+    } finally { role = viewerRole; }
+    if (leadMemberSelection) {
+      document.getElementById('netFloatLabel').textContent = leadMemberSelection.name + '’s payout';
+    }
+  }
+  function renderYbdContent() {
+    syncDockEdit();
     var c = ROLE[role], lad = document.getElementById('ybdLad'), ppl = document.getElementById('ybdPpl');
     /* Role, amount and edit changes rebuild this card. End any live disclosure
        motion before replacing its DOM so no frame can paint detached nodes. */
@@ -4427,8 +4878,8 @@ Thanks</textarea></div>
       if (ybdEditing) { b.setAttribute('role', 'button'); b.setAttribute('tabindex', '0'); }
       else { b.removeAttribute('role'); b.removeAttribute('tabindex'); }
     });
+    document.getElementById('summaryPrice').textContent = cur(price);
     document.getElementById('detailFinPrice').textContent = cur(price);
-    document.getElementById('detailFinGross').textContent = cur(gross);
     if (role === 'agent' || role === 'group_agent' || role === 'dual_role') {
       document.getElementById('netFloatLabel').textContent = 'Your payout';
       document.getElementById('netFloatSub').textContent = isDualOtherSide()
@@ -4452,6 +4903,10 @@ Thanks</textarea></div>
     document.getElementById('ybdClose').textContent = closeShort;
     lad.textContent = '';
     ybdLadder().forEach(function (o) { lad.appendChild(ybdRowEl(o)); });
+    var groupPlanHost = document.getElementById('ybdFullDet');
+    if (groupPlanHost) groupPlanHost.insertBefore(groupPlanControls(ybdEditing), groupPlanHost.firstChild);
+    renderDetailGroupPlans();
+    renderBuyingTeamSplit();
     markStuck();
     /* Quick card answers one question for every role. Participant review and
        editing belong in Detailed breakdown, where side context is preserved. */
@@ -4520,14 +4975,14 @@ Thanks</textarea></div>
           note: 'The flat team fee charged once your team cap is met. Changing it recalculates your net and the team commission, and sends the breakdown back to draft.' },
         team_admin: { t: 'Team admin fee', s: function () { return teamAdminFee; },
           set: function (v) { teamAdminFee = v; },
-          note: 'The team lead post-split administrative fee. Changing it recalculates net commission and sends the breakdown back to draft.' }
+          note: 'The team lead administrative fee charged after the split. Changing it recalculates net commission and sends the breakdown back to draft.' }
       };
   teamDemoFees.forEach(function (fee) {
     FEEMETA['team_demo_' + fee.id] = {
       t: fee.n,
       s: function () { return fee.a; },
       set: function (v) { fee.a = v; },
-      note: 'Demo team-lead post-split fee. This prototype keeps it visible and editable without changing commission calculations.'
+      note: 'Demo team-lead fee charged after the split. This prototype keeps it visible and editable without changing commission calculations.'
     };
   });
   function openFee(k, trigger) {
@@ -4801,7 +5256,7 @@ Thanks</textarea></div>
     var paid = document.createElement('span'); paid.className = 'paid-by';
     paid.setAttribute('aria-label', 'Paid by ' + fee.post.p);
     var payerIcon = document.createElement('i'); payerIcon.className = 'ph ' + (PAYICON[fee.post.p] || 'ph-user'); payerIcon.setAttribute('aria-hidden', 'true');
-    var payerLabel = document.createElement('span'); payerLabel.textContent = fee.post.p;
+    var payerLabel = document.createElement('span'); payerLabel.textContent = fee.post.p === 'Both' ? 'Agent + Team' : fee.post.p;
     paid.appendChild(payerIcon); paid.appendChild(payerLabel); meta.appendChild(paid);
     if (fee.post.private) {
       var privacy = document.createElement('span'); privacy.className = 'private-fee';
@@ -4829,7 +5284,7 @@ Thanks</textarea></div>
     return value;
   }
   function agentDetailLine(host, label, value, badge, fee, unsigned) {
-    var row = document.createElement('div'); row.className = 'd' + (String(value).charAt(0) === '\u2212' ? ' neg' : '');
+    var row = document.createElement('div'); row.className = 'd' + amountTone(value, fee && fee.post);
     var key = document.createElement('span'); key.textContent = label;
     if (badge) { var chip = document.createElement('em'); chip.className = 'split-badge'; chip.textContent = badge; key.appendChild(chip); }
     agentDetailFeeSubtext(key, fee);
@@ -4886,7 +5341,7 @@ Thanks</textarea></div>
   function agentDetailEditableFee(host, row) {
     var target = agentDetailEditing ? ybdFullTarget(row) : null;
     if (!target) { agentDetailLine(host, row.k, row.v, row.badge, row); return; }
-    var line = document.createElement('button'); line.type = 'button'; line.className = 'd' + (String(row.v).charAt(0) === '−' ? ' neg' : '');
+    var line = document.createElement('button'); line.type = 'button'; line.className = 'd' + amountTone(row.v, row.post);
     Object.keys(target).forEach(function (key) { line.setAttribute(key, target[key]); });
     var label = document.createElement('span'); label.textContent = row.k; agentDetailFeeMeta(label, row);
     var amount = document.createElement('b'); amount.textContent = row.v;
@@ -4894,6 +5349,27 @@ Thanks</textarea></div>
     line.appendChild(label); line.appendChild(amount); line.appendChild(pencil); host.appendChild(line);
   }
   function openAgentDetail(o, trigger, refreshing) {
+    if (!refreshing && usesLeadLayout()) {
+      if (openSheetEl) close(true);
+      leadMemberSelection = o; leadMemberTrigger = trigger;
+      ybdEditing = false; ybdFull = true;
+      detailPage.hidden = true; agentDetailPage.hidden = true;
+      screenEl.setAttribute('data-role', 'agent');
+      screenEl.appendChild(decisionDockEl); decisionDockEl.hidden = false;
+      document.getElementById('backLink').setAttribute('aria-label', 'Back to ' + (role === 'team_lead' ? 'team' : 'group') + ' breakdown');
+      renderYbd(); scrollEl.scrollTop = 0;
+      var heading = document.querySelector('#ybdFbh .ybd-r.head');
+      if (heading) heading.focus({ preventScroll:true });
+      return;
+    }
+    if (!refreshing && openSheetEl) close(true);
+    if (!refreshing && !usesLeadLayout()) {
+      closeDetailed();
+      scrollEl.scrollTop = 0;
+      var summary = document.querySelector('#ybdFbh .ybd-r.head');
+      if (summary) summary.focus({ preventScroll:true });
+      return;
+    }
     var savedScroll = refreshing ? agentDetailPage.querySelector('.detail-scroll').scrollTop : 0;
     agentDetailSelection = o;
     if (!refreshing) { agentDetailEditing = false; agentPlanOpen = false; agentDetailFromMain = detailPage.hidden; }
@@ -4906,14 +5382,16 @@ Thanks</textarea></div>
     document.getElementById('agentDetailAddMenu').hidden = !(canEditAgent && agentDetailEditing);
     closeAgentDetailAddMenu(false);
     if (!refreshing) agentDetailTrigger = trigger;
-    document.getElementById('agentDetailTitle').textContent = o.name;
+    document.getElementById('agentDetailTitle').textContent = o.name + '’s Breakdown';
+    agentDetailPage.querySelector('.net-copy > span').textContent = o.name + '’s payout';
+    agentDetailPage.querySelector('.net-copy > small').textContent = 'After split, fees, and deductions';
     document.getElementById('agentDetailContext').textContent = (o.side === 'other' ? coopTitle : myTitle) + ' · ' + o.role;
     var host = document.getElementById('agentDetailRows'), plans = document.getElementById('agentDetailPlans');
     host.textContent = ''; plans.textContent = '';
     var isMine = o.side === 'mine', isOther = o.side === 'other', groups = [], current = null;
     document.getElementById('agentDetailDock').hidden = !isMine;
     if (isMine) {
-      var agent = AG.mine[o.index], chain = MINE[o.index], schedule = SCHED[o.name],
+      var agent = AG.mine[o.index], chain = MINE[o.index], schedule = SCHED[o.name] || {}, caps = CAPS[o.name] || {},
           share = Math.max(0, Number(agent.allocation == null ? 100 / AG.mine.length : agent.allocation)) / 100;
       agentDetailLine(host, 'Sales price', cur(price * share));
       var grossCredit = DEDS.mine.filter(function (d) { return d.type === 'credit'; }).reduce(function (sum, d) { return sum + d.amt * share; }, 0),
@@ -4928,8 +5406,8 @@ Thanks</textarea></div>
       [
         agentDetailInfoCard('Standard Plan', schedule.plan),
         agentDetailInfoCard('Group Plan', schedule.groupPlan || 'Not assigned'),
-        agentDetailInfoCard('Post-Cap Plan', selectedPostCap('group').formula),
-        agentDetailInfoCard('Radius Cap', CAPS[o.name].radius.fee, cur(CAPS[o.name].radius.at) + ' met')
+        agentDetailInfoCard('Post-Cap Plan', schedule.postCap && (schedule.postCap.agent_group_lead || schedule.postCap.agent_team) ? (schedule.postCap.agent_group_lead || schedule.postCap.agent_team).formula : 'Not assigned'),
+        agentDetailInfoCard('Radius Cap', caps.radius ? caps.radius.fee : 'Not provided', caps.radius ? cur(caps.radius.at) + ' met' : '')
       ].forEach(function (card, index) {
         if (index > 1) { card.classList.add('agent-plan-card-extra'); card.hidden = !agentPlanOpen; }
         planCards.appendChild(card);
@@ -4947,17 +5425,18 @@ Thanks</textarea></div>
       host.appendChild(planCards);
       agentDetailSection(host, 'Cap');
       var capCards = document.createElement('div'); capCards.className = 'agent-detail-summary-cards';
-      capCards.appendChild(capEl(CAPS[o.name].radius));
+      if (caps.radius) capCards.appendChild(capEl(caps.radius));
       var splitRow = chain.rows.filter(function (r) { return r.badge && / split$/.test(r.k); })[0];
-      capCards.appendChild(capEl(CAPS[o.name].internal_team));
+      if (caps.internal_team) capCards.appendChild(capEl(caps.internal_team));
+      if (!capCards.childElementCount) agentDetailLine(capCards, 'Cap details', 'Not provided');
       host.appendChild(capCards);
-      agentDetailSection(host, 'Pre-split deductions');
+      agentDetailSection(host, 'Fees before the split');
       DEDS.mine.filter(function (deduction) { return deduction.kind === 'presplit'; }).forEach(function (deduction) {
         agentDetailLine(host, deduction.name, neg(deduction.amt * share));
       });
       agentDetailSection(host, 'Agent Split');
       if (splitRow) agentDetailLine(host, 'Agent split', splitRow.v, splitRow.badge);
-      chain.rows.filter(function (r) { return r.underSplit && r.k !== 'Agent split'; }).forEach(function (r) { agentDetailEditableFee(host, r); });
+      deductionsFirst(chain.rows.filter(function (r) { return r.underSplit && r.k !== 'Agent split'; })).forEach(function (r) { agentDetailEditableFee(host, r); });
       POSTDEDS.filter(function (fee) { return fee.p === 'Team'; }).forEach(function (fee) {
         agentDetailEditableFee(host, { k:fee.n, v:neg(fee.a), post:fee, list:'post', underSplit:true, det:[{ k:'Paid by', v:'Team' }] });
       });
@@ -4978,22 +5457,23 @@ Thanks</textarea></div>
       agentDetailLine(host, 'Commission plan', 'Managed by ' + COOP[mySide]);
       agentDetailLine(host, 'Commission basis', cur(otherGross * allocation));
       var deductions = DEDS.other.filter(function (d) { return d.kind === 'presplit'; }).map(function (d) { return { k:d.name, v:neg(d.amt * allocation), amt:d.amt * allocation }; });
-      agentDetailDisclosure(host, 'Pre-split deductions', deductions, cur(deductions.reduce(function (sum, r) { return sum + r.amt; }, 0)), deductions.length === 1 ? 'fee' : 'fees');
+      agentDetailDisclosure(host, 'Fees before the split', deductions, cur(deductions.reduce(function (sum, r) { return sum + r.amt; }, 0)), deductions.length === 1 ? 'fee' : 'fees');
       agentDetailLine(host, 'Agent allocation', o.pay, pctLbl(allocation));
       agentDetailLine(host, 'Payable to Radius', cur(0));
       agentDetailLine(host, 'Co-op payout', o.pay).classList.add('agent-detail-net');
       var note = document.createElement('p'); note.className = 'ybd-note';
-      note.textContent = 'Co-op plan splits and post-split fees are not provided. This is the allocation paid by ' + COOP[mySide] + ', before any co-op fees.'; host.appendChild(note);
+      note.textContent = 'Co-op plan splits and fees after the split are not provided. This is the allocation paid by ' + COOP[mySide] + ', before any co-op fees.'; host.appendChild(note);
     } else {
       o.rows.forEach(function (r) { if (r.k) agentDetailLine(host, r.k, r.v); });
     }
     detailPage.setAttribute('inert', ''); detailPage.setAttribute('aria-hidden', 'true');
+    decisionDockEl.hidden = true;
     agentDetailPage.hidden = false; agentDetailPage.querySelector('.detail-scroll').scrollTop = savedScroll;
     if (!refreshing) document.getElementById('agentDetailBack').focus();
   }
   function closeAgentDetail() {
     closeAgentDetailAddMenu(false);
-    agentDetailPage.hidden = true; detailPage.removeAttribute('inert'); detailPage.removeAttribute('aria-hidden');
+    agentDetailPage.hidden = true; decisionDockEl.hidden = false; detailPage.removeAttribute('inert'); detailPage.removeAttribute('aria-hidden');
     if (agentDetailFromMain) {
       agentDetailFromMain = false;
       if (agentDetailTrigger && agentDetailTrigger.isConnected) agentDetailTrigger.focus();
@@ -5016,18 +5496,26 @@ Thanks</textarea></div>
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
+  function usesLeadLayout() {
+    return role === 'team_lead' || role === 'group_lead' || role === 'group_lead_agent';
+  }
   function setDetailBackground(hidden) {
-    /* Detail owns its footer. Keep the parent floating dock out of view so its
-       controls cannot paint beneath the detail actions. */
-    if (decisionDockEl) decisionDockEl.hidden = hidden;
+    var overview = hidden && !usesLeadLayout();
+    (overview ? detailPage : screenEl).appendChild(decisionDockEl);
+    decisionDockEl.hidden = false;
     bgEls.forEach(function (el) {
       if (!el) return;
-      if (hidden) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      if (overview && el !== decisionDockEl) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
       else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
     });
+    fitBar();
+    syncDockEdit();
   }
   function setDetailEditing(on) {
     detailEditing = !!on;
+    renderAgentCommissionOverview();
+    renderDetailGroupPlans();
+    syncDockEdit();
     detailPage.classList.toggle('editing', detailEditing);
     var btn = document.getElementById('detailEditBtn'), ico = btn.querySelector('i');
     btn.setAttribute('aria-pressed', String(detailEditing));
@@ -5038,11 +5526,30 @@ Thanks</textarea></div>
       if (el.hasAttribute('data-addagent')) el.setAttribute('data-addagent', el.getAttribute('data-agent-side') === 'other' ? coopTitle : myTitle);
     });
   }
+  function leaveLeadMember() {
+    if (!leadMemberSelection) return false;
+    leadMemberSelection = null; ybdEditing = false;
+    screenEl.setAttribute('data-role', role);
+    detailPage.hidden = false;
+    renderYbd(); renderBuyingTeamSplit(); syncDockEdit();
+    document.getElementById('backLink').setAttribute('aria-label', 'Back to home');
+    if (leadMemberTrigger && leadMemberTrigger.isConnected) leadMemberTrigger.focus();
+    return true;
+  }
+  document.getElementById('backLink').addEventListener('click', function (event) {
+    if (!leadMemberSelection) return;
+    event.preventDefault(); event.stopImmediatePropagation(); leaveLeadMember();
+  }, true);
   function openDetailed(trigger) {
+    if (leadMemberSelection) leaveLeadMember();
     if (openSheetEl) close(true);
+    if (usesLeadLayout()) {
+      document.getElementById('sec-sides').scrollIntoView({ block: 'nearest' });
+      return;
+    }
     detailTrigger = trigger;
     detailPage.hidden = false;
-    var canEditDetail = role === 'team_lead' || role === 'group_lead' || role === 'group_lead_agent';
+    var canEditDetail = usesLeadLayout() || agentFinancialView();
     document.getElementById('detailEditBtn').hidden = !canEditDetail;
     setDetailBackground(true);
     setDetailEditing(false);
@@ -5051,6 +5558,7 @@ Thanks</textarea></div>
     document.getElementById('detailCloseBtn').focus();
   }
   function closeDetailed() {
+    if (usesLeadLayout()) return;
     if (agentDetailPage && !agentDetailPage.hidden) closeAgentDetail();
     detailPage.hidden = true;
     setDetailBackground(false);
@@ -5072,6 +5580,70 @@ Thanks</textarea></div>
       if (!agentDetailPage.hidden) closeAgentDetail(); else closeDetailed();
     }
   });
+  document.getElementById('dockEditBtn').addEventListener('click', function () {
+    if (!detailPage.hidden) setDetailEditing(!detailEditing);
+    else document.getElementById('ybdEditBtn').click();
+    this.focus();
+  });
+  var dockAddTrigger = document.getElementById('dockAddBtn'), dockAddMenu = document.createElement('div');
+  dockAddMenu.id = 'dockAddMenu'; dockAddMenu.hidden = true;
+  dockAddMenu.setAttribute('role', 'menu'); dockAddMenu.setAttribute('aria-label', 'Add to breakdown');
+  dockAddMenu.innerHTML = '<button type="button" role="menuitem" data-dock-add="credit"><i class="ph ph-hand-coins" aria-hidden="true"></i><span>Client credit</span></button><button type="button" role="menuitem" data-dock-add="referral"><i class="ph ph-users" aria-hidden="true"></i><span>Referral</span></button><button type="button" role="menuitem" data-dock-add="fee"><i class="ph ph-receipt" aria-hidden="true"></i><span>Fee</span></button><button type="button" role="menuitem" data-dock-add="presplit"><i class="ph ph-minus-circle" aria-hidden="true"></i><span>Fee before the split</span></button><button type="button" role="menuitem" data-dock-add="postsplit"><i class="ph ph-minus-square" aria-hidden="true"></i><span>Fee after the split</span></button>';
+  decisionDockEl.appendChild(dockAddMenu);
+  dockAddTrigger.setAttribute('aria-label', 'Add to breakdown');
+  dockAddTrigger.title = 'Add to breakdown';
+  dockAddTrigger.setAttribute('aria-haspopup', 'menu'); dockAddTrigger.setAttribute('aria-controls', 'dockAddMenu'); dockAddTrigger.setAttribute('aria-expanded', 'false');
+  function closeDockAddMenu(refocus) {
+    dockAddMenu.hidden = true; dockAddTrigger.setAttribute('aria-expanded', 'false');
+    if (refocus) dockAddTrigger.focus();
+  }
+  function positionDockAddMenu() {
+    var top = 0, left = 0, element = dockAddTrigger;
+    while (element && element !== decisionDockEl) {
+      top += element.offsetTop; left += element.offsetLeft; element = element.offsetParent;
+    }
+    dockAddMenu.style.bottom = (decisionDockEl.clientHeight - top + 8) + 'px';
+    dockAddMenu.style.right = Math.max(0, decisionDockEl.clientWidth - left - dockAddTrigger.offsetWidth) + 'px';
+  }
+  window.addEventListener('resize', function () { if (!dockAddMenu.hidden) positionDockAddMenu(); });
+  dockAddTrigger.addEventListener('click', function () {
+    var show = dockAddMenu.hidden;
+    dockAddMenu.querySelector('[data-dock-add="fee"]').hidden = false;
+    dockAddMenu.hidden = !show; this.setAttribute('aria-expanded', String(show));
+    if (show) { positionDockAddMenu(); dockAddMenu.querySelector('button').focus(); }
+  });
+  dockAddMenu.addEventListener('click', function (event) {
+    var option = event.target.closest('[data-dock-add]'); if (!option) return;
+    var type = option.getAttribute('data-dock-add'), side = role === 'dual_role' && isDualOtherSide() ? 'other' : 'mine';
+    closeDockAddMenu(false);
+    if (type === 'fee') {
+      openCommissionFee(null, dockAddTrigger);
+      return;
+    }
+    if (type === 'presplit') { openDed(side, null, true, 'presplit', dockAddTrigger); return; }
+    if (type === 'postsplit') { openPost('post', null, dockAddTrigger); return; }
+    openDed(side, null, true, 'credit', dockAddTrigger);
+    setDedType(type);
+  });
+  document.addEventListener('click', function (event) {
+    if (!dockAddMenu.hidden && !dockAddMenu.contains(event.target) && !dockAddTrigger.contains(event.target)) closeDockAddMenu(false);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (dockAddMenu.hidden) return;
+    if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); closeDockAddMenu(true); }
+    else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      var options = Array.from(dockAddMenu.querySelectorAll('button:not([hidden])')), index = options.indexOf(document.activeElement);
+      options[(index + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length].focus();
+    } else if (event.key === 'Tab') closeDockAddMenu(false);
+  }, true);
+  function syncDockEdit() {
+    var button = document.getElementById('dockEditBtn'), active = detailPage && !detailPage.hidden ? detailEditing : ybdEditing;
+    button.setAttribute('aria-pressed', String(!!active));
+    button.setAttribute('aria-label', active ? 'Done editing breakdown' : 'Edit breakdown');
+    button.title = active ? 'Done editing breakdown' : 'Edit breakdown';
+    button.querySelector('i').className = active ? 'ph ph-check' : 'ph ph-pencil-simple';
+  }
   document.getElementById('msgBtn').addEventListener('click', function () {
     renderFeed();
     open(document.getElementById('activitySheet'), this);
@@ -5205,7 +5777,23 @@ Thanks</textarea></div>
       : dualRoleSeed ? [{ name: 'Mark Perez', role: 'Agent on both sides', me: true, allocation: 100 }]
       : [];
   }
+  var nonTeamRoster = null, teamLeadRoster = null;
   function setRole(r) {
+    leadMemberSelection = null;
+    if (r === 'team_lead' && role !== 'team_lead') {
+      nonTeamRoster = AG.mine;
+      if (!teamLeadRoster) {
+        teamLeadRoster = AG.mine.map(function (agent) { return Object.assign({}, agent); });
+        if (teamLeadRoster.length === 1) {
+          teamLeadRoster[0].allocation = 80;
+          teamLeadRoster.push({ name:'Dana Whitfield', role:'Co-agent', me:false, allocation:20 });
+        }
+      }
+      AG.mine = teamLeadRoster;
+    } else if (role === 'team_lead' && r !== 'team_lead' && nonTeamRoster) {
+      teamLeadRoster = AG.mine;
+      AG.mine = nonTeamRoster;
+    }
     role = r; screenEl.setAttribute('data-role', r);
     if (role === 'dual_role') dualSide = mySide === 'buyer' ? 'buying' : 'listing';
     syncDualRoleAgents();
@@ -5222,6 +5810,24 @@ Thanks</textarea></div>
     sideHrefs();
     renderStatus();
     syncDualRoleView(true);
+    if (!agentDetailPage.hidden) closeAgentDetail();
+    setDetailBackground(false);
+    setDetailEditing(false);
+    if (usesLeadLayout()) {
+      scrollEl.appendChild(detailPage);
+      detailPage.hidden = false;
+      detailPage.setAttribute('role', 'region');
+      detailPage.removeAttribute('aria-modal');
+      document.getElementById('detailEditBtn').hidden = false;
+      setDefaultSideOpen();
+      syncSideStack(true);
+    } else {
+      screenEl.appendChild(detailPage);
+      detailPage.hidden = true;
+      detailPage.setAttribute('role', 'dialog');
+      detailPage.setAttribute('aria-modal', 'true');
+    }
+    fitBar();
   }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-setstatus]'); if (!b) return;
@@ -5260,6 +5866,22 @@ Thanks</textarea></div>
     setWires(b.getAttribute('data-setwires'));
   });
   document.getElementById('moreBtn').addEventListener('click', function () { open(document.getElementById('moreSheet'), this); });
+  document.getElementById('detailMoreBtn').addEventListener('click', function () { open(document.getElementById('moreSheet'), this); });
+  document.getElementById('moreCapProgress').addEventListener('click', function () {
+    var name = leadMemberSelection ? leadMemberSelection.name : breakdownAgent().name,
+        host = document.getElementById('capProgressBody'), caps = CAPS[name] || {};
+    document.getElementById('capProgressTitle').querySelector('.sh-sub').textContent = name;
+    host.textContent = '';
+    var cards = document.createElement('div'); cards.className = 'capstack';
+    var body = document.createElement('div'); body.className = 'capstack-body';
+    visibleCapRecords(caps).forEach(function (cap) { body.appendChild(capEl(cap)); });
+    if (!body.childElementCount) {
+      var empty = document.createElement('p'); empty.className = 'ybd-note';
+      empty.textContent = 'No cap details available for your view.'; body.appendChild(empty);
+    }
+    cards.appendChild(body); host.appendChild(cards);
+    open(document.getElementById('capProgressSheet'), document.getElementById(detailPage.hidden || usesLeadLayout() ? 'moreBtn' : 'detailMoreBtn'));
+  });
   document.getElementById('moreDetailed').addEventListener('click', function () { openDetailed(this); });
   document.getElementById('moreCda').addEventListener('click', function () { close(true); downloadCda(); });
   document.getElementById('moreTracker').addEventListener('click', function () {
@@ -5948,7 +6570,7 @@ Thanks</textarea></div>
   function chooseBreakdownAdd(kind, trigger) {
     if (!trigger) return;
     if (kind === 'presplit') { openDed('mine', null, true, 'presplit', trigger); return; }
-    if (kind === 'post') { openPost('post', null, trigger, 'Add post-split deduction'); return; }
+    if (kind === 'post') { openPost('post', null, trigger, 'Add fee after the split'); return; }
     if (kind === 'credit' || kind === 'referral') {
       openDed('mine', null, true, 'credit', trigger);
       setDedType(kind);
@@ -5957,7 +6579,7 @@ Thanks</textarea></div>
     openCommissionFee(null, trigger);
   }
   function chooseDropdownPlan(name) {
-    var p = null, i, s = SCHED['Mark Perez'];
+    var p = null, i, s = SCHED[breakdownAgent().name];
     for (i = 0; i < PLANS.length; i++) if (PLANS[i].name === name) p = PLANS[i];
     if (!s || !p || s.plan === name) { closePlanDropdown(); return; }
     var parts = planDropParts();
@@ -6274,6 +6896,21 @@ Thanks</textarea></div>
   }
 
   /* the deduction rows inside each side — editable, and they drive the basis */
+  function renderBuyingTeamSplit() {
+    var previous = document.getElementById('buyingTeamSplit');
+    if (previous) previous.remove();
+    if (role !== 'team_lead') return;
+    var host = document.getElementById(mySide === 'buyer' ? 'deds1' : 'deds2'),
+        split = document.querySelector('#ybdFullDet > .agent-split'),
+        fees = document.querySelector('#ybdFullDet > .team-fee-list');
+    if (!host || !split) return;
+    // Reuse the current read-only team statement so amounts and fee copy stay aligned.
+    var section = document.createElement('div');
+    section.id = 'buyingTeamSplit'; section.className = 'ybd-det';
+    section.appendChild(split.cloneNode(true));
+    if (fees) section.appendChild(fees.cloneNode(true));
+    host.appendChild(section);
+  }
   function renderDeds() {
     ['mine', 'other'].forEach(function (k) {
       var host = document.getElementById(k === 'mine' ? 'deds1' : 'deds2');
@@ -6284,17 +6921,27 @@ Thanks</textarea></div>
         if (!items.length) return;
         if (grp[1]) {
           var h = document.createElement('div'); h.className = 'ssub'; h.textContent = grp[1];
+          if (usesLeadLayout()) {
+            h.classList.add('team-pre-heading'); h.textContent = '';
+            var label = document.createElement('span'); label.textContent = 'Fees before the split';
+            var count = document.createElement('em'); count.textContent = ' · ' + items.length + (items.length === 1 ? ' fee' : ' fees');
+            label.appendChild(count);
+            var total = document.createElement('b'); total.textContent = neg(items.reduce(function (sum, item) { return sum + item.amt; }, 0));
+            h.appendChild(label); h.appendChild(total);
+          }
           host.appendChild(h);
         }
         items.forEach(function (d) { host.appendChild(dedRow(k, d)); });
       });
     });
+    renderBuyingTeamSplit();
   }
   function dedRow(k, d) {
     var w = WIRES.filter(function (x) { return x.fee === d.name; })[0];
     var onFile = w ? w.status === 'on-file' : !!d.payee;
     var to = (w && w.status === 'on-file') ? w.to : d.payee;
     var wrap = document.createElement('div'); wrap.className = 'dedrow';
+    wrap.setAttribute('data-kind', d.kind);
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'srow'; b.setAttribute('aria-haspopup', 'dialog');
     b.setAttribute('data-editded', k + '|' + d.id);
@@ -6302,7 +6949,7 @@ Thanks</textarea></div>
     var nb = document.createElement('b'); nb.textContent = d.name;
     if (d.kind === 'credit' && d.payTo && d.payTo !== 'external') onFile = true, to = PAYTO[d.payTo].to;
     sk.appendChild(nb);
-    var v = document.createElement('span'); v.className = 'svv neg'; v.textContent = neg(d.amt);
+    var v = document.createElement('span'); v.className = 'svv neg'; v.textContent = usesLeadLayout() && d.kind === 'credit' ? cur(d.amt) : neg(d.amt);
     b.appendChild(sk); b.appendChild(v);
     b.setAttribute('aria-label', d.name + ' · ' + neg(d.amt) + ' · '
       + (d.kind === 'presplit' ? 'taken before the split' : 'taken off the top') + ' · edit');
@@ -6315,6 +6962,7 @@ Thanks</textarea></div>
       wireInfo.addEventListener('click', function () {
         openWireSheet(d.name, w ? w.amt : cur(d.amt), (w && w.to) || d.payee || 'Payee not set yet', w ? w.status : 'missing', wireInfo);
       });
+      if (usesLeadLayout() && d.type === 'referral') wrap.classList.add('referral-info-inline');
       wrap.appendChild(wireInfo);
     }
     return wrap;
@@ -6329,7 +6977,7 @@ Thanks</textarea></div>
   };
   var PAYTOLABEL = { radius: 'Radius', team: 'Team', external: 'External / Referral' };
   var INFOTXT = {
-    post: 'Post-split deductions come out of each agent\u2019s share after the split \u2014 every agent on this side feels them.',
+    post: 'Fees after the split come out of each agent\u2019s share after the split \u2014 every agent on this side feels them.',
     radius: 'Radius fees are collected by Radius at closing and netted out of the disbursement.'
   };
   function closeDD(dd) {
@@ -6421,17 +7069,53 @@ Thanks</textarea></div>
       ? PAYTO[payTo].hint : 'Who the money is disbursed to at closing.';
     document.getElementById('fPayee').hidden = payTo !== 'external';
   }
+  function defaultFeeShares(payer, agentKind) {
+    var agent = agentKind === 'co' ? AG.mine.filter(function (a) { return !a.me; })[0] : breakdownAgent();
+    agent = agent || breakdownAgent();
+    var schedule = SCHED[agent.name] || {}, index = AG.mine.indexOf(agent), chain = MINE[index],
+        allocation = Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation) / 100,
+        commissionBasis = Math.max(0, (basis - preSplit) * allocation),
+        agentPct = schedule.flat != null && chain && commissionBasis > 0
+          ? chain.splitAmt / commissionBasis * 100 : Number(schedule.split == null ? 80 : schedule.split),
+        groupPct = Math.max(0, Math.min(100, groupSplitPct)), payers = feePayers(payer), shares = { Agent:0, Team:0, Group:0 };
+    agentPct = Math.max(0, Math.min(100, agentPct));
+    if (payers.length === 1) shares[payers[0]] = 100;
+    else if (payers.length === 3) {
+      shares.Agent = agentPct;
+      shares.Group = (100 - agentPct) * groupPct / 100;
+      shares.Team = 100 - shares.Agent - shares.Group;
+    } else if (payers.indexOf('Agent') >= 0) {
+      shares.Agent = agentPct;
+      shares[payers.indexOf('Team') >= 0 ? 'Team' : 'Group'] = 100 - agentPct;
+    } else { shares.Group = groupPct; shares.Team = 100 - groupPct; }
+    var total = 0;
+    payers.forEach(function (name, index) {
+      shares[name] = index === payers.length - 1 ? Math.round((100 - total) * 100) / 100 : Math.round(shares[name] * 100) / 100;
+      total += shares[name];
+    });
+    return shares;
+  }
+  function seedFeeShares(payer) {
+    var shares = defaultFeeShares(payer, dedCtx.agent);
+    ['Agent', 'Team', 'Group'].forEach(function (name) { document.getElementById('fee' + name + 'Pct').value = String(shares[name]); });
+  }
   function setFeePayer(p) {
+    if (p === 'Both') p = 'Agent + Team';
+    var payers = feePayers(p);
+    if (dedCtx && dedCtx.kind === 'fee' && dedCtx.isNew && dedCtx.p !== p) seedFeeShares(p);
     if (dedCtx) dedCtx.p = p;
     Array.prototype.forEach.call(document.querySelectorAll('[data-feepayer]'), function (b) {
       b.setAttribute('aria-selected', String(b.getAttribute('data-feepayer') === p));
     });
     document.getElementById('ddFeePayerVal').textContent = p;
-    document.getElementById('fAgentFeeShare').hidden = p === 'Team';
-    document.getElementById('fTeamFeeShare').hidden = p === 'Agent';
+    document.getElementById('fAgentFeeShare').hidden = payers.indexOf('Agent') < 0;
+    document.getElementById('fTeamFeeShare').hidden = payers.indexOf('Team') < 0;
+    document.getElementById('fGroupFeeShare').hidden = payers.indexOf('Group') < 0;
   }
   function setFeeAgent(agent) {
+    var changed = dedCtx && dedCtx.agent !== agent;
     if (dedCtx) dedCtx.agent = agent;
+    if (changed && dedCtx.kind === 'fee' && dedCtx.isNew) seedFeeShares(dedCtx.p);
     Array.prototype.forEach.call(document.querySelectorAll('[data-feeagent]'), function (b) {
       b.setAttribute('aria-checked', String(b.getAttribute('data-feeagent') === agent));
     });
@@ -6450,7 +7134,7 @@ Thanks</textarea></div>
     if (fa) setFeeAgent(fa.getAttribute('data-feeagent'));
     if (fs) setFeeStage(fs.getAttribute('data-feestage'));
   });
-  /* post-split deductions: same sheet, name + amount only (paid-by is fixed by the fee) */
+  /* fees after the split: same sheet, name + amount only (paid-by is fixed by the fee) */
   var LISTS = { post: function () { return POSTDEDS; }, radius: function () { return PAYRADIUS; } };
   function actor() { return role === 'team_lead' || role === 'group_lead' ? ['Andy Martin', 'lead'] : ['Mark Perez', 'ag']; }
   function openPost(list, d, trigger, titleTxt, keepOpen) {
@@ -6459,7 +7143,7 @@ Thanks</textarea></div>
     dedCtx = { k: list, id: d ? d.id : null, isNew: !d, kind: 'post', type: null,
                payTo: d ? (d.payTo || 'radius') : 'radius', p: d ? (d.p || 'Agent') : 'Agent' };
     Array.prototype.forEach.call(document.querySelectorAll('#dedSheet input, #dedSheet button'), function (field) { field.disabled = false; });
-    document.getElementById('dedSheetT').firstChild.textContent = titleTxt || ((d ? 'Edit ' : 'Add ') + (isR ? 'Radius fee' : 'post-split deduction'));
+    document.getElementById('dedSheetT').firstChild.textContent = titleTxt || ((d ? 'Edit ' : 'Add ') + (isR ? 'Radius fee' : 'fee after the split'));
     document.getElementById('dedSub').hidden = !isR;
     document.getElementById('dedSub').textContent = myTitle;
     document.getElementById('fType').hidden = true;
@@ -6468,6 +7152,7 @@ Thanks</textarea></div>
     document.getElementById('fFeePayer').hidden = isR;
     document.getElementById('fAgentFeeShare').hidden = true;
     document.getElementById('fTeamFeeShare').hidden = true;
+    document.getElementById('fGroupFeeShare').hidden = true;
     document.getElementById('fFeeStage').hidden = true;
     document.getElementById('fContributes').hidden = false;
     document.getElementById('fPrivate').hidden = false;
@@ -6506,12 +7191,13 @@ Thanks</textarea></div>
       stage:d ? d.stage : 'postsplit', fee:d || null };
     document.getElementById('dedSheetT').firstChild.textContent = d ? 'Edit fee' : 'Add fee';
     document.getElementById('dedSub').hidden = false;
-    document.getElementById('dedSub').textContent = role === 'team_lead' ? 'Team split' : 'Agent split';
+    document.getElementById('dedSub').textContent = 'Choose who pays this fee';
     document.getElementById('fType').hidden = true;
     document.getElementById('fName').hidden = false;
     document.getElementById('fFeePayer').hidden = false;
     document.getElementById('fAgentFeeShare').hidden = false;
     document.getElementById('fTeamFeeShare').hidden = true;
+    document.getElementById('fGroupFeeShare').hidden = true;
     document.getElementById('fFeeStage').hidden = false;
     document.getElementById('fPayTo').hidden = false;
     document.getElementById('fContributes').hidden = true;
@@ -6522,10 +7208,11 @@ Thanks</textarea></div>
     document.getElementById('dedAmt').value = d ? String(d.a) : '';
     document.getElementById('dedPayee').value = d && d.payee ? d.payee : '';
     document.getElementById('feeAgentPct').value = d ? String(d.agentPct == null ? 100 : d.agentPct) : '100';
+    document.getElementById('feeGroupPct').value = d ? String(d.groupPct == null ? 100 : d.groupPct) : '100';
     document.getElementById('feeTeamPct').value = d ? String(d.teamPct == null ? 100 : d.teamPct) : '100';
     clearDedErrors(); armRemove(false); setDedPayTo(dedCtx.payTo); setFeePayer(dedCtx.p); setFeeAgent(dedCtx.agent); setFeeStage(dedCtx.stage);
     var editable = !d || canEditCommissionFee(d), editableFields = d && d.editableFields
-      ? d.editableFields : ['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'dedPayee', 'payTo', 'payer', 'agent', 'stage'];
+      ? d.editableFields : ['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'feeGroupPct', 'dedPayee', 'payTo', 'payer', 'agent', 'stage'];
     Array.prototype.forEach.call(document.querySelectorAll('#dedSheet input, #dedSheet [data-feepayer], #dedSheet [data-feeagent], #dedSheet [data-feestage], #dedSheet #ddPayToBtn'), function (field) {
       var key = field.id === 'ddPayToBtn' ? 'payTo' : field.hasAttribute('data-feepayer') ? 'payer' : field.hasAttribute('data-feeagent') ? 'agent' : field.hasAttribute('data-feestage') ? 'stage' : field.id;
       field.disabled = !editable || editableFields.indexOf(key) === -1;
@@ -6542,7 +7229,7 @@ Thanks</textarea></div>
     applyNumbers();
     if (status !== 'draft') { status = 'draft'; renderStatus(); }
     var a = actor();
-    logActivity(a[0], a[1], 'Removed \u201c' + gone + '\u201d from ' + (list === 'radius' ? 'Radius fees' : 'post-split deductions') + '.', true);
+    logActivity(a[0], a[1], 'Removed \u201c' + gone + '\u201d from ' + (list === 'radius' ? 'Radius fees' : 'fees after the split') + '.', true);
     toast(gone + ' removed \u2014 net recalculated.');
   }
   document.addEventListener('click', function (e) {
@@ -6592,6 +7279,7 @@ Thanks</textarea></div>
   })();
   function openDed(k, d, isNew, kind, trigger, keepOpen) {
     kind = d ? d.kind : kind;
+    if (agentFinancialView() && (kind !== 'credit' || isFinalizedStatus(status))) return;
     document.getElementById('fPayTo').hidden = false;
     dedCtx = { k: k, id: d ? d.id : null, isNew: !!isNew, kind: kind,
                type: d ? (d.type || 'credit') : null, payTo: d ? (d.payTo || 'external') : null };
@@ -6599,12 +7287,12 @@ Thanks</textarea></div>
     var isCr = kind === 'credit';
     var requestedTitle = trigger && trigger.getAttribute('data-dedtitle');
     document.getElementById('dedSheetT').firstChild.textContent = requestedTitle || ((isNew ? 'Add ' : 'Edit ')
-      + (isCr ? 'credit or referral' : 'pre-split deduction'));
+      + (isCr ? 'credit or referral' : 'fee before the split'));
     document.getElementById('dedSub').hidden = false;
     document.getElementById('dedSub').textContent = k === 'mine' ? myTitle : coopTitle;
     document.getElementById('dedKindNote').textContent = isCr
       ? 'Credits and referrals come off the side gross before any split, so both sides feel them.'
-      : 'Pre-split deductions come out of the basis the splits are calculated on — E&O, TC, title fees.';
+      : 'These fees are deducted before your share is calculated. Examples: E&O, transaction coordinator, and title fees.';
     document.getElementById('fType').hidden = !isCr;
     document.getElementById('fName').hidden = isCr;
     document.getElementById('fFeePayer').hidden = true;
@@ -6663,16 +7351,18 @@ Thanks</textarea></div>
       return;
     }
     if (ctx.kind === 'fee') {
-      var agentPct = Math.max(0, Math.min(100, Number(document.getElementById('feeAgentPct').value) || 0)),
-          teamPct = Math.max(0, Math.min(100, Number(document.getElementById('feeTeamPct').value) || 0));
-      if ((ctx.p !== 'Team' && !agentPct) || (ctx.p !== 'Agent' && !teamPct) || (ctx.p === 'Both' && agentPct + teamPct !== 100)) {
-        toast(ctx.p === 'Both' ? 'Agent and team shares must total 100%.' : 'Enter a payment share.'); return;
+      var payers = feePayers(ctx.p), shares = {};
+      payers.forEach(function (payer) { shares[payer] = Number(document.getElementById('fee' + payer + 'Pct').value); });
+      var total = payers.reduce(function (sum, payer) { return sum + shares[payer]; }, 0);
+      if (payers.some(function (payer) { return !Number.isFinite(shares[payer]) || shares[payer] <= 0 || shares[payer] > 100; }) || Math.abs(total - 100) > 0.001) {
+        toast('Selected payer shares must total 100%.'); return;
       }
+      var agentPct = shares.Agent || 0, teamPct = shares.Team || 0, groupPct = shares.Group || 0;
       var fee = { id:ctx.id || 'p' + (++postSeq), n:typed, a:amt, p:ctx.p, payTo:ctx.payTo,
         payee:ctx.payTo === 'external' ? payee : PAYTO[ctx.payTo].to, feeMode:true, agent:ctx.agent,
-        agentPct:agentPct, teamPct:teamPct, stage:ctx.stage, editable:true,
-        teamLeadEditable:ctx.p !== 'Agent' && ctx.stage === 'postsplit',
-        editableFields:ctx.p !== 'Agent' && ctx.stage === 'postsplit' ? ['dedAmt'] : ['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'dedPayee', 'payTo', 'payer', 'agent', 'stage'] };
+        agentPct:agentPct, teamPct:teamPct, groupPct:groupPct, stage:ctx.stage, editable:true,
+        teamLeadEditable:(payers.indexOf('Team') >= 0) && ctx.stage === 'postsplit',
+        editableFields:(payers.indexOf('Team') >= 0) && ctx.stage === 'postsplit' ? ['dedAmt'] : ['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'feeGroupPct', 'dedPayee', 'payTo', 'payer', 'agent', 'stage'] };
       if (ctx.isNew) POSTDEDS.push(fee);
       else POSTDEDS.forEach(function (x, i) { if (x.id === ctx.id) POSTDEDS[i] = fee; });
       applyNumbers(); close();
@@ -6691,7 +7381,7 @@ Thanks</textarea></div>
       applyNumbers(); close();
       if (status !== 'draft') { status = 'draft'; renderStatus(); }
       var ac = actor();
-      logActivity(ac[0], ac[1], (ctx.isNew ? 'Added' : 'Updated') + ' \u201c' + typed + '\u201d at ' + cur(amt) + ' in ' + (isR ? 'Radius fees' : 'post-split deductions') + '.', true);
+      logActivity(ac[0], ac[1], (ctx.isNew ? 'Added' : 'Updated') + ' \u201c' + typed + '\u201d at ' + cur(amt) + ' in ' + (isR ? 'Radius fees' : 'fees after the split') + '.', true);
       toast(typed + (ctx.isNew ? ' added' : ' updated') + ' \u2014 net recalculated.');
       return;
     }
@@ -6834,7 +7524,7 @@ Thanks</textarea></div>
   function syncDualRoleView(immediate) {
     var dual = role === 'dual_role';
     sideCards.forEach(function (card) {
-      card.hidden = dual && sideName(card) !== dualSide;
+      card.hidden = card.id !== 'commissionsStackCard' && (agentFinancialView() ? role !== 'dual_role' && sideName(card) !== (mySide === 'buyer' ? 'buying' : 'listing') : dual && sideName(card) !== dualSide);
     });
     setDefaultSideOpen();
     if (!detailPage.hidden) syncSideStack(immediate);
@@ -6879,13 +7569,12 @@ Thanks</textarea></div>
       state.tm = open ? 10 : 0;
       state.trot = open ? 90 : 0;
       state.closing = !open;
-      if (openIndex < 0) {
-        state.trt = index === 0 ? 20 : 0;
-        state.trb = index === sideCards.length - 1 ? 20 : 0;
-      } else {
-        state.trt = 20;
-        state.trb = 20;
-      }
+      // Collapsed neighbors form one continuous group around the open section.
+      var visibleCards = sideCards.filter(function (item) { return !item.hidden; }),
+          visibleIndex = visibleCards.indexOf(card),
+          previous = visibleCards[visibleIndex - 1], next = visibleCards[visibleIndex + 1];
+      state.trt = open || !previous || previous.querySelector('.sgo').getAttribute('aria-expanded') === 'true' ? 20 : 0;
+      state.trb = open || !next || next.querySelector('.sgo').getAttribute('aria-expanded') === 'true' ? 20 : 0;
     });
   }
   function paintSide(card, state) {
@@ -7019,6 +7708,8 @@ Thanks</textarea></div>
   document.addEventListener('click', function (e) {
     var ib = e.target.closest('[data-infosheet]'); if (!ib) return;
     var key = ib.getAttribute('data-infosheet');
+    if (!canViewInternalCommission(key)) return;
+    if (agentFinancialView()) { document.getElementById('netFloatInfo').click(); return; }
     ['Net', 'Rad', 'Team', 'Group'].forEach(function (k) {
       document.getElementById('pop1' + k + 'B').hidden = k !== key;
     });
@@ -7078,7 +7769,9 @@ Thanks</textarea></div>
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TINT = { aud: 'violet', ag: 'blue', lead: 'gold' };
   var ROLE_LABEL = { aud: 'Auditor', ag: 'Agent', lead: 'Team lead' };
-  var VISIBLE_GROUPS = 4, feedExpanded = false;
+  var VISIBLE_GROUPS = 4, feedExpanded = false, activityFilter = 'all',
+      activityPage = document.getElementById('activityPage'),
+      activityPageTrigger = null;
 
   var FEED = [
     { who: 'Jessica Hall', ini: 'JH', role: 'aud', day: '2026-05-12', time: '10:08 AM', iso: '2026-05-12T10:08', text: 'Commission breakdown draft created for ' + addr + '.', act: true },
@@ -7117,31 +7810,84 @@ Thanks</textarea></div>
     });
     return g;
   }
+  function setActivityFilter(value) {
+    activityFilter = ['all', 'comments', 'activity'].indexOf(value) >= 0 ? value : 'all';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-activity-filter]'), function (button) {
+      button.setAttribute('aria-pressed', String(button.getAttribute('data-activity-filter') === activityFilter));
+    });
+    renderFeed();
+  }
+  function setActivityPageBackground(hidden) {
+    decisionDockEl.hidden = hidden;
+    bgEls.forEach(function (el) {
+      if (!el || el === decisionDockEl) return;
+      if (hidden) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+      else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    });
+    if (detailPage && !detailPage.hidden) {
+      if (hidden) { detailPage.setAttribute('inert', ''); detailPage.setAttribute('aria-hidden', 'true'); }
+      else { detailPage.removeAttribute('inert'); detailPage.removeAttribute('aria-hidden'); setDetailBackground(true); }
+    }
+    if (agentDetailPage && !agentDetailPage.hidden) {
+      if (hidden) { agentDetailPage.setAttribute('inert', ''); agentDetailPage.setAttribute('aria-hidden', 'true'); }
+      else { agentDetailPage.removeAttribute('inert'); agentDetailPage.removeAttribute('aria-hidden'); }
+    }
+    if (!hidden && (!detailPage || detailPage.hidden) && (!agentDetailPage || agentDetailPage.hidden)) {
+      decisionDockEl.hidden = false;
+    }
+  }
+  function openActivityPage(trigger) {
+    activityPageTrigger = trigger || document.activeElement;
+    var sheetInput = document.getElementById('cmInput'), pageInput = document.getElementById('activityPageInput');
+    if (sheetInput && pageInput) {
+      pageInput.value = sheetInput.value;
+      pageInput.style.height = 'auto';
+      pageInput.style.height = Math.min(pageInput.scrollHeight, 120) + 'px';
+    }
+    if (openSheetEl) close(true);
+    feedExpanded = true;
+    activityPage.hidden = false;
+    setActivityPageBackground(true);
+    renderFeed();
+    var scroll = activityPage.querySelector('.detail-scroll');
+    if (scroll) scroll.scrollTop = 0;
+    document.getElementById('activityPageBack').focus();
+  }
+  function closeActivityPage() {
+    activityPage.hidden = true;
+    setActivityPageBackground(false);
+    if (activityPageTrigger && activityPageTrigger.isConnected) activityPageTrigger.focus();
+  }
+  function feedIdentity(ch, f, activity) {
+    var hint = document.createElement('span'); hint.className = 'feed-kind';
+    hint.innerHTML = '<i class="ph ' + (activity ? 'ph-clock-counter-clockwise' : 'ph-chat-circle-text') + '" aria-hidden="true"></i>';
+    hint.title = activity ? 'Activity' : 'Comment';
+    var author = document.createElement('span'); author.className = 'feed-author';
+    var avatar = document.createElement('span'); avatar.className = 'ini ' + f.role;
+    avatar.textContent = f.ini; avatar.setAttribute('aria-hidden', 'true');
+    var name = document.createElement('b'); name.textContent = f.who;
+    author.appendChild(avatar); author.appendChild(name);
+    ch.appendChild(hint); ch.appendChild(author);
+  }
   function commentRow(g) {
     var f = g.items[0];
-    var row = document.createElement('li'); row.className = 'cm';
-    var ini = document.createElement('span'); ini.className = 'ini ' + f.role;
-    ini.textContent = f.ini; ini.setAttribute('aria-hidden', 'true');
+    var row = document.createElement('li'); row.className = 'cm comment';
     var cb = document.createElement('span'); cb.className = 'cb';
     var ch = document.createElement('span'); ch.className = 'ch';
-    var b = document.createElement('b'); b.textContent = f.who;
-    var pill = document.createElement('span'); pill.className = 'pill ' + TINT[f.role];
-    pill.textContent = ROLE_LABEL[f.role];
-    ch.appendChild(b); ch.appendChild(pill); ch.appendChild(timeEl(f.iso, f.time));
+    row.setAttribute('aria-label', 'Comment by ' + f.who);
+    feedIdentity(ch, f, false); ch.appendChild(timeEl(f.iso, f.time));
     var ct = document.createElement('span'); ct.className = 'ct'; textInto(ct, f.text);
     cb.appendChild(ch); cb.appendChild(ct);
-    row.appendChild(ini); row.appendChild(cb);
+    row.appendChild(cb);
     return row;
   }
   function activityRow(g) {
-    var row = document.createElement('li'); row.className = 'cm act';
-    var ic = document.createElement('span'); ic.className = 'acic'; ic.setAttribute('aria-hidden', 'true');
-    ic.innerHTML = '<i class="ph ph-clock-counter-clockwise"></i>';
+    var row = document.createElement('li'); row.className = 'cm feed-activity';
     var cb = document.createElement('span'); cb.className = 'cb';
     var ch = document.createElement('span'); ch.className = 'ch';
-    var b = document.createElement('b'); b.textContent = g.who + ' \u00b7 activity';
-    ch.appendChild(b);
+    row.setAttribute('aria-label', 'Activity by ' + g.who);
     var first = g.items[0], last = g.items[g.items.length - 1];
+    feedIdentity(ch, first, true);
     if (g.items.length === 1) {
       ch.appendChild(timeEl(first.iso, first.time));
       cb.appendChild(ch);
@@ -7158,20 +7904,22 @@ Thanks</textarea></div>
       });
       cb.appendChild(ul);
     }
-    row.appendChild(ic); row.appendChild(cb);
+    row.appendChild(cb);
     return row;
   }
-  function renderFeed() {
-    var host = document.getElementById('actFeed');
+  function renderFeedInto(host, full) {
     if (!host) return;
     host.textContent = '';
-    if (!FEED.length) {
+    var feed = FEED.filter(function (item) {
+      return activityFilter === 'all' || (activityFilter === 'activity' ? item.act : !item.act);
+    });
+    if (!feed.length) {
       var e = document.createElement('li'); e.className = 'noagent'; e.style.borderTop = '0';
-      e.textContent = 'Nothing here yet — start the thread below.';
+      e.textContent = activityFilter === 'activity' ? 'No activity yet.' : activityFilter === 'comments' ? 'No comments yet.' : 'Nothing here yet — start the thread below.';
       host.appendChild(e); return;
     }
-    var groups = groupFeed(FEED);
-    var hiddenCount = feedExpanded ? 0 : Math.max(0, groups.length - VISIBLE_GROUPS);
+    var groups = groupFeed(feed);
+    var hiddenCount = feedExpanded || full ? 0 : Math.max(0, groups.length - VISIBLE_GROUPS);
     if (hiddenCount) {
       var n = 0;
       groups.slice(0, hiddenCount).forEach(function (g) { n += g.items.length; });
@@ -7179,7 +7927,7 @@ Thanks</textarea></div>
       var btn = document.createElement('button'); btn.type = 'button';
       btn.innerHTML = '<i class="ph ph-arrow-up" aria-hidden="true"></i>';
       btn.appendChild(document.createTextNode('Show earlier activity (' + n + ')'));
-      btn.addEventListener('click', function () { feedExpanded = true; renderFeed(); });
+      btn.addEventListener('click', function () { openActivityPage(btn); });
       li.appendChild(btn); host.appendChild(li);
     }
     var lastDay = null;
@@ -7192,6 +7940,10 @@ Thanks</textarea></div>
       host.appendChild(g.act ? activityRow(g) : commentRow(g));
     });
   }
+  function renderFeed() {
+    renderFeedInto(document.getElementById('actFeed'), false);
+    renderFeedInto(document.getElementById('activityPageFeed'), true);
+  }
   function logActivity(who, r, text, act) {
     var d = new Date(), h = d.getHours(), mi = d.getMinutes(), ap = h < 12 ? 'AM' : 'PM';
     var pad = function (v) { return (v < 10 ? '0' : '') + v; };
@@ -7203,13 +7955,35 @@ Thanks</textarea></div>
     renderFeed();
   }
   document.getElementById('cmSend').addEventListener('click', function () {
-    var input = document.getElementById('cmInput'), v = input.value.trim(); if (!v) { input.focus(); return; }
+    postActivityComment(document.getElementById('cmInput'), document.getElementById('activityPageInput'));
+  });
+  document.getElementById('activityPageSend').addEventListener('click', function () {
+    postActivityComment(document.getElementById('activityPageInput'), document.getElementById('cmInput'));
+  });
+  function postActivityComment(input, mirror) {
+    var v = input.value.trim(); if (!v) { input.focus(); return; }
     var me = role === 'agent' || role === 'dual_role' ? ['Mark Perez', 'ag'] : role === 'team_lead' ? ['Andy Martin', 'lead'] : ['Jessica Hall', 'aud'];
     logActivity(me[0], me[1], v, false);
-    input.value = ''; input.style.height = 'auto'; sheetDirty = false; toast('Comment posted.');
-  });
-  document.getElementById('cmInput').addEventListener('input', function () {
+    input.value = ''; input.style.height = 'auto';
+    if (mirror) { mirror.value = ''; mirror.style.height = 'auto'; }
+    sheetDirty = false; toast('Comment posted.');
+  }
+  function autosizeCommentBox() {
     this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  }
+  document.getElementById('cmInput').addEventListener('input', autosizeCommentBox);
+  document.getElementById('activityPageInput').addEventListener('input', autosizeCommentBox);
+  document.addEventListener('click', function (e) {
+    var button = e.target.closest('[data-activity-filter]');
+    if (!button) return;
+    setActivityFilter(button.getAttribute('data-activity-filter'));
+  });
+  document.getElementById('activityPageBack').addEventListener('click', closeActivityPage);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && activityPage && !activityPage.hidden) {
+      e.preventDefault();
+      closeActivityPage();
+    }
   });
 
   renderFeed();

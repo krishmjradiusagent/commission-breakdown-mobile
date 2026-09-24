@@ -994,6 +994,11 @@ section[data-sec].sec-hidden { display:none; }
   .stagger { animation:none; opacity:1; transform:none; }
   .screen.editing section[data-sec] { animation:none; }
 }
+
+.ca-gross { display:flex; align-items:center; min-width:0; font:600 14px/1.3 var(--font); color:#c6a15b; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.ca-gross b { font:inherit; color:inherit; }
+.screen:not(.dark) .ca-gross { color:#8f6d2a; }
+ .ca-copy { width:100%; }
 </style>
 </head>
 <body>
@@ -1231,10 +1236,10 @@ section[data-sec].sec-hidden { display:none; }
         <div class="sec-head"><h2>Commissions</h2></div>
         <div class="gcard commission-card">
           <div class="commission-rail" aria-label="Commission approvals">
-            <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012" aria-label="118 Maple St, closes September 12, Agent pending, review and approve commission">
-              <span class="ca-status-strip">With agent</span>
+            <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012" aria-label="118 Maple St, closes September 12, you pending, review and approve commission">
+              <span class="ca-status-strip">You</span>
               <div class="ca-body">
-                <span class="ca-main"><span class="ca-copy"><span class="ca-address">118 Maple St</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 12</span></span></span>
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">118 Maple St</span><span class="ca-gross"><b>$23,000</b></span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 12</span></span></span>
                 <span class="ca-controls">
                   <button class="ca-status tracker-trigger" type="button" data-commission-tracker="maple" aria-label="Open tracker for 118 Maple Street: 1 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:16.667%" aria-hidden="true"></span><span class="track-count">1/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
                   <a class="ca-action" href="Commission breakdown.html?from=home&amp;addr=118%20Maple%20St&amp;price=1150000&amp;side=buyer&amp;close=Close%20Sep%2012">Review</a>
@@ -1244,7 +1249,7 @@ section[data-sec].sec-hidden { display:none; }
             <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;status=agent_confirmed&amp;addr=42%20Oak%20Ln&amp;price=980000&amp;side=seller&amp;close=Close%20Sep%2015" aria-label="Open commission breakdown for 42 Oak Lane, closes September 15, Team lead pending">
               <span class="ca-status-strip with-team">With team lead</span>
               <div class="ca-body">
-                <span class="ca-main"><span class="ca-copy"><span class="ca-address">42 Oak Ln</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 15</span></span></span>
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">42 Oak Ln</span><span class="ca-gross"><b>$19,600</b></span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 15</span></span></span>
                 <span class="ca-controls">
                   <button class="ca-status tracker-trigger" type="button" data-commission-tracker="oak" aria-label="Open tracker for 42 Oak Lane: 2 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:33.333%" aria-hidden="true"></span><span class="track-count">2/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
                   <a class="ca-action ca-action-secondary" href="Commission breakdown.html?from=home&amp;status=agent_confirmed&amp;addr=42%20Oak%20Ln&amp;price=980000&amp;side=seller&amp;close=Close%20Sep%2015">View</a>
@@ -1254,7 +1259,7 @@ section[data-sec].sec-hidden { display:none; }
             <div class="ca-row" role="link" tabindex="0" data-href="Commission breakdown.html?from=home&amp;status=lead_confirmed&amp;addr=640%20Alma%20St&amp;price=1275000&amp;side=seller&amp;close=Close%20Sep%2020" aria-label="Open commission breakdown for 640 Alma Street, closes September 20, Group lead pending">
               <span class="ca-status-strip with-group">With group lead</span>
               <div class="ca-body">
-                <span class="ca-main"><span class="ca-copy"><span class="ca-address">640 Alma St</span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 20</span></span></span>
+                <span class="ca-main"><span class="ca-copy"><span class="ca-address">640 Alma St</span><span class="ca-gross"><b>$25,500</b></span><span class="ca-close"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2"></rect><path d="M7 2v4M13 2v4M3 8h14"></path></svg>Closes Sep 20</span></span></span>
                 <span class="ca-controls">
                   <button class="ca-status tracker-trigger" type="button" data-commission-tracker="alma" aria-label="Open tracker for 640 Alma Street: 3 of 6 complete" aria-controls="commissionTrackerSheet" aria-expanded="false"><span class="track-ring" style="--track-progress:50%" aria-hidden="true"></span><span class="track-count">3/6</span><span class="track-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></button>
                   <a class="ca-action ca-action-secondary" href="Commission breakdown.html?from=home&amp;status=lead_confirmed&amp;addr=640%20Alma%20St&amp;price=1275000&amp;side=seller&amp;close=Close%20Sep%2020">View</a>
