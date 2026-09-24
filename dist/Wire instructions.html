@@ -11,6 +11,26 @@
 .pg-titlewrap { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
 .pg-subtitle { font:400 13px/1.35 var(--font); color:var(--muted-foreground); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .wire-scroll { padding-top:14px; }
+.wire-overview { display:flex; flex-direction:column; gap:24px; }
+.wire-intro { margin:0; color:var(--muted-foreground); font:500 14px/1.45 var(--font); }
+.wire-section { display:flex; flex-direction:column; gap:8px; }
+.wire-section-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.wire-section-head h2 { margin:0; color:var(--muted-foreground); font:600 12px/1 var(--font); letter-spacing:.06em; text-transform:uppercase; }
+.wire-section-head span { color:var(--muted-foreground); font:600 13px/1 var(--font); font-variant-numeric:tabular-nums; }
+.wire-list { border-top:1px solid var(--border); }
+.wire-row { width:100%; min-height:64px; display:flex; align-items:center; gap:10px; padding:10px 2px; border:0; border-bottom:1px solid var(--border); background:transparent; color:var(--foreground); font-family:var(--font); text-align:left; cursor:pointer; }
+.wire-row:active { background:var(--muted); }
+.wire-row:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; border-radius:var(--radius-sm); }
+.wire-row .wire-icon { flex:none; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
+.wire-row.pending .wire-icon { color:#ffab6b; background:rgba(234,88,12,.14); }
+.wire-row .wire-icon i { font-size:17px; }
+.wire-row .wire-copy { min-width:0; flex:1; display:flex; flex-direction:column; gap:3px; }
+.wire-row .wire-copy b { font:600 15px/1.2 var(--font); }
+.wire-row .wire-copy span { color:var(--muted-foreground); font:500 13px/1.25 var(--font); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wire-row .wire-value { flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:4px; color:var(--foreground); font:600 14px/1.1 var(--font); font-variant-numeric:tabular-nums; }
+.wire-row .wire-state { color:var(--muted-foreground); font:500 12px/1 var(--font); }
+.wire-row.pending .wire-state { color:#ffab6b; }
+.wire-row .ph-caret-right { flex:none; color:var(--muted-foreground); font-size:15px; }
 .wire-card { padding:2px 0 0; }
 .wire-form { display:flex; flex-direction:column; gap:16px; }
 .field { display:flex; flex-direction:column; gap:7px; }
@@ -40,10 +60,29 @@ select.control { appearance:none; -webkit-appearance:none; padding-right:42px; c
     <div class="statusbar"><span>9:41</span><div class="sb-icons"><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="4.5" y="5" width="3" height="7" rx="1"/><rect x="9" y="2.5" width="3" height="9.5" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.7"/></svg><svg width="20" height="12" viewBox="0 0 22 12" fill="none" stroke="currentColor"><rect x="1" y="1" width="17" height="10" rx="3"/><rect x="3" y="3" width="11" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M20 4v4" stroke-linecap="round"/></svg></div></div>
     <div class="pg-head">
       <a href="Commission breakdown.html" class="back-btn" id="backLink" aria-label="Back to detailed breakdown"><i class="ph ph-caret-left" aria-hidden="true"></i></a>
-      <div class="pg-titlewrap"><h1>Wire instructions</h1><div class="pg-subtitle" id="feeName">Payment details</div></div>
+      <div class="pg-titlewrap"><h1>Wire instructions</h1><div class="pg-subtitle" id="feeName">3 fees need attention</div></div>
     </div>
     <main class="scroll wire-scroll">
-      <form class="wire-card wire-form" id="wireForm">
+      <div class="wire-overview" id="wireOverview">
+        <p class="wire-intro">Add payment details for fees that are sent by wire. Fees already set up stay here for review.</p>
+        <section class="wire-section" aria-labelledby="needsWireTitle">
+          <div class="wire-section-head"><h2 id="needsWireTitle">Needs instructions</h2><span>3</span></div>
+          <div class="wire-list">
+            <button class="wire-row pending" type="button" data-openwirefee="Referral"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Referral</b><span>Payee not set</span></span><span class="wire-value">$20<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row pending" type="button" data-openwirefee="Team admin fee"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Team admin fee</b><span>Team payment</span></span><span class="wire-value">$250<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row pending" type="button" data-openwirefee="Vendor referral fee"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Vendor referral fee</b><span>Payee not set</span></span><span class="wire-value">$500<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+          </div>
+        </section>
+        <section class="wire-section" aria-labelledby="onFileTitle">
+          <div class="wire-section-head"><h2 id="onFileTitle">On file</h2><span>3</span></div>
+          <div class="wire-list">
+            <button class="wire-row" type="button" data-openwirefee="Credits"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Credits</b><span>Bay Area Escrow</span></span><span class="wire-value">$50<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row" type="button" data-openwirefee="SBTC"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>SBTC</b><span>Southern Bay Title Company</span></span><span class="wire-value">$400<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row" type="button" data-openwirefee="E&amp;O"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>E&amp;O</b><span>Radius Agent Realty</span></span><span class="wire-value">$250<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+          </div>
+        </section>
+      </div>
+      <form class="wire-card wire-form" id="wireForm" hidden>
         <div class="field"><label for="wireType">Wire Type</label><div class="control-wrap"><select class="control" id="wireType"><option value="radius" selected>Radius</option><option value="external">External</option><option value="team">Team</option><option value="agent">Agent</option></select><i class="ph ph-caret-down select-icon" aria-hidden="true"></i></div></div>
         <div class="field"><label for="recipient">Recipient / Account Holder Name <span class="required">*</span></label><input class="control" id="recipient" placeholder="e.g. Radius Agent Realty" autocomplete="name" required></div>
         <div class="grid"><div class="field"><label for="email">Email</label><input class="control" id="email" type="email" placeholder="name@example.com" autocomplete="email"></div><div class="field"><label for="phone">Phone</label><input class="control" id="phone" type="tel" placeholder="(555) 123-4567" autocomplete="tel"></div></div>
@@ -64,19 +103,61 @@ select.control { appearance:none; -webkit-appearance:none; padding-right:42px; c
 <script>
 var params = new URLSearchParams(window.location.search);
 var fee = params.get('fee');
-if (fee) document.getElementById('feeName').textContent = fee;
 var returnFile = params.get('return') || 'Commission breakdown.html';
 params.delete('fee'); params.delete('return');
 var backUrl = returnFile + (params.toString() ? '?' + params.toString() : '') + '#detailed';
-document.getElementById('backLink').href = backUrl;
-document.getElementById('cancelBtn').addEventListener('click', function () { window.location.href = backUrl; });
+var overview = document.getElementById('wireOverview');
+var form = document.getElementById('wireForm');
+var subtitle = document.getElementById('feeName');
+var openedFromOverview = false;
+var WIRE_DETAILS = {
+  'Credits': { type:'external', recipient:'Bay Area Escrow' },
+  'SBTC': { type:'external', recipient:'Southern Bay Title Company' },
+  'E&O': { type:'radius', recipient:'Radius Agent Realty' },
+  'Team admin fee': { type:'team', recipient:'' },
+  'Vendor referral fee': { type:'external', recipient:'' },
+  'Referral': { type:'external', recipient:'' }
+};
+function resetWireForm() {
+  Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function (field) { field.value = ''; });
+  document.getElementById('wireType').value = 'external';
+  document.getElementById('accountType').value = 'checking';
+}
+function showOverview() {
+  overview.hidden = false;
+  form.hidden = true;
+  subtitle.textContent = '3 fees need attention';
+  openedFromOverview = false;
+  document.getElementById('backLink').href = backUrl;
+}
+function showFee(name, fromOverview) {
+  var details = WIRE_DETAILS[name] || { type:'external', recipient:'' };
+  overview.hidden = true;
+  form.hidden = false;
+  subtitle.textContent = name;
+  openedFromOverview = !!fromOverview;
+  resetWireForm();
+  document.getElementById('wireType').value = details.type;
+  document.getElementById('recipient').value = details.recipient;
+  document.getElementById('backLink').href = fromOverview ? '#' : backUrl;
+}
+document.getElementById('backLink').addEventListener('click', function (event) {
+  if (!form.hidden && openedFromOverview) { event.preventDefault(); showOverview(); }
+});
+document.getElementById('cancelBtn').addEventListener('click', function () {
+  if (openedFromOverview) showOverview(); else window.location.href = backUrl;
+});
+Array.prototype.forEach.call(document.querySelectorAll('[data-openwirefee]'), function (button) {
+  button.addEventListener('click', function () { showFee(button.getAttribute('data-openwirefee'), true); });
+});
 document.getElementById('routing').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 9); });
 document.getElementById('account').addEventListener('input', function () { this.value = this.value.replace(/\D/g, ''); });
 document.getElementById('wireForm').addEventListener('submit', function (event) {
   event.preventDefault();
   var toast = document.getElementById('toast'); toast.classList.add('show');
-  window.setTimeout(function () { window.location.href = backUrl; }, 700);
+  window.setTimeout(function () { if (openedFromOverview) showOverview(); else window.location.href = backUrl; }, 700);
 });
+if (fee) showFee(fee, false); else showOverview();
 </script>
 </body>
 </html>
