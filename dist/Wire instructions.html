@@ -12,7 +12,6 @@
 .pg-subtitle { font:400 13px/1.35 var(--font); color:var(--muted-foreground); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .wire-scroll { padding-top:14px; }
 .wire-overview { display:flex; flex-direction:column; gap:24px; }
-.wire-intro { margin:0; color:var(--muted-foreground); font:500 14px/1.45 var(--font); }
 .wire-section { display:flex; flex-direction:column; gap:8px; }
 .wire-section-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .wire-section-head h2 { margin:0; color:var(--muted-foreground); font:600 12px/1 var(--font); letter-spacing:.06em; text-transform:uppercase; }
@@ -21,9 +20,6 @@
 .wire-row { width:100%; min-height:64px; display:flex; align-items:center; gap:10px; padding:10px 2px; border:0; border-bottom:1px solid var(--border); background:transparent; color:var(--foreground); font-family:var(--font); text-align:left; cursor:pointer; }
 .wire-row:active { background:var(--muted); }
 .wire-row:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; border-radius:var(--radius-sm); }
-.wire-row .wire-icon { flex:none; width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
-.wire-row.pending .wire-icon { color:#ffab6b; background:rgba(234,88,12,.14); }
-.wire-row .wire-icon i { font-size:17px; }
 .wire-row .wire-copy { min-width:0; flex:1; display:flex; flex-direction:column; gap:3px; }
 .wire-row .wire-copy b { font:600 15px/1.2 var(--font); }
 .wire-row .wire-copy span { color:var(--muted-foreground); font:500 13px/1.25 var(--font); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -33,18 +29,37 @@
 .wire-row .ph-caret-right { flex:none; color:var(--muted-foreground); font-size:15px; }
 .wire-card { padding:2px 0 0; }
 .wire-form { display:flex; flex-direction:column; gap:16px; }
-.field { display:flex; flex-direction:column; gap:7px; }
-.field label { font:600 14px/1.25 var(--font); color:var(--foreground); }
+.field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.field label { padding-left:2px; font:600 13px/1.2 var(--font); color:var(--muted-foreground); }
 .required { color:#ff8080; }
-.control-wrap { position:relative; }
-.control { width:100%; min-height:50px; border:1px solid rgba(255,255,255,.09); border-radius:16px; background:rgba(255,255,255,.07); color:var(--foreground); padding:0 15px; font:500 16px/1.2 var(--font); outline:none; box-shadow:inset 0 1px 0 rgba(255,255,255,.04); }
-.control::placeholder { color:var(--muted-foreground); opacity:.78; font-weight:400; }
-textarea.control { min-height:88px; padding:13px 14px; resize:vertical; }
-.control:focus { border-color:rgba(123,127,245,.72); background:rgba(255,255,255,.095); box-shadow:0 0 0 3px rgba(90,95,242,.18), inset 0 1px 0 rgba(255,255,255,.06); }
-select.control { appearance:none; -webkit-appearance:none; padding-right:42px; cursor:pointer; }
-.select-icon { position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--muted-foreground); pointer-events:none; font-size:17px; }
-.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.control { display:block; width:100%; min-width:0; height:36px; min-height:36px; border:1px solid var(--input); border-radius:var(--radius-md); background:#262626; color:var(--foreground); padding:0 12px; font:400 14px/20px var(--font); outline:none; box-shadow:var(--shadow-xs); caret-color:var(--primary); transition:border-color .15s ease,box-shadow .15s ease; }
+.control::placeholder { color:var(--muted-foreground); opacity:1; font-weight:400; }
+textarea.control { height:auto; min-height:72px; padding:8px 12px; resize:vertical; }
+.control:focus { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 18%,transparent); }
+.grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; }
 .section-line { height:1px; background:var(--border); margin:2px 0; }
+.wire-picker-trigger { width:100%; min-height:36px; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0 12px; border:1px solid var(--input); border-radius:var(--radius-md); background:#262626; color:var(--foreground); box-shadow:var(--shadow-xs); font:400 14px/20px var(--font); text-align:left; cursor:pointer; }
+.wire-picker-trigger i { flex:none; color:var(--muted-foreground); font-size:16px; transition:transform 160ms cubic-bezier(.23,1,.32,1); }
+.wire-picker-trigger[aria-expanded="true"] { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 18%,transparent); }
+.wire-picker-trigger[aria-expanded="true"] i { transform:rotate(180deg); }
+.wire-picker-trigger:active { transform:scale(.985); }
+.wire-picker-trigger:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.wire-picker-scrim { position:absolute; inset:0; z-index:30; background:rgba(0,0,0,.58); opacity:0; transition:opacity 200ms ease-out; }
+.wire-picker-scrim.on { opacity:1; }
+.wire-picker-sheet { position:absolute; left:0; right:0; bottom:0; z-index:31; display:flex; flex-direction:column; padding:8px 12px calc(20px + env(safe-area-inset-bottom)); border:1px solid var(--border); border-bottom:0; border-radius:22px 22px 0 0; background:var(--card); box-shadow:0 -12px 40px rgba(0,0,0,.45); transform:translateY(103%); transition:transform 240ms cubic-bezier(.32,.72,0,1); }
+.wire-picker-sheet.on { transform:translateY(0); }
+.wire-picker-grab { width:38px; height:4px; margin:0 auto 10px; border-radius:999px; background:var(--muted-foreground); opacity:.4; }
+.wire-picker-head { position:relative; display:flex; align-items:center; min-height:44px; padding:0 46px 8px 10px; border-bottom:1px solid var(--border); }
+.wire-picker-head h2 { margin:0; font:700 17px/1.2 var(--font); letter-spacing:-.01em; }
+.wire-picker-close { position:absolute; top:0; right:2px; width:40px; height:40px; border:0; border-radius:999px; background:rgba(255,255,255,.08); color:var(--foreground); display:inline-flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; }
+.wire-picker-close:active { transform:scale(.94); }
+.wire-picker-close:focus-visible, .wire-picker-option:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
+.wire-picker-options { display:flex; flex-direction:column; padding:6px 0 2px; }
+.wire-picker-option { width:100%; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0 10px; border:0; border-radius:var(--radius-md); background:transparent; color:var(--foreground); font:500 15px/1.25 var(--font); text-align:left; cursor:pointer; }
+.wire-picker-option:active, .wire-picker-option[aria-selected="true"] { background:var(--muted); }
+.wire-picker-option i { flex:none; color:var(--primary); font-size:18px; }
+.wire-picker-option[aria-selected="false"] i { visibility:hidden; }
+@media (prefers-reduced-motion: reduce) { .wire-picker-scrim, .wire-picker-sheet, .wire-picker-trigger i { transition:none; } }
 .wire-actions { position:sticky; bottom:0; display:flex; gap:10px; margin:2px -8px 8px; padding:10px 8px; border:1px solid rgba(255,255,255,.09); border-radius:24px; background:rgba(28,28,30,.72); box-shadow:0 10px 30px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter:blur(24px) saturate(170%); -webkit-backdrop-filter:blur(24px) saturate(170%); }
 .wire-btn { flex:1; min-height:48px; border:1px solid rgba(255,255,255,.11); border-radius:999px; background:rgba(255,255,255,.08); color:var(--foreground); font:600 15px/1 var(--font); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); cursor:pointer; }
 .wire-btn.primary { border-color:rgba(154,157,255,.48); background:rgba(90,95,242,.82); color:#fff; box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 6px 18px rgba(56,60,190,.24); }
@@ -64,26 +79,25 @@ select.control { appearance:none; -webkit-appearance:none; padding-right:42px; c
     </div>
     <main class="scroll wire-scroll">
       <div class="wire-overview" id="wireOverview">
-        <p class="wire-intro">Add payment details for fees that are sent by wire. Fees already set up stay here for review.</p>
         <section class="wire-section" aria-labelledby="needsWireTitle">
-          <div class="wire-section-head"><h2 id="needsWireTitle">Needs instructions</h2><span>3</span></div>
+          <div class="wire-section-head"><h2 id="needsWireTitle">Needs details</h2><span>3</span></div>
           <div class="wire-list">
-            <button class="wire-row pending" type="button" data-openwirefee="Referral"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Referral</b><span>Payee not set</span></span><span class="wire-value">$20<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
-            <button class="wire-row pending" type="button" data-openwirefee="Team admin fee"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Team admin fee</b><span>Team payment</span></span><span class="wire-value">$250<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
-            <button class="wire-row pending" type="button" data-openwirefee="Vendor referral fee"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Vendor referral fee</b><span>Payee not set</span></span><span class="wire-value">$500<span class="wire-state">Add</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row pending" type="button" data-openwirefee="Referral"><span class="wire-copy"><b>Referral</b><span>Recipient missing</span></span><span class="wire-value">$20<span class="wire-state">Add details</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row pending" type="button" data-openwirefee="Team admin fee"><span class="wire-copy"><b>Team admin fee</b><span>Recipient missing</span></span><span class="wire-value">$250<span class="wire-state">Add details</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row pending" type="button" data-openwirefee="Vendor referral fee"><span class="wire-copy"><b>Vendor referral fee</b><span>Recipient missing</span></span><span class="wire-value">$500<span class="wire-state">Add details</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
           </div>
         </section>
         <section class="wire-section" aria-labelledby="onFileTitle">
-          <div class="wire-section-head"><h2 id="onFileTitle">On file</h2><span>3</span></div>
+          <div class="wire-section-head"><h2 id="onFileTitle">Details added</h2><span>3</span></div>
           <div class="wire-list">
-            <button class="wire-row" type="button" data-openwirefee="Credits"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>Credits</b><span>Bay Area Escrow</span></span><span class="wire-value">$50<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
-            <button class="wire-row" type="button" data-openwirefee="SBTC"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>SBTC</b><span>Southern Bay Title Company</span></span><span class="wire-value">$400<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
-            <button class="wire-row" type="button" data-openwirefee="E&amp;O"><span class="wire-icon"><i class="ph ph-bank" aria-hidden="true"></i></span><span class="wire-copy"><b>E&amp;O</b><span>Radius Agent Realty</span></span><span class="wire-value">$250<span class="wire-state">On file</span></span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row" type="button" data-openwirefee="Credits"><span class="wire-copy"><b>Credits</b><span>Bay Area Escrow</span></span><span class="wire-value">$50</span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row" type="button" data-openwirefee="SBTC"><span class="wire-copy"><b>SBTC</b><span>Southern Bay Title Company</span></span><span class="wire-value">$400</span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+            <button class="wire-row" type="button" data-openwirefee="E&amp;O"><span class="wire-copy"><b>E&amp;O</b><span>Radius Agent Realty</span></span><span class="wire-value">$250</span><i class="ph ph-caret-right" aria-hidden="true"></i></button>
           </div>
         </section>
       </div>
       <form class="wire-card wire-form" id="wireForm" hidden>
-        <div class="field"><label for="wireType">Wire Type</label><div class="control-wrap"><select class="control" id="wireType"><option value="radius" selected>Radius</option><option value="external">External</option><option value="team">Team</option><option value="agent">Agent</option></select><i class="ph ph-caret-down select-icon" aria-hidden="true"></i></div></div>
+        <div class="field"><label id="wireTypeLabel" for="wireTypeTrigger">Wire Type</label><input id="wireType" name="wireType" type="hidden" value="external"><button class="wire-picker-trigger" id="wireTypeTrigger" type="button" data-picker-trigger="wireType" aria-labelledby="wireTypeLabel wireTypeValue" aria-haspopup="dialog" aria-controls="wirePickerSheet" aria-expanded="false"><span id="wireTypeValue">External</span><i class="ph ph-caret-down" aria-hidden="true"></i></button></div>
         <div class="field"><label for="recipient">Recipient / Account Holder Name <span class="required">*</span></label><input class="control" id="recipient" placeholder="e.g. Radius Agent Realty" autocomplete="name" required></div>
         <div class="grid"><div class="field"><label for="email">Email</label><input class="control" id="email" type="email" placeholder="name@example.com" autocomplete="email"></div><div class="field"><label for="phone">Phone</label><input class="control" id="phone" type="tel" placeholder="(555) 123-4567" autocomplete="tel"></div></div>
         <div class="field"><label for="street">Street Address</label><input class="control" id="street" placeholder="123 Main St" autocomplete="street-address"></div>
@@ -92,12 +106,18 @@ select.control { appearance:none; -webkit-appearance:none; padding-right:42px; c
         <div class="section-line" aria-hidden="true"></div>
         <div class="field"><label for="bank">Bank Name</label><input class="control" id="bank" placeholder="e.g. Chase Bank"></div>
         <div class="grid"><div class="field"><label for="routing">Routing Number (ABA)</label><input class="control" id="routing" inputmode="numeric" placeholder="123456789" maxlength="9"></div><div class="field"><label for="account">Account Number</label><input class="control" id="account" inputmode="numeric" placeholder="1234567890"></div></div>
-        <div class="field"><label for="accountType">Account Type</label><div class="control-wrap"><select class="control" id="accountType"><option value="checking">Checking</option><option value="savings">Savings</option></select><i class="ph ph-caret-down select-icon" aria-hidden="true"></i></div></div>
+        <div class="field"><label id="accountTypeLabel" for="accountTypeTrigger">Account Type</label><input id="accountType" name="accountType" type="hidden" value="checking"><button class="wire-picker-trigger" id="accountTypeTrigger" type="button" data-picker-trigger="accountType" aria-labelledby="accountTypeLabel accountTypeValue" aria-haspopup="dialog" aria-controls="wirePickerSheet" aria-expanded="false"><span id="accountTypeValue">Checking</span><i class="ph ph-caret-down" aria-hidden="true"></i></button></div>
         <div class="field"><label for="memo">Special Instructions / Memo</label><textarea class="control" id="memo" placeholder="e.g. Include property address"></textarea></div>
         <div class="wire-actions"><button class="wire-btn" type="button" id="cancelBtn">Cancel</button><button class="wire-btn primary" type="submit">Save</button></div>
       </form>
     </main>
     <div class="toast" id="toast" role="status" aria-live="polite">Wire instructions saved</div>
+    <div class="wire-picker-scrim" id="wirePickerScrim" hidden></div>
+    <section class="wire-picker-sheet" id="wirePickerSheet" role="dialog" aria-modal="true" aria-labelledby="wirePickerTitle" hidden>
+      <div class="wire-picker-grab" aria-hidden="true"></div>
+      <div class="wire-picker-head"><h2 id="wirePickerTitle" tabindex="-1">Select option</h2><button class="wire-picker-close" id="wirePickerClose" type="button" aria-label="Close options"><i class="ph ph-x" aria-hidden="true"></i></button></div>
+      <div class="wire-picker-options" id="wirePickerOptions" role="listbox"></div>
+    </section>
   </div>
 </div>
 <script>
@@ -110,6 +130,15 @@ var overview = document.getElementById('wireOverview');
 var form = document.getElementById('wireForm');
 var subtitle = document.getElementById('feeName');
 var openedFromOverview = false;
+var pickerSheet = document.getElementById('wirePickerSheet');
+var pickerScrim = document.getElementById('wirePickerScrim');
+var pickerTitle = document.getElementById('wirePickerTitle');
+var pickerOptions = document.getElementById('wirePickerOptions');
+var activePicker = null, pickerTrigger = null;
+var PICKERS = {
+  wireType: { title:'Wire type', options:[['radius','Radius'],['external','External'],['team','Team'],['agent','Agent']] },
+  accountType: { title:'Account type', options:[['checking','Checking'],['savings','Savings']] }
+};
 var WIRE_DETAILS = {
   'Credits': { type:'external', recipient:'Bay Area Escrow' },
   'SBTC': { type:'external', recipient:'Southern Bay Title Company' },
@@ -120,8 +149,8 @@ var WIRE_DETAILS = {
 };
 function resetWireForm() {
   Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function (field) { field.value = ''; });
-  document.getElementById('wireType').value = 'external';
-  document.getElementById('accountType').value = 'checking';
+  setPickerValue('wireType', 'external');
+  setPickerValue('accountType', 'checking');
 }
 function showOverview() {
   overview.hidden = false;
@@ -137,10 +166,55 @@ function showFee(name, fromOverview) {
   subtitle.textContent = name;
   openedFromOverview = !!fromOverview;
   resetWireForm();
-  document.getElementById('wireType').value = details.type;
+  setPickerValue('wireType', details.type);
   document.getElementById('recipient').value = details.recipient;
   document.getElementById('backLink').href = fromOverview ? '#' : backUrl;
 }
+function setPickerValue(key, value) {
+  var picker = PICKERS[key], option = picker.options.filter(function (item) { return item[0] === value; })[0] || picker.options[0];
+  document.getElementById(key).value = option[0];
+  document.getElementById(key + 'Value').textContent = option[1];
+}
+function closePicker(restoreFocus) {
+  if (pickerSheet.hidden) return;
+  pickerSheet.classList.remove('on');
+  pickerScrim.classList.remove('on');
+  if (pickerTrigger) pickerTrigger.setAttribute('aria-expanded', 'false');
+  window.setTimeout(function () {
+    pickerSheet.hidden = true;
+    pickerScrim.hidden = true;
+    if (restoreFocus && pickerTrigger) pickerTrigger.focus();
+    activePicker = null;
+  }, 240);
+}
+function openPicker(key, trigger) {
+  var picker = PICKERS[key];
+  activePicker = key;
+  pickerTrigger = trigger;
+  pickerTitle.textContent = picker.title;
+  pickerOptions.textContent = '';
+  picker.options.forEach(function (option) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'wire-picker-option';
+    button.setAttribute('role', 'option');
+    button.setAttribute('aria-selected', String(document.getElementById(key).value === option[0]));
+    button.innerHTML = '<span>' + option[1] + '</span><i class="ph ph-check" aria-hidden="true"></i>';
+    button.addEventListener('click', function () { setPickerValue(key, option[0]); closePicker(true); });
+    pickerOptions.appendChild(button);
+  });
+  trigger.setAttribute('aria-expanded', 'true');
+  pickerSheet.hidden = false;
+  pickerScrim.hidden = false;
+  requestAnimationFrame(function () { pickerSheet.classList.add('on'); pickerScrim.classList.add('on'); });
+  pickerTitle.focus();
+}
+Array.prototype.forEach.call(document.querySelectorAll('[data-picker-trigger]'), function (trigger) {
+  trigger.addEventListener('click', function () { openPicker(trigger.getAttribute('data-picker-trigger'), trigger); });
+});
+pickerScrim.addEventListener('click', function () { closePicker(true); });
+document.getElementById('wirePickerClose').addEventListener('click', function () { closePicker(true); });
+document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !pickerSheet.hidden) closePicker(true); });
 document.getElementById('backLink').addEventListener('click', function (event) {
   if (!form.hidden && openedFromOverview) { event.preventDefault(); showOverview(); }
 });
