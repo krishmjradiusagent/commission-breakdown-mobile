@@ -1526,10 +1526,6 @@ button.ybd-r:active { opacity:.7; }
 .split-breakdown-sheet .kv .v { flex:none; font:650 15px/1.2 var(--font); font-variant-numeric:tabular-nums; }
 .split-breakdown-sheet .kv .v.neg { color:var(--tint-red-fg); }
 .split-breakdown-note { margin:2px 10px 8px; padding:8px 10px; border-radius:var(--radius-md); background:var(--tint-amber-bg); color:var(--foreground); font:500 12px/1.4 var(--font); }
-.fee-terms { margin:6px 10px 4px; padding:8px 0 0; border-top:1px solid var(--border); }
-.fee-terms > div { display:flex; gap:8px; padding:2px 0; font:400 12px/1.4 var(--font); }
-.fee-terms dt { flex:none; min-width:88px; font-weight:600; color:var(--foreground); }
-.fee-terms dd { margin:0; color:var(--muted-foreground); }
 /* Agent summary rows are 38px; standalone fees are 40px. */
 .screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="credit"] .srow { min-height:38px; padding:6px 0; }
 .screen:is([data-role="team_lead"], [data-role="group_lead"], [data-role="group_lead_agent"]) #sec-sides .dedrow[data-kind="presplit"] .srow { min-height:40px; padding:4px 0; }
@@ -2588,11 +2584,6 @@ Thanks</textarea></div>
       <div class="grab" aria-hidden="true"></div>
       <div class="sh-name" id="feePayerSheetT" tabindex="-1">Fee payer details<span class="sh-sub" id="feePayerSheetSub">Payer shares</span></div>
       <div class="rows" id="feePayerRows"></div>
-      <dl class="fee-terms" id="feePayerTerms">
-        <div><dt>Fee amount</dt><dd>The full charge before it is divided between payers.</dd></div>
-        <div><dt>Payer share</dt><dd>The percentage of the fee amount each person pays.</dd></div>
-        <div><dt>Your share</dt><dd>The part of this fee deducted from your payout.</dd></div>
-      </dl>
       <div class="foot"><button class="rds-btn rds-btn--outline" type="button" id="feePayerAssign" hidden>Change who pays</button><button class="prim" type="button" id="feePayerClose">Done</button></div>
     </div>
 
@@ -5339,23 +5330,6 @@ Thanks</textarea></div>
         ? 'Payer details incomplete. ' + splitPct(splitData.unassignedPct) + ' remains unassigned.'
         : 'Payer details incomplete. Correct the assigned payer shares.';
       host.appendChild(note);
-    }
-    /* In the agent view, pin the reader's own deducted share above the payer
-       list so the sheet answers "what do I pay" before the full breakdown. */
-    if (agentFinancialView()) {
-      var viewer = breakdownAgent(), mineEntry = null;
-      splitData.rows.forEach(function (entry) {
-        if (viewer && entry.name === viewer.name && entry.amount != null && !mineEntry) mineEntry = entry;
-      });
-      if (mineEntry) {
-        var selfRow = document.createElement('div'); selfRow.className = 'kv';
-        var selfKey = document.createElement('span'); selfKey.className = 'k';
-        var selfName = document.createElement('b'); selfName.textContent = 'Your share';
-        var selfMeta = document.createElement('em'); selfMeta.textContent = 'Deducted from your payout';
-        selfKey.appendChild(selfName); selfKey.appendChild(selfMeta); selfRow.appendChild(selfKey);
-        var selfValue = document.createElement('span'); selfValue.className = 'v neg'; selfValue.textContent = neg(mineEntry.amount);
-        selfRow.appendChild(selfValue); host.appendChild(selfRow);
-      }
     }
     splitData.rows.forEach(function (entry) {
       var row = document.createElement('div'); row.className = 'kv';
