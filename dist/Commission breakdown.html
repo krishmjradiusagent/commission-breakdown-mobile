@@ -5276,9 +5276,8 @@ Thanks</textarea></div>
       var row = document.createElement('div'); row.className = 'kv';
       var key = document.createElement('span'); key.className = 'k';
       var name = document.createElement('b'); name.textContent = entry.name;
-      var meta = document.createElement('em'); meta.textContent = entry.meta;
+      var meta = document.createElement('em'); meta.textContent = [entry.meta, entry.note].filter(Boolean).join(' · ');
       key.appendChild(name); key.appendChild(meta);
-      if (entry.note) { var note = document.createElement('em'); note.textContent = entry.note; key.appendChild(note); }
       var value = document.createElement('span'); value.className = 'v' + (/^[−-]/.test(entry.value) ? ' neg' : ' pos'); value.textContent = entry.value;
       row.appendChild(key); row.appendChild(value); host.appendChild(row);
     });
