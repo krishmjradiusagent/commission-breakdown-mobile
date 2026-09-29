@@ -14,16 +14,16 @@
 .commission-summary { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
 .commission-address { min-width:0; overflow-wrap:anywhere; font:600 14px/20px var(--font); letter-spacing:var(--tracking-tight); }
 .commission-gross { flex:none; color:#E6C570; font:600 14px/20px var(--font); font-variant-numeric:tabular-nums; white-space:nowrap; }
-.commission-close { margin:0 0 2px; display:flex; align-items:center; gap:6px; color:var(--muted-foreground); font:400 12px/16px var(--font); }
+.commission-close { margin:8px 0 2px; display:flex; align-items:center; gap:8px; color:var(--muted-foreground); font:400 12px/16px var(--font); }
 .commission-close > span:first-child { white-space:nowrap; }
 .commission-close > span:first-child::before { content:"·"; margin-right:6px; }
-.commission-tracker { order:-1; min-height:28px; display:inline-flex; align-items:center; gap:3px; padding:0; border:0; background:transparent; color:#a78bfa; font-size:0; text-decoration:none; white-space:nowrap; }
-.commission-tracker::before { display:none; }
+.commission-tracker { position:relative; order:-1; min-height:24px; margin:0; display:inline-flex; align-items:center; gap:3px; padding:0 7px; border:1px solid color-mix(in srgb,#8B8B94 22%,transparent); border-radius:6px; background:transparent; color:#8B8B94; font-size:0; text-decoration:none; white-space:nowrap; }
+.commission-tracker::before { content:""; position:absolute; inset:-10px; }
 .commission-tracker::after { content:"Tracker · 1 of 6"; font:500 11px/16px var(--font); }
-.commission-tracker svg { width:10px; height:10px; }
+.commission-tracker svg { order:2; width:10px; height:10px; }
 .commission-tracker:active { opacity:.7; }
 .commission-tracker:focus-visible, .commission-view:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:var(--radius-sm); }
-.commission-card-footer { min-height:34px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.commission-card-footer { min-height:34px; margin-top:8px; padding-top:8px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid var(--border); }
 .commission-status { flex:1; min-width:0; display:flex; align-items:center; gap:6px; color:var(--foreground); font:500 12px/16px var(--font); overflow-wrap:anywhere; }
 .commission-status-dot { width:6px; height:6px; flex:none; border-radius:50%; background:var(--muted-foreground); }
 .commission-status.is-actionable .commission-status-dot { background:var(--warning); }
