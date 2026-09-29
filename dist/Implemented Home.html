@@ -276,6 +276,9 @@ section { margin-top:22px; }
 /* active transactions — one card, separated rows (web parity condensed) */
 .tx-row { display:block; text-decoration:none; color:inherit; padding:12px 2px; cursor:pointer; transition:transform 160ms cubic-bezier(0.23,1,0.32,1); }
 .tx-row:active { transform:scale(0.985); }
+.tx-header { display:flex; align-items:flex-start; gap:12px; }
+.tx-photo { width:44px; height:44px; flex:none; align-self:flex-start; border-radius:var(--radius-sm); object-fit:cover; background:var(--muted); }
+.tx-content { min-width:0; flex:1; display:flex; flex-direction:column; }
 .tx-right { display:flex; align-items:center; gap:8px; flex:none; }
 .tx-chev { flex:none; display:flex; align-items:center; color:var(--muted-foreground); }
 .tx-role { font:600 13px/1.2 var(--font); }
@@ -1209,11 +1212,13 @@ section[data-sec].sec-hidden { display:none; }
         <div class="sec-head"><h2>Active transactions</h2></div>
         <div class="gcard">
           <a class="tx-row" href="Transaction detail.html?addr=118%20Maple%20St">
-            <div class="tx-top"><div class="tx-addr">118 Maple St, Fremont, CA<span class="tx-price">$1,150,000<i class="tx-sep"></i><span class="tx-role buyer">Buyer</span></span></div><span class="tx-right"><span class="tx-chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></span></div>
+            <div class="tx-header"><img class="tx-photo" src="assets/transactions/118-maple-st.jpg" alt="118 Maple St property exterior">
+            <div class="tx-content"><div class="tx-top"><div class="tx-addr">118 Maple St, Fremont, CA<span class="tx-price">$1,150,000<i class="tx-sep"></i><span class="tx-role buyer">Buyer</span></span></div><span class="tx-right"><span class="tx-chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></span></div></div></div>
             <div class="tx-foot"><span class="tx-status ok"><span class="dot"></span>In escrow</span><span class="tx-close">Close Sep 12</span></div>
           </a>
           <a class="tx-row" href="Transaction detail.html?addr=42%20Oak%20Ln">
-            <div class="tx-top"><div class="tx-addr">42 Oak Ln, Fremont, CA<span class="tx-price">$980,000<i class="tx-sep"></i><span class="tx-role seller">Seller</span></span></div><span class="tx-right"><span class="tx-chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></span></div>
+            <div class="tx-header"><img class="tx-photo" src="assets/transactions/42-oak-ln.jpg" alt="42 Oak Ln property exterior">
+            <div class="tx-content"><div class="tx-top"><div class="tx-addr">42 Oak Ln, Fremont, CA<span class="tx-price">$980,000<i class="tx-sep"></i><span class="tx-role seller">Seller</span></span></div><span class="tx-right"><span class="tx-chev"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></span></div></div></div>
             <div class="tx-foot"><span class="tx-status warn"><span class="dot"></span>Inspection due</span><span class="tx-close">Offer review</span></div>
           </a>
           <a href="Transactions.html" class="card-foot-link" aria-label="All 6 active transactions">
