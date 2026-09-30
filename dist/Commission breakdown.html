@@ -3327,6 +3327,7 @@ Thanks</textarea></div>
     if (open) tweaksClose.focus(); else tweaksTrigger.focus();
   }
   tweaksTrigger.addEventListener('click',function(){ setTweaksOpen(tweaksTrigger.getAttribute('aria-expanded')!=='true'); });
+  if(new URLSearchParams(window.location.search).get('tweaks')==='1') setTweaksOpen(true);
   tweaksClose.addEventListener('click',function(){ setTweaksOpen(false); });
   document.addEventListener('click',function(e){
     if (tweaksTrigger.getAttribute('aria-expanded')==='true' && !e.target.closest('.tweaks-control')) setTweaksOpen(false);

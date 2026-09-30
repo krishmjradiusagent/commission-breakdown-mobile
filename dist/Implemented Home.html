@@ -995,6 +995,10 @@ section[data-sec].sec-hidden { display:none; }
 #commissionTrackerTitle { margin:0; font:600 16px/20px var(--font); }
 #commissionTrackerMeta { font:400 12px/16px var(--font); }
 #commissionTrackerClose { min-width:44px; min-height:44px; }
+/* Developer controls stay outside the mobile app preview. */
+.home-developer-links { display:grid; gap:var(--space-2); width:220px; padding:var(--space-2); }
+.home-developer-links a { text-decoration:none; }
+.home-developer-links small { color:var(--muted-foreground); font-size:var(--text-caption); }
 </style>
 </head>
 <body>
@@ -2502,5 +2506,11 @@ document.addEventListener('click', function(e){
   toast('This prototype focuses on commission workflow.');
 });
 </script>
+<nav class="home-developer-links dark" aria-label="Prototype developer tools">
+  <a class="rds-btn rds-btn--outline" href="Commission%20breakdown.html?tweaks=1">Design tweaks <i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+  <a class="rds-btn rds-btn--outline" href="downloads/radius-office-ios-source.zip" download>Download iOS source</a>
+  <a class="rds-btn rds-btn--outline" href="downloads/radius-office-android-source.zip" download>Download Android source</a>
+  <small>Developer previews · partial native port</small>
+</nav>
 </body>
 </html>
