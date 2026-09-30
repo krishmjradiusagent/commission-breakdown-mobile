@@ -87,13 +87,16 @@
 .statusbar { position:absolute; top:0; left:0; right:0; z-index:14; }
 
 /* ── head ───────────────────────────────────────────────────
-   Translucent navigation and status strip blur content beneath the header. */
+   A real nav bar: back, the screen's name, ⋯. Under a hairline, the strip that
+   says which closing this is and where it stands. Solid, not frosted — there
+   is no photograph behind it to frost, and the money below reads on the same
+   surface whatever the listing looks like. */
 /* stretch, not the inherited center: centred children shrink to their content,
    which is why the banner sat 23px in from each edge */
 .pg-head { position:absolute; top:0; left:0; right:0; z-index:13; display:flex; flex-direction:column; align-items:stretch;
-  padding:calc(44px + env(safe-area-inset-top)) 0 0; background:rgba(24,24,27,.64); border:0;
+  padding:calc(44px + env(safe-area-inset-top)) 0 0; background:rgba(18,18,20,.94);
   backdrop-filter:blur(28px) saturate(180%); -webkit-backdrop-filter:blur(28px) saturate(180%); }
-.screen.light .pg-head { background:rgba(252,252,253,.68); }
+.screen.light .pg-head { background:rgba(252,252,253,.94); }
 /* the gutter lives on the nav row, not on the head — so the banner below can
    run the full width without fighting a negative margin */
 .pg-nav { display:flex; align-items:center; gap:8px; min-height:44px; padding:0 12px; }
@@ -111,10 +114,10 @@
    A masked pseudo-element is the only way to fade a backdrop-filter. */
 .pg-head::after { content:''; position:absolute; top:100%; left:0; right:0; height:12px; pointer-events:none;
   backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
-  background:transparent;
+  background:linear-gradient(to bottom, var(--chrome-2), transparent);
   -webkit-mask-image:linear-gradient(to bottom, #000, transparent); mask-image:linear-gradient(to bottom, #000, transparent); }
 /* hairline only once content is actually tucked under the header */
-.screen[data-scrolled] .pg-head { box-shadow:none; }
+.screen[data-scrolled] .pg-head { box-shadow:inset 0 -1px 0 var(--chrome-hairline); }
 .screen[data-scrolled] .pg-head::after { opacity:0; }
 @supports not (backdrop-filter: blur(1px)) { .pg-head, .abar .arow, .net-float { background:var(--chrome-solid); } }
 /* back and ⋯ sit on the banner photo, so they carry their own scrim —
@@ -687,11 +690,8 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
   border-radius:var(--radius-card); background:rgba(18,18,20,.94);
   box-shadow:var(--shadow-md),inset 0 1px 0 var(--chrome-hairline); }
 .screen.light .commission-wallet { border-color:rgba(10,10,10,.09); background:rgba(252,252,253,.94); }
-.commission-wallet .ybd-card { margin:0; border:1px solid rgba(255,255,255,.14); border-radius:var(--radius-card);
-  background:rgba(255,255,255,.06); backdrop-filter:blur(10px) saturate(120%); -webkit-backdrop-filter:blur(10px) saturate(120%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12); }
-.screen.light .commission-wallet .ybd-card { border-color:rgba(10,10,10,.12); background:rgba(255,255,255,.55);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6); }
+.commission-wallet .ybd-card { margin:0; border:0; border-radius:var(--radius-card) var(--radius-card) 0 0;
+  background:transparent; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
 .net-flow .net-out { display:none; }
 .net-flow .net-float { min-height:60px; padding:12px 14px; border-color:var(--lux-card-border); border-radius:var(--radius-card);
   background-color:var(--lux-card-surface); background-image:var(--lux-texture); background-size:120px 120px;
@@ -942,37 +942,6 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 #dedSheet .foot { align-items:center; background:transparent; }
 #dedSheet .foot .rds-btn { min-width:0; height:46px; border-radius:var(--radius-full); font:600 15px/1 var(--font); }
 #dedSheet .foot #dedSave { flex:1 1 auto; }
-#clientCreditSheet { max-height:82%; }
-#clientCreditSheet .sh-name { margin-bottom:2px; }
-#clientCreditSheet .fields { gap:14px; }
-#clientCreditSheet .cc-select { position:relative; }
-#clientCreditSheet .cc-select-btn { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:40px; padding:0 12px; border:1px solid var(--input); border-radius:var(--radius-input); background:var(--background); color:var(--foreground); font:400 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#clientCreditSheet .cc-select-btn > i { color:var(--muted-foreground); font-size:16px; }
-#clientCreditSheet .cc-select-btn:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-#clientCreditSheet .cc-select-list { position:absolute; z-index:3; right:0; left:0; top:calc(100% + 4px); padding:4px; border:1px solid var(--border); border-radius:var(--radius-input); background:var(--card); box-shadow:var(--shadow-md); }
-#clientCreditSheet #ccPayeeList { top:auto; bottom:calc(100% + 4px); }
-#clientCreditSheet .cc-select-list button { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:40px; padding:0 10px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#clientCreditSheet .cc-select-list button:hover, #clientCreditSheet .cc-select-list button[aria-selected="true"] { background:var(--muted); }
-#clientCreditSheet .cc-payee-input { padding-right:42px; }
-#clientCreditSheet .cc-payee-toggle { position:absolute; top:0; right:0; display:flex; align-items:center; justify-content:center; width:40px; height:36px; border:0; background:transparent; color:var(--muted-foreground); cursor:pointer; }
-#clientCreditSheet .cc-payee-select { position:relative; }
-#clientCreditSheet .foot .rds-btn { flex:1; min-height:46px; border-radius:var(--radius-full); }
-#preSplitFeeSheet { max-height:88%; }
-#preSplitFeeSheet .sh-name { margin-bottom:2px; }
-#preSplitFeeSheet .fields { gap:14px; }
-#preSplitFeeSheet .psf-select { position:relative; }
-#preSplitFeeSheet .psf-select-btn { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:40px; padding:0 12px; border:1px solid var(--input); border-radius:var(--radius-input); background:var(--background); color:var(--foreground); font:400 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#preSplitFeeSheet .psf-select-btn > i { color:var(--muted-foreground); font-size:16px; }
-#preSplitFeeSheet .psf-select-btn:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-#preSplitFeeSheet .psf-select-list { position:absolute; z-index:3; right:0; left:0; top:calc(100% + 4px); padding:4px; border:1px solid var(--border); border-radius:var(--radius-input); background:var(--card); box-shadow:var(--shadow-md); }
-#preSplitFeeSheet .psf-select-list button { display:flex; align-items:center; width:100%; min-height:40px; padding:0 10px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#preSplitFeeSheet .psf-select-list button:hover, #preSplitFeeSheet .psf-select-list button[aria-selected="true"] { background:var(--muted); }
-#preSplitFeeSheet .psf-grid { display:grid; grid-template-columns:1fr; gap:14px; }
-#preSplitFeeSheet .psf-choice-row { display:flex; flex-direction:column; gap:8px; padding:0; }
-#preSplitFeeSheet .psf-choice-row .rds-choice { display:flex; align-items:center; gap:var(--space-2); width:100%; min-height:44px; padding:0 2px; }
-#preSplitFeeSheet .rds-checkbox { -webkit-appearance:none; appearance:none; flex:none; }
-#preSplitFeeSheet .foot .rds-btn { flex:1; min-height:46px; border-radius:var(--radius-full); }
-@media (min-width:600px) { #preSplitFeeSheet .psf-grid { grid-template-columns:1fr 1fr; } }
 .ios-alert-backdrop { position:absolute; inset:0; z-index:80; display:grid; place-items:center; padding:24px; background:rgba(0,0,0,.52); }
 .ios-alert { width:min(270px,100%); overflow:hidden; border:1px solid var(--border); border-radius:14px; background:var(--elevated); box-shadow:0 18px 44px rgba(0,0,0,.42); text-align:center; }
 .ios-alert h2 { margin:20px 18px 5px; color:var(--foreground); font:600 17px/1.25 var(--font); letter-spacing:-.01em; }
@@ -1167,20 +1136,9 @@ button.ybd-r:active { opacity:.7; }
 /* Read mode uses same compact footprint as selector without borrowing its
    caret or active color. Ratio leads; plan family stays supporting context. */
 .ybd-r .v.txt.plan-static-value { display:inline-flex; align-items:center; gap:6px; height:32px; max-width:200px;
-  box-sizing:border-box; padding:1px 10px 0; border:1px solid rgba(255,255,255,.18); border-radius:8px;
-  background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.15);
+  box-sizing:border-box; padding:1px 10px 0; border:1px solid rgba(255,255,255,.08); border-radius:10px; background:rgba(255,255,255,.045);
   font-weight:400; overflow:hidden; white-space:nowrap; }
-.screen.light .ybd-r .v.txt.plan-static-value { border-color:rgba(10,10,10,.12); background:rgba(10,10,10,.05); box-shadow:inset 0 1px 0 rgba(255,255,255,.4); }
-/* Whole Commission plan row reads as one frosted badge: label + value inside a
-   single glass shell; the inner pill flattens so it doesn't double-frame. */
-.ybd-r.summary.plan-static-row { padding:4px 12px; margin:2px 0; border:1px solid rgba(255,255,255,.18); border-radius:8px;
-  background:rgba(255,255,255,.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.15); }
-.ybd-r.summary.plan-static-row .v.txt.plan-static-value { padding:0; height:auto; max-width:none; border:0; background:transparent;
-  box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
-.screen.light .ybd-r.summary.plan-static-row { border-color:rgba(10,10,10,.12); background:rgba(10,10,10,.05); box-shadow:inset 0 1px 0 rgba(255,255,255,.4); }
-.screen.light .ybd-r.summary.plan-static-row .v.txt.plan-static-value { border:0; background:transparent; box-shadow:none; }
+.screen.light .ybd-r .v.txt.plan-static-value { border-color:rgba(10,10,10,.09); background:rgba(10,10,10,.035); }
 .plan-static-value strong { flex:none; font:700 14px/1 var(--font-hubot); color:var(--foreground); letter-spacing:-.01em; }
 .plan-static-value span { min-width:0; overflow:hidden; text-overflow:ellipsis; font:500 12px/1.2 var(--font); color:var(--muted-foreground); }
 .plan-drop { position:absolute; top:auto; left:auto; bottom:calc(100% + 6px); right:-6px; z-index:12; width:min(272px,calc(100vw - 64px));
@@ -1403,7 +1361,6 @@ button.ybd-r:active { opacity:.7; }
 .ybd-det .d.sum { margin:2px 0 4px; }
 .ybd-det .d.sum span { font:600 15px/1.35 var(--font); }
 .ybd-det .d-fees { margin:0 0 2px; padding:0 0 4px; }
-.ybd-det .d-fees-head { padding:10px 2px 2px; color:var(--muted-foreground); font:600 11px/1.2 var(--font); letter-spacing:.02em; }
 .ybd-det .d-fees.basis-fees { margin:0; padding:1px 0; }
 .ybd-det .d-fees .d > .chev { display:none; }
 /* Compact rows stay compact. Only a row with subtext earns the extra height. */
@@ -1461,7 +1418,6 @@ button.ybd-r:active { opacity:.7; }
 .detail-header-options { display:flex; align-items:center; gap:4px; }
 .decision-dock .arow > .dock-icon { flex:0 0 44px; width:44px; min-width:44px; height:46px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
 .decision-dock .arow > .dock-icon i { font-size:20px; line-height:1; }
-#dockAddBtn > i { font-size:16px; width:16px; height:16px; line-height:1; }
 .decision-dock .arow.cda-actions > #dockEditBtn,
 .decision-dock .arow.cda-actions > #dockAddBtn { display:none; }
 .decision-dock .cda-action-row { flex-wrap:nowrap; }
@@ -1768,7 +1724,6 @@ button.ybd-r:active { opacity:.7; }
    in the reference: gross, deductions, agents, then team. Keep this visual
    grouping separate from the lower calculation rows. */
 .side-metric-foot { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:28px; margin-top:10px; color:var(--muted-foreground); }
-.side-metric[hidden], .side-metric-foot[hidden], .card.sides[hidden] { display:none!important; }
 .side-metric-summary { display:inline-flex; align-items:center; gap:8px; min-width:0; font:600 12px/1.2 var(--font); }
 .side-metric-count { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:999px;
   background:var(--muted-foreground); color:var(--background); font:600 11px/1 var(--font); }
@@ -2045,355 +2000,6 @@ body { position:relative; gap:0; }
 .personal-overview [data-addagent],
 .personal-overview [data-addded$="presplit"],
 .personal-overview #noAgent2 { display:none !important; }
-
-/* Agent-only statement: a continuous list on the page, with direction tiles. */
-.screen #commissionWallet.agent-flat,
-.screen #commissionWallet.agent-flat > #ybdCard {
-  border:0; border-radius:0; background:none; box-shadow:none;
-  backdrop-filter:none; -webkit-backdrop-filter:none;
-}
-.screen #commissionWallet.agent-flat { margin:0; }
-.screen #commissionWallet.agent-flat > #ybdCard { padding:4px 0; }
-/* The removed Agent heading must not reserve its former 44px row. */
-#commissionWallet.agent-flat #ybdFbh { display:none; }
-#commissionWallet.agent-flat #ybdFullDet .d-fees {
-  max-height:none; overflow:visible; margin:0; padding:0; background:none; border:0; border-radius:0;
-}
-#commissionWallet.agent-flat #ybdFullDet .d-fees-head { display:none; }
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row {
-  display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:12px;
-  align-items:center; margin:0;
-  border:0; border-top:1px solid var(--border); border-radius:0; background:none; box-shadow:none;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-direction {
-  display:flex; align-items:center; justify-content:center; width:32px; height:32px;
-  border:1px solid var(--border); border-radius:12px; background:var(--muted);
-  color:var(--muted-foreground); font-size:18px;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row > span {
-  display:block; color:var(--foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans);
-}
-/* Fee labels stay quieter than calculation titles; preserve color and weight. */
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row:not(.agent-calculation-row) > span { font-size:12px; }
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .fee-subtext {
-  display:block; margin-top:4px; color:var(--muted-foreground); font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans);
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row > b {
-  min-width:0; padding:0; align-self:center; font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans); white-space:nowrap;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row > .fee-row-action { grid-row:2; }
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row > .fee-row-action.delete { grid-column:3; }
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row > .fee-row-action:not(.delete) { grid-column:2; justify-self:end; }
-
-
-/* Compact Agent controls; calculation rows reuse the fee statement styling. */
-#commissionWallet.agent-flat #ybdFullDet .agent-calculation-row {
-  grid-template-columns:minmax(0,1fr) auto;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row.agent-split::after { display:none; }
-
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .fee-subtext {
-  display:flex; flex-wrap:nowrap; align-items:center; gap:4px;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-label::after {
-  content:' ·';
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-link {
-  display:inline-flex; flex:none; width:auto; margin-top:0;
-}
-
-
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-card { margin-top:12px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); overflow:hidden; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-summary { display:flex; align-items:center; gap:12px; padding:12px; min-height:44px; list-style:none; cursor:pointer; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-title { flex:1; font:600 14px/1.4 var(--font); }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-summary::-webkit-details-marker { display:none; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-summary > .agent-fee-row { flex:1; min-width:0; border:0; padding:0; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary { border-bottom:1px solid var(--border); }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-body { padding:0 12px 4px; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-body > .d-fees { margin:0; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-mark { display:flex; align-items:center; justify-content:center; flex:none; width:24px; font-size:24px; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-mark .ph-minus { display:none; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary .ph-minus { display:block; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary .ph-plus { display:none; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-summary:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-/* Scope the current Radius product font to Agent statement rows. */
-#commissionWallet.agent-flat .agent-fee-row { --font-sans:var(--font); }
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-label {
-  font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans);
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-link {
-  font:var(--font-weight-medium) var(--text-caption)/var(--leading-caption) var(--font-sans);
-}
-
-
-/* Agent deal context uses compact neutral rows with aligned labels. */
-.screen #transactionSummary.agent-sale-summary { margin:0; }
-.screen #transactionSummary.agent-sale-summary .fin-row,
-.screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row {
-  --font-sans:var(--font);
-  display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px;
-  box-sizing:border-box; width:100%;
-  background:transparent; background-image:none; color:var(--foreground); border:0; box-shadow:none; opacity:1;
-  font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans);
-}
-.screen #transactionSummary.agent-sale-summary .fin-row { border-radius:0; }
-.screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row {
-  grid-template-columns:minmax(0,1fr) auto;
-  border-radius:0; border-top:1px solid var(--border);
-}
-.screen #transactionSummary.agent-sale-summary .agent-summary-copy,
-.screen #commissionWallet.agent-flat .agent-summary-copy { display:block; min-width:0; white-space:normal; text-align:left; }
-.screen #transactionSummary.agent-sale-summary .agent-summary-copy b,
-.screen #commissionWallet.agent-flat .agent-summary-copy b {
-  color:var(--muted-foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans); letter-spacing:normal;
-}
-.screen #transactionSummary.agent-sale-summary #summaryPrice,
-.screen #commissionWallet.agent-flat .agent-summary-value {
-  color:var(--foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans); letter-spacing:normal;
-}
-.screen #transactionSummary.agent-sale-summary small,
-.screen #commissionWallet.agent-flat .agent-summary-copy small {
-  display:block; margin-top:4px; color:#b8b0a0;
-  font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans);
-}
-.screen #transactionSummary.agent-sale-summary #summaryPrice,
-.screen #commissionWallet.agent-flat .agent-summary-value { align-self:center; text-align:right; font-variant-numeric:tabular-nums; }
-.screen #commissionWallet.agent-flat > #ybdCard { padding-top:0; }
-#commissionWallet.agent-flat #ybdFullDet { padding-top:0; }
-
-/* One content-sized layout for all Agent statement rows. */
-.screen #transactionSummary.agent-sale-summary .fin-row,
-.screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row,
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row {
-  box-sizing:border-box; height:auto; min-height:44px;
-  padding:var(--space-3) var(--space-3); gap:var(--space-3);
-  align-items:center;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .fee-subtext {
-  min-width:0; white-space:normal;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-label {
-  flex:0 1 auto; min-width:0;
-}
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row .split-summary-link {
-  min-height:var(--leading-caption);
-}
-
-/* Compact deal context; the value well communicates the plan's locked state. */
-.screen #transactionSummary.agent-sale-summary .fin-row { padding-top:4px; padding-bottom:8px; }
-.screen #transactionSummary.agent-sale-summary .agent-summary-copy { display:flex; align-items:center; gap:8px; }
-.screen #transactionSummary.agent-sale-summary .agent-sale-icon { flex:none; font-size:18px; line-height:1; color:#c5b58e; }
-.screen.light #transactionSummary.agent-sale-summary .agent-sale-icon { color:#806b3f; }
-.screen #commissionWallet.agent-flat .agent-summary-value {
-  min-height:32px; box-sizing:border-box; padding:5px 8px; border:1px solid var(--border);
-  border-radius:var(--radius-input,8px); background:var(--control-surface); font-size:14px; line-height:20px;
-}
-.screen #commissionWallet.agent-flat .agent-summary-row:disabled { cursor:default; }
-.screen #commissionWallet.agent-flat .agent-summary-row:disabled .agent-summary-value { color:var(--muted-foreground); }
-.screen #commissionWallet.agent-flat .agent-plan-lock { display:none; font-size:14px; line-height:1; }
-.screen #commissionWallet.agent-flat .agent-summary-row:disabled .agent-plan-lock { display:inline-block; }
-
-/* Self-explanatory summary rows need only their label and amount. */
-#commissionWallet.agent-flat #ybdFullDet .agent-fee-row.agent-compact-summary {
-  min-height:44px; padding-top:6px; padding-bottom:6px; align-items:center;
-}
-
-/* One page gutter for the Agent statement; rows add no horizontal inset. */
-.screen:has(#commissionWallet.agent-flat) > #scroll { padding-left:16px; padding-right:16px; }
-.screen:has(#commissionWallet.agent-flat) > .pg-head .pg-nav { padding-left:16px; padding-right:16px; }
-.screen #scroll > #ybd:has(> #commissionWallet.agent-flat) { margin-left:0; margin-right:0; padding-left:0; padding-right:0; }
-.screen #transactionSummary.agent-sale-summary .fin-row,
-.screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row,
-.screen #commissionWallet.agent-flat #ybdFullDet .agent-fee-row { padding-left:0; padding-right:0; }
-
-/* Agent amounts: neutral totals, explicit additions green, deductions red. */
-#commissionWallet.agent-flat { --agent-addition-color:#6ee7b7; }
-.screen.light #commissionWallet.agent-flat { --agent-addition-color:#047857; }
-.screen #commissionWallet.agent-flat #ybdFullDet .agent-fee-row.positive-amount > b { color:var(--foreground); }
-.screen #commissionWallet.agent-flat #ybdFullDet .agent-fee-row.agent-addition > b { color:var(--agent-addition-color); }
-.screen #commissionWallet.agent-flat #ybdFullDet .agent-fee-row.neg > b { color:var(--tint-red-fg); }
-
-/* Team Lead shares the Agent statement's spacing and financial hierarchy. */
-#teamLeadOverall { display:none; }
-.team-lead-overview #teamLeadOverall { display:block; padding:0 0 12px; }
-.team-lead-overview .sidebody > :not(.tl-side-content) { display:none !important; }
-.tl-side-content { display:none; }
-.team-lead-overview .tl-side-content { display:block; }
-.screen[data-role="team_lead"] > #scroll { padding-left:16px; padding-right:16px; }
-.screen[data-role="team_lead"] #detailPage.team-lead-overview > .detail-scroll { padding-left:0; padding-right:0; }
-.screen .team-lead-overview #sec-sides { margin-left:0; margin-right:0; }
-.screen .team-lead-overview #sec-sides > .sides { background:none; border:0; box-shadow:none; }
-.screen .team-lead-overview .sidebody { padding:0; }
-.tl-line { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; box-sizing:border-box; min-height:44px; padding:8px 0; border:0; border-top:1px solid var(--border); background:none; color:var(--foreground); text-align:left; font:500 14px/20px var(--font); }
-.tl-copy { min-width:0; }
-.tl-copy small { display:block; margin-top:3px; color:var(--muted-foreground); font:400 12px/18px var(--font); }
-.tl-line > b { flex:none; font:inherit; font-variant-numeric:tabular-nums; text-align:right; }
-.tl-line.tl-deduction > b { color:var(--tint-red-fg); }
-.tl-line.tl-addition > b { color:#6ee7b7; }
-.screen.light .tl-line.tl-addition > b { color:#047857; }
-.tl-line.fee .tl-copy { font-size:12px; }
-.tl-line.tl-total > b { color:var(--lux-accent); }
-.tl-heading { margin:16px 0 4px; font:600 14px/20px var(--font); color:var(--foreground); }
-.tl-line.tl-plan { font-size:12px; }
-.tl-line.tl-plan > b { padding:5px 8px; border:1px solid var(--border); border-radius:8px; background:var(--control-surface); }
-button.tl-line { cursor:pointer; }
-button.tl-line:disabled { cursor:default; opacity:.6; }
-button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-
-/* Reuse the Agent sale row; show the combined total only for dual deals. */
-.team-lead-overview #teamLeadOverall[hidden] { display:none; }
-.screen[data-role="team_lead"] #transactionSummary.agent-sale-summary .fin-row { padding-left:0; padding-right:0; }
-.screen[data-role="team_lead"] #detailPage.team-lead-overview .side { padding-left:0; padding-right:0; }
-.screen[data-role="team_lead"] #detailPage.team-lead-overview .side .sm { min-width:0; flex-wrap:wrap; }
-
-/* Buying details reuse the Agent statement's row rhythm and icon treatment. */
-.team-lead-overview .tl-agent-style .tl-line {
-  display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center;
-  min-height:44px; padding:6px 0; gap:var(--space-3);
-  font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font);
-}
-.team-lead-overview .tl-agent-style .tl-line > b { white-space:nowrap; }
-.team-lead-overview .tl-agent-style .tl-icon-row { grid-template-columns:32px minmax(0,1fr) auto; }
-.team-lead-overview .tl-agent-style .tl-icon-row .tl-copy { font-size:12px; }
-.team-lead-overview .tl-agent-style .tl-fee-icon {
-  display:flex; align-items:center; justify-content:center; box-sizing:border-box;
-  width:32px; height:32px; border:1px solid var(--border); border-radius:12px;
-  background:var(--muted); color:var(--muted-foreground); font-size:18px;
-}
-.team-lead-overview .tl-agent-style .tl-plan .tl-copy { color:var(--muted-foreground); }
-
-/* Agent fee disclosures share the statement gutter and preserve their state. */
-.tl-fee-details[hidden] { display:none; }
-.tl-fee-toggle .tl-copy { display:flex; align-items:center; gap:8px; }
-.tl-fee-chevron { flex:none; font-size:14px; color:var(--muted-foreground); }
-.tl-fee-toggle[aria-expanded="true"] .tl-fee-chevron { transform:rotate(90deg); }
-/* Expanded agent fees reuse the Agent Breakdown statement row: icon, title,
-   payer context, and amount. The disclosure trigger remains separate. */
-.tl-fee-details .agent-fee-row { display:grid; grid-template-columns:32px minmax(0,1fr) auto; align-items:center; gap:var(--space-3); width:100%; min-height:44px; padding:var(--space-3) 0; border:0; border-top:1px solid var(--border); background:none; color:var(--foreground); font-family:var(--font); text-align:left; }
-.tl-fee-details button.agent-fee-row { cursor:pointer; }
-.tl-fee-details .agent-fee-direction { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid var(--border); border-radius:12px; background:var(--muted); color:var(--muted-foreground); font-size:18px; }
-.tl-fee-details .agent-fee-row > span { min-width:0; color:var(--foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font); }
-.tl-fee-details .agent-fee-row .fee-subtext { display:block; margin-top:4px; color:var(--muted-foreground); font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font); }
-.tl-fee-details .agent-fee-row > b { flex:none; white-space:nowrap; font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font); font-variant-numeric:tabular-nums; }
-.tl-fee-details .agent-fee-row.neg > b { color:var(--tint-red-fg); }
-.tl-fee-details .agent-fee-row.agent-addition > b { color:var(--agent-addition-color, #6ee7b7); }
-.tl-fee-details .agent-fee-row:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-/* Sheet examples use the Agent component geometry: 4/8/12/16/24px.
-   All spacing is scoped; personal Agent components remain untouched. */
-.sheet-breakdown { --statement-unit:4px; --statement-gap:calc(var(--statement-unit) * 3); --statement-inset:calc(var(--statement-unit) * 4); --statement-section:calc(var(--statement-unit) * 6); }
-.screen.sheet-breakdown #scroll { padding-inline:var(--statement-inset); }
-.screen.sheet-breakdown #ybd, .screen.sheet-breakdown #transactionSummary { display:none; }
-.screen.sheet-breakdown #detailPage { position:relative; inset:auto; z-index:auto; }
-.screen.sheet-breakdown #detailPage > .detail-head { display:none; }
-.screen.sheet-breakdown #detailPage > .detail-scroll { flex:none; overflow:visible; padding:0; }
-.screen.sheet-breakdown #detailPage > .detail-scroll > :not(#sheetBreakdown) { display:none !important; }
-#sheetBreakdown .sheet-title { margin:0 0 var(--statement-inset); font:600 var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown .sheet-section { margin-block:var(--statement-section); }
-#sheetBreakdown .sheet-heading { margin:0 0 calc(var(--statement-unit) * 2); font:600 var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown .sheet-row { padding-block:var(--statement-gap); gap:var(--statement-gap); }
-#sheetBreakdown .sheet-fee-editable > .agent-fee-direction { color:var(--primary); border-color:var(--primary); }
-#sheetBreakdown .sheet-row > span { font-size:12px; overflow-wrap:anywhere; }
-#sheetBreakdown .sheet-row > b { font-size:14px; font-variant-numeric:tabular-nums; }
-#sheetBreakdown .sheet-total { border-top:1px solid var(--border); }
-#sheetBreakdown .sheet-total > b { font-weight:600; color:var(--lux-accent); }
-#sheetBreakdown .sheet-disclosure { margin-block:var(--statement-inset); border-block:1px solid var(--border); }
-#sheetBreakdown > .sheet-row + .sheet-disclosure { margin-top:0; }
-#sheetBreakdown .sheet-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--statement-gap); min-height:44px; padding-block:var(--statement-gap); cursor:pointer; list-style:none; font:600 var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown summary::-webkit-details-marker { display:none; }
-#sheetBreakdown summary > span:first-child { min-width:0; }
-#sheetBreakdown .fee-subtext { display:block; margin-top:var(--statement-unit); color:var(--muted-foreground); font:400 var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown .sheet-disclosure-mark { flex:none; display:flex; align-items:center; justify-content:center; width:32px; height:32px; }
-#sheetBreakdown .sheet-disclosure-mark > i { font-size:24px; line-height:1; }
-#sheetBreakdown .sheet-disclosure-mark > .ph-minus { display:none; }
-#sheetBreakdown details[open] > summary > .sheet-disclosure-mark > .ph-plus { display:none; }
-#sheetBreakdown details[open] > summary > .sheet-disclosure-mark > .ph-minus { display:block; }
-#sheetBreakdown .sheet-agent-plan { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 0; border-top:1px solid var(--border); font-size:12px; }
-#sheetBreakdown .sheet-agent-plan > span { min-width:0; }
-#sheetBreakdown .sheet-plan { flex:0 1 58%; min-width:0; min-height:44px; margin:0; font-size:12px; }
-#sheetBreakdown .sheet-note { margin:calc(var(--statement-unit) * 2) 0; color:var(--muted-foreground); font:400 var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown summary:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
-#sheetBreakdown summary:active { background:var(--muted); }
-#sheetBreakdown .sheet-side-card { border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); overflow:hidden; }
-#sheetBreakdown .sheet-side-card > summary { padding:12px; }
-#sheetBreakdown .sheet-side-card[open] > summary { border-bottom:1px solid var(--border); }
-#sheetBreakdown .sheet-side-card > .sheet-section,
-#sheetBreakdown .sheet-side-card > .sheet-disclosure { margin:12px; }
-/* Single-side group examples use the existing Agent statement rhythm. */
-#sheetBreakdown.sheet-agent-layout { font-family:var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-sale,
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row { box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--space-3); width:100%; min-height:44px; padding:6px 0; border:0; border-top:1px solid var(--border); background:transparent; color:var(--foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-sale { padding-top:4px; padding-bottom:8px; border-top:0; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-sale > span { display:flex; align-items:center; gap:8px; min-width:0; color:var(--muted-foreground); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-sale .agent-sale-icon { flex:none; font-size:18px; line-height:1; color:#c5b58e; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-sale > b,
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row > b { justify-self:end; color:var(--foreground); font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row > span { min-width:0; color:var(--foreground); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.sheet-fee-row > span { font:var(--font-weight-medium) var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row .fee-subtext { display:block; margin-top:4px; color:var(--muted-foreground); font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.sheet-icon-row { grid-template-columns:32px minmax(0,1fr) auto; padding:var(--space-3) 0; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row .agent-fee-direction { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid var(--border); border-radius:12px; background:var(--muted); color:var(--muted-foreground); font-size:18px; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.neg > b { color:var(--tint-red-fg); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.positive > b { color:var(--agent-addition-color, #6ee7b7); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.gold > b { color:var(--lux-accent); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.radius-size > span,
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.radius-size > b { font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.total > span,
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.total > b,
-#sheetBreakdown.sheet-agent-layout .sheet-agent-row.heading > span { font-weight:600; }
-#sheetBreakdown.sheet-agent-layout button.sheet-agent-row { cursor:pointer; font:inherit; text-align:left; }
-#sheetBreakdown.sheet-agent-layout button.sheet-agent-row:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group { margin-top:16px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); overflow:hidden; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head { display:flex; align-items:center; gap:10px; padding:12px; border-bottom:1px solid var(--border); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head i { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:12px; background:var(--muted); color:var(--muted-foreground); font-size:18px; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head span { display:flex; flex-direction:column; gap:2px; min-width:0; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head b { font:600 var(--text-body)/var(--leading-body) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head > .sheet-agent-group-value { flex:none; margin-left:auto; color:var(--foreground); font-variant-numeric:tabular-nums; white-space:nowrap; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-head small { color:var(--muted-foreground); font:var(--font-weight-medium) var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-body { padding:0 12px 4px; }
-#sheetBreakdown.sheet-agent-layout .sheet-agent-group-body > .sheet-agent-row:first-child { border-top:0; }
-.screen.sheet-breakdown .decision-dock { border-radius:var(--radius-card); }
-.screen.sheet-breakdown .decision-dock .net-float b { color:var(--agent-addition-color, #6ee7b7); }
-.sp-b[data-sheet-scenario] { min-height:44px; white-space:normal; text-align:left; line-height:1.4; }
-.sp-b:is([data-setrole="team_lead"], [data-setrole="group_lead"], [data-setrole="group_lead_agent"], [data-setrole="dual_role"]) em { white-space:normal; overflow-wrap:anywhere; }
-
-#sheetBreakdown .sheet-plan-anchor { flex:0 1 58%; min-width:0; }
-#sheetBreakdown .sheet-plan-trigger { height:auto; min-height:44px; font:500 12px/1.4 var(--font); background:var(--control-surface); color:var(--foreground); border:1px solid var(--input); border-radius:var(--radius-input); }
-#sheetBreakdown .sheet-plan-trigger > span { text-align:left; }
-#sheetBreakdown .sheet-plan-trigger > i { flex:none; font-size:16px; color:var(--muted-foreground); }
-#sheetBreakdown .sheet-plan-trigger:disabled { cursor:default; color:var(--muted-foreground); opacity:1; }
-#sheetBreakdown .sheet-plan-menu { position:fixed; inset:auto; margin:0; padding:6px; max-height:148px; overflow:auto; box-sizing:border-box; border:1px solid var(--border); border-radius:16px; background:var(--card); color:var(--foreground); box-shadow:var(--shadow-md); }
-#sheetBreakdown .sheet-plan-menu:not(:popover-open) { display:none; }
-#sheetBreakdown .sheet-plan-menu .rds-command__item { appearance:none; display:flex; align-items:center; justify-content:flex-start; gap:10px; width:100%; min-height:44px; padding:0 12px; border:0; border-radius:10px; background:transparent; color:var(--foreground); box-shadow:none; font:500 14px/1.3 var(--font); text-align:left; cursor:pointer; }
-#sheetBreakdown .sheet-plan-menu .rds-command__item:hover,
-#sheetBreakdown .sheet-plan-menu .rds-command__item:focus-visible { background:var(--muted); }
-#sheetBreakdown .sheet-plan-menu .rds-command__item > i { flex:none; font-size:18px; line-height:1; color:var(--muted-foreground); }
-#sheetBreakdown .sheet-plan-menu .rds-command__item > span { min-width:0; }
-.screen .personal-overview #sec-sides > .card.sides { margin:16px 0; border:1px solid var(--border); border-radius:var(--radius-card) !important; background:var(--card); box-shadow:none; overflow:hidden; }
-.screen .personal-overview #sec-sides > .card.sides > .side { padding:12px; min-height:44px; border-radius:0; }
-.screen .personal-overview #sec-sides > .card.sides > .side:has(.sgo[aria-expanded="true"]) { border-bottom:1px solid var(--border); }
-.screen .personal-overview #sec-sides .sidebody { padding:0 12px 4px; }
-.screen .personal-overview #sec-sides .side-metrics { border:0; border-radius:0; background:transparent; box-shadow:none; padding:0; }
-.screen .personal-overview #sec-sides .side-metric,
-.screen .personal-overview #sec-sides .srow { min-height:44px; padding:12px 0; border-top:1px solid var(--border); }
-.screen .personal-overview #sec-sides .side-metric > span,
-.screen .personal-overview #sec-sides .srow .sk b { font:500 12px/1.4 var(--font); }
-.screen .personal-overview #sec-sides .side-metric > b,
-.screen .personal-overview #sec-sides .srow .svv { font:500 14px/1.4 var(--font); }
-.screen .personal-overview #sec-sides .srow .sk em { font:400 12px/1.4 var(--font); }
-
-
-.personal-side-mark { display:none; }
-.screen .personal-overview #sec-sides .sidechev { display:none; }
-.screen .personal-overview #sec-sides .personal-side-mark { display:flex; align-items:center; justify-content:center; flex:none; width:32px; height:32px; font-size:24px; }
-.screen .personal-overview #sec-sides .personal-side-mark .ph-minus { display:none; }
-.screen .personal-overview #sec-sides .side:has(.sgo[aria-expanded="true"]) .personal-side-mark .ph-minus { display:block; }
-.screen .personal-overview #sec-sides .side:has(.sgo[aria-expanded="true"]) .personal-side-mark .ph-plus { display:none; }
-
-/* Radius Item owns row geometry and typography across participant roles. */
-.screen .commission-item { font-family:var(--font-sans); color:var(--foreground); }
-.screen .commission-item .rds-item__actions > b { font-size:var(--text-body); font-weight:var(--font-weight-medium); line-height:var(--leading-body); font-variant-numeric:tabular-nums; white-space:nowrap; }
-.screen .commission-item--deduction .rds-item__actions > b { color:var(--tint-red-fg); }
-.screen .commission-item--addition .rds-item__actions > b { color:var(--tint-green-fg); }
 </style>
 </head>
 <body>
@@ -2453,7 +2059,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
           <div id="agentCommissionOverview" hidden></div>
           <div id="detailGroupPlans" hidden></div>
           <div id="sec-sides">
-      <div class="card sides" id="primarySideCard">
+      <div class="card sides">
         <div class="side">
           <button class="sgo" type="button" aria-expanded="false" aria-controls="sbody1" aria-label="Toggle listing side"></button>
           <span class="sb">
@@ -2467,11 +2073,11 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
           <div class="side-metrics side-summary rest-metrics" data-expanded="false">
             <div class="side-metric-list" id="metricList1" aria-label="Side summary totals">
               <div class="side-metric gross"><span><span class="metric-badge" data-mark="$" aria-hidden="true"><i class="ph ph-seal"></i></span>Gross</span><b id="m1Gross">$49,500</b></div>
-              <div class="side-metric after-deductions"><span><span class="metric-badge" data-mark="i" aria-hidden="true"><i class="ph ph-seal"></i></span>Gross after credits and referrals</span><b id="m1After">$49,430</b></div>
-              <div class="side-metric to-agents" hidden><span><i class="ph ph-user" aria-hidden="true"></i>To agents</span><b id="m1Agents">$39,544</b></div>
-              <div class="side-metric to-team" hidden><span><i class="ph ph-buildings" aria-hidden="true"></i>To team</span><b id="m1Team">$10,386</b></div>
+              <div class="side-metric after-deductions"><span><span class="metric-badge" data-mark="i" aria-hidden="true"><i class="ph ph-seal"></i></span>After deductions</span><b id="m1After">$49,430</b></div>
+              <div class="side-metric to-agents"><span><i class="ph ph-user" aria-hidden="true"></i>To agents</span><b id="m1Agents">$39,544</b></div>
+              <div class="side-metric to-team"><span><i class="ph ph-buildings" aria-hidden="true"></i>To team</span><b id="m1Team">$10,386</b></div>
             </div>
-            <div class="side-metric-foot" hidden>
+            <div class="side-metric-foot">
               <span class="side-metric-summary"><span class="side-metric-count">4</span>Commission totals</span>
               <button class="side-metric-toggle" type="button" aria-expanded="false" aria-controls="metricList1"><span>View all</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
             </div>
@@ -2486,7 +2092,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
             <span class="ab"><b>Add fee before the split</b></span>
           </button>
           <div class="srow tot plain">
-            <span class="sk"><b>Gross after credits and referrals</b></span>
+            <span class="sk"><b>Gross after deductions</b></span>
             <span class="svv" id="x1Basis">$49,430</span>
           </div>
         <div id="leadDetailBreakdown" hidden></div>
@@ -2518,7 +2124,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
         </div>
         </div>
       </div>
-      <div class="card sides" id="opposingSideCard">
+      <div class="card sides">
         <div class="side">
           <button class="sgo" type="button" aria-expanded="false" aria-controls="sbody2" aria-label="Toggle buying side"></button>
           <span class="sb">
@@ -2532,17 +2138,17 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
           <div class="side-metrics" data-expanded="false">
             <div class="side-metric-list" id="metricList2" aria-label="Side summary totals">
               <div class="side-metric gross"><span><span class="metric-badge" data-mark="$" aria-hidden="true"><i class="ph ph-seal"></i></span>Gross</span><b id="m2Gross">$49,500</b></div>
-              <div class="side-metric after-deductions"><span><span class="metric-badge" data-mark="i" aria-hidden="true"><i class="ph ph-seal"></i></span>Gross after credits and referrals</span><b id="m2After">$49,430</b></div>
-              <div class="side-metric to-agents" hidden><span><i class="ph ph-user" aria-hidden="true"></i>To agents</span><b id="m2Agents">$49,430</b></div>
+              <div class="side-metric after-deductions"><span><span class="metric-badge" data-mark="i" aria-hidden="true"><i class="ph ph-seal"></i></span>After deductions</span><b id="m2After">$49,430</b></div>
+              <div class="side-metric to-agents"><span><i class="ph ph-user" aria-hidden="true"></i>To agents</span><b id="m2Agents">$49,430</b></div>
             </div>
-            <div class="side-metric-foot" hidden>
+            <div class="side-metric-foot">
               <span class="side-metric-summary"><span class="side-metric-count">3</span>Commission totals</span>
               <button class="side-metric-toggle" type="button" aria-expanded="false" aria-controls="metricList2"><span>View all</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
             </div>
           </div>
           <div id="deds2"></div>
           <div class="srow tot plain">
-            <span class="sk"><b>Gross after credits and referrals</b></span>
+            <span class="sk"><b>Gross after deductions</b></span>
             <span class="svv" id="x2Basis">$49,430</span>
           </div>
         <div class="ssub" id="agentListTitle2">Agents on this side</div>
@@ -2774,8 +2380,7 @@ Thanks</textarea></div>
           </div></div>
           <div class="fee-split-summary" id="feeSplitSummary" aria-live="polite"><span>Combined payer split <b id="feeSplitTotal">100%</b></span><small id="feeTotalPreview">Total fee $0</small></div>
         </div>
-        <div class="fld rds-field" id="fFeeSide" hidden><label for="feeDealSide">Deal side</label><select class="rds-input" id="feeDealSide"><option id="feeSideMine" value="mine">Listing side</option><option id="feeSideOther" value="other">Buying side</option></select></div>
-        <div class="fld rds-field" id="fFeeStage" hidden><span>Apply fee</span><div class="seg" role="radiogroup" aria-label="Fee stage"><button type="button" role="radio" data-feestage="presplit" aria-checked="false">Pre-split</button><button type="button" role="radio" data-feestage="postsplit" aria-checked="true">Post-split</button></div></div>
+        <div class="fld rds-field" id="fFeeStage" hidden><span>Deduct from</span><div class="fee-stage-value">Payer’s share</div></div>
         <div class="fld rds-field" id="fPayTo"><span id="dedPayToLbl">Payable to</span>
           <div class="dd" id="ddPayTo">
             <button type="button" class="ddbtn rds-combobox__trigger" id="ddPayToBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="ddPayToList" aria-labelledby="dedPayToLbl"><span id="ddPayToVal">Select</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
@@ -2802,113 +2407,6 @@ Thanks</textarea></div>
         <button class="rds-btn rds-btn--outline" type="button" id="dedCancel">Close</button>
         <button class="rds-btn" type="button" id="dedSave">Add</button>
       </div>
-    </div>
-
-    <div class="sheet" id="clientCreditSheet" role="dialog" aria-modal="true" aria-labelledby="clientCreditSheetT" data-dirty-guard hidden>
-      <div class="grab" aria-hidden="true"></div>
-      <div class="sh-name" id="clientCreditSheetT" tabindex="-1">Add Credit or Referral<span class="sh-sub">Add a side-level deduction with a small, focused form.</span></div>
-      <div class="fields">
-        <div class="fld rds-field" id="ccDescriptionField"><span id="ccDescriptionLabel">Description</span>
-          <div class="cc-select" id="ccTypeSelect">
-            <button class="cc-select-btn" type="button" id="ccTypeButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="ccTypeList" aria-labelledby="ccDescriptionLabel"><span id="ccTypeValue">Credit</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="cc-select-list" id="ccTypeList" role="listbox" aria-labelledby="ccDescriptionLabel" hidden>
-              <button type="button" role="option" data-client-credit-type="credit" aria-selected="true">Credit</button>
-              <button type="button" role="option" data-client-credit-type="referral" aria-selected="false">Referral</button>
-              <button type="button" role="option" data-client-credit-type="other" aria-selected="false">Other</button>
-            </div>
-          </div>
-        </div>
-        <label class="fld rds-field" id="ccNameField" hidden><span>Fee name</span><input class="rds-input" type="text" id="ccName" placeholder="Fee name" autocomplete="off"></label>
-        <label class="fld rds-field" id="ccAmountField"><span>Amount</span><span class="amt"><i aria-hidden="true">$</i><input class="rds-input" type="text" id="ccAmount" inputmode="decimal" placeholder="0" autocomplete="off"></span></label>
-        <div class="fld rds-field" id="ccPayToField"><span id="ccPayToLabel">Payable To</span>
-          <div class="cc-select" id="ccPayToSelect">
-            <button class="cc-select-btn" type="button" id="ccPayToButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="ccPayToList" aria-labelledby="ccPayToLabel"><span id="ccPayToValue">External / Referral</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="cc-select-list" id="ccPayToList" role="listbox" aria-labelledby="ccPayToLabel" hidden>
-              <button type="button" role="option" data-client-credit-payto="radius" aria-selected="false">Radius</button>
-              <button type="button" role="option" data-client-credit-payto="team" aria-selected="false">Team</button>
-              <button type="button" role="option" data-client-credit-payto="external" aria-selected="true">External / Referral</button>
-            </div>
-          </div>
-        </div>
-        <div class="fld rds-field" id="ccPayeeField"><span id="ccPayeeLabel">External Payee</span>
-          <div class="cc-payee-select">
-            <input class="rds-input cc-payee-input" type="text" id="ccPayee" placeholder="Select or enter external payee" autocomplete="off" aria-labelledby="ccPayeeLabel" aria-controls="ccPayeeList" aria-expanded="false">
-            <button class="cc-payee-toggle" type="button" id="ccPayeeToggle" aria-label="Show external payees"><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="cc-select-list" id="ccPayeeList" role="listbox" aria-labelledby="ccPayeeLabel" hidden>
-              <button type="button" role="option" data-client-credit-payee="Akash Deep">Akash Deep</button>
-              <button type="button" role="option" data-client-credit-payee="Yogesh External 1">Yogesh External 1</button>
-              <button type="button" role="option" data-client-credit-payee="Akash external 1">Akash external 1</button>
-              <button type="button" role="option" data-client-credit-payee="Yogesh Mem">Yogesh Mem</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="foot"><button class="rds-btn rds-btn--outline" type="button" id="ccCancel">Cancel</button><button class="rds-btn" type="button" id="ccSave" disabled>Add Credit</button></div>
-    </div>
-
-    <div class="sheet" id="preSplitFeeSheet" role="dialog" aria-modal="true" aria-labelledby="preSplitFeeSheetT" data-dirty-guard hidden>
-      <div class="grab" aria-hidden="true"></div>
-      <div class="sh-name" id="preSplitFeeSheetT" tabindex="-1">Fee Type<span class="sh-sub">Configure fee type details.</span></div>
-      <div class="fields">
-        <div class="fld rds-field"><span id="psfTemplateLabel">Select Fee Type</span>
-          <div class="psf-select">
-            <button class="psf-select-btn" type="button" id="psfTemplateButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="psfTemplateList" aria-labelledby="psfTemplateLabel"><span id="psfTemplateValue">＋ Create a fee type</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="psf-select-list" id="psfTemplateList" role="listbox" aria-labelledby="psfTemplateLabel" hidden>
-              <button type="button" role="option" data-psf-template="create" aria-selected="true">＋ Create a fee type</button>
-              <button type="button" role="option" data-psf-template="Transaction Coordinator Fee" aria-selected="false">Transaction Coordinator Fee</button>
-              <button type="button" role="option" data-psf-template="Home Warranty Fee" aria-selected="false">Home Warranty Fee</button>
-            </div>
-          </div>
-        </div>
-        <label class="fld rds-field"><span>Fee Name</span><input class="rds-input" type="text" id="psfName" placeholder="e.g., Transaction Coordinator Fee" autocomplete="off"></label>
-        <div class="psf-grid">
-          <div class="fld rds-field"><span id="psfModeLabel">Fee Type</span>
-            <div class="psf-select">
-              <button class="psf-select-btn" type="button" id="psfModeButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="psfModeList" aria-labelledby="psfModeLabel"><span id="psfModeValue">Flat Fee</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-              <div class="psf-select-list" id="psfModeList" role="listbox" aria-labelledby="psfModeLabel" hidden>
-                <button type="button" role="option" data-psf-mode="flat" aria-selected="true">Flat Fee</button>
-                <button type="button" role="option" data-psf-mode="percentage" aria-selected="false">Percentage</button>
-              </div>
-            </div>
-          </div>
-          <label class="fld rds-field" id="psfAmountField"><span id="psfAmountLabel">Flat Fee</span><span class="amt" id="psfAmountWrap"><i aria-hidden="true">$</i><input class="rds-input" type="text" id="psfAmount" inputmode="decimal" placeholder="0" autocomplete="off"></span></label>
-        </div>
-        <div class="fld rds-field" id="psfBasisField" hidden><span id="psfBasisLabel">Percentage Based On</span>
-          <div class="psf-select">
-            <button class="psf-select-btn" type="button" id="psfBasisButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="psfBasisList" aria-labelledby="psfBasisLabel"><span id="psfBasisValue">Pre-Split Amount (Gross Commission)</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="psf-select-list" id="psfBasisList" role="listbox" aria-labelledby="psfBasisLabel" hidden><button type="button" role="option" data-psf-basis="gross" aria-selected="true">Pre-Split Amount (Gross Commission)</button></div>
-          </div>
-        </div>
-        <div class="fld rds-field"><span id="psfPayerLabel">Fee Payer</span>
-          <div class="psf-select">
-            <button class="psf-select-btn" type="button" id="psfPayerButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="psfPayerList" aria-labelledby="psfPayerLabel"><span id="psfPayerValue">Both</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-            <div class="psf-select-list" id="psfPayerList" role="listbox" aria-labelledby="psfPayerLabel" hidden>
-              <button type="button" role="option" data-psf-payer="Agent" aria-selected="false">Agent</button>
-              <button type="button" role="option" data-psf-payer="Team" aria-selected="false">Team</button>
-              <button type="button" role="option" data-psf-payer="Group" aria-selected="false">Group</button>
-              <button type="button" role="option" data-psf-payer="Both" aria-selected="true">Both</button>
-            </div>
-          </div>
-        </div>
-        <div class="psf-grid">
-          <div class="fld rds-field"><span id="psfPayToLabel">Payable To</span>
-            <div class="psf-select">
-              <button class="psf-select-btn" type="button" id="psfPayToButton" aria-haspopup="listbox" aria-expanded="false" aria-controls="psfPayToList" aria-labelledby="psfPayToLabel"><span id="psfPayToValue">Radius</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
-              <div class="psf-select-list" id="psfPayToList" role="listbox" aria-labelledby="psfPayToLabel" hidden>
-                <button type="button" role="option" data-psf-payto="radius" aria-selected="true">Radius</button>
-                <button type="button" role="option" data-psf-payto="team" aria-selected="false">Team</button>
-                <button type="button" role="option" data-psf-payto="external" aria-selected="false">External / Referral</button>
-              </div>
-            </div>
-          </div>
-          <label class="fld rds-field"><span>Payable Name</span><input class="rds-input" type="text" id="psfPayee" value="Radius Agent Realty" autocomplete="off"></label>
-        </div>
-        <div class="psf-choice-row" aria-label="Fee settings">
-          <label class="rds-choice" for="psfContributes"><input class="rds-checkbox" type="checkbox" id="psfContributes"><span>Contributes to cap</span></label>
-          <label class="rds-choice" for="psfPrivate"><input class="rds-checkbox" type="checkbox" id="psfPrivate"><span>Private fee</span></label>
-        </div>
-      </div>
-      <div class="foot"><button class="rds-btn rds-btn--outline" type="button" id="psfCancel">Cancel</button><button class="rds-btn" type="button" id="psfSave" disabled>Add Fee</button></div>
     </div>
 
     <div class="ios-alert-backdrop" id="dedRemoveDialog" hidden>
@@ -3169,19 +2667,13 @@ Thanks</textarea></div>
       <button class="tweaks-close" type="button" id="tweaksClose" aria-label="Close design tweaks"><i class="ph ph-x" aria-hidden="true"></i></button>
     </div>
     <div class="sp-grp">
-      <span class="sp-k">View as · Sheet scenarios</span>
-      <button class="sp-b" type="button" data-sheet-scenario="single" aria-pressed="false">Single side tranaction with a group</button>
-      <button class="sp-b" type="button" data-sheet-scenario="dual" aria-pressed="false">Dual sided with two agents on one side</button>
-      <span class="sp-k">Viewer</span>
+      <span class="sp-k">View as</span>
       <button class="sp-b" type="button" data-setrole="agent" aria-pressed="true"><i class="ph ph-user" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Agent</span><em>Mark Perez</em></span></button>
       <button class="sp-b" type="button" data-setrole="group_agent" aria-pressed="false"><i class="ph ph-user-circle" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Group member</span><em>Mark Perez · Rise Group</em></span></button>
-      <button class="sp-b" type="button" data-setrole="team_lead" aria-pressed="false"><i class="ph ph-users-three" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Team lead</span><em>Team payout · Sheet example</em></span></button>
-      <button class="sp-b" type="button" data-setrole="group_lead" aria-pressed="false"><i class="ph ph-buildings" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Group lead</span><em>Best Agents Ever</em></span></button>
-      <button class="sp-b" type="button" data-setrole="group_lead_agent" aria-pressed="false"><i class="ph ph-user-focus" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Group lead + member</span><em>Agent Ally · Best Agents Ever</em></span></button>
-      <button class="sp-b" type="button" data-sheet-person="ally">Sheet agent · Ally</button>
-      <button class="sp-b" type="button" data-sheet-person="benny">Sheet agent · Benny</button>
-      <button class="sp-b" type="button" data-sheet-team-personal>Team lead + agent · Ally</button>
-      <button class="sp-b" type="button" data-setrole="dual_role" aria-pressed="false"><i class="ph ph-arrows-left-right" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Dual role</span><em>Agent Ally · Listing + Buying</em></span></button>
+      <button class="sp-b" type="button" data-setrole="team_lead" aria-pressed="false"><i class="ph ph-users-three" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Team lead</span><em>Andy Martin</em></span></button>
+      <button class="sp-b" type="button" data-setrole="group_lead" aria-pressed="false"><i class="ph ph-buildings" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Group lead</span><em>Rise Group</em></span></button>
+      <button class="sp-b" type="button" data-setrole="group_lead_agent" aria-pressed="false"><i class="ph ph-user-focus" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Group lead + member</span><em>Mark Perez · Rise Group</em></span></button>
+      <button class="sp-b" type="button" data-setrole="dual_role" aria-pressed="false"><i class="ph ph-arrows-left-right" aria-hidden="true"></i><span class="sp-role-copy"><span class="sp-role-name">Dual role</span><em>Mark Perez · Listing + Buying</em></span></button>
     </div>
     <div class="sp-grp">
       <span class="sp-k">Status</span>
@@ -3334,14 +2826,14 @@ Thanks</textarea></div>
         { id: 'p9', n: 'Transaction bonus', a: 300, p: 'Radius', payTo: 'radius', direction: 'addition' },
         { n: 'RERM', a: 124, p: 'Agent', payTo: 'radius' },
         { id: 'p10', n: 'Cap credit', a: 150, p: 'Radius', payTo: 'radius', direction: 'addition' },
-        { n: 'SBTC', a: 400, p: 'Both', agentPct:50, teamPct:50, payTo: 'radius' },
-        { n: 'E&O', a: 250, p: 'Both', agentPct:50, teamPct:50, payTo: 'radius' },
+        { n: 'SBTC', a: 400, p: 'Both', payTo: 'radius' },
+        { n: 'E&O', a: 250, p: 'Both', payTo: 'radius' },
         { id: 'p5', n: 'TC Fee', a: 500, p: 'Agent', wire: true, info: 'Escrow to contact vendor directly for payment instructions.', payTo: 'external', payee: 'Title Co.', private: true },
-        { id: 'p6', n: 'RM Fee', a: 300, p: 'Both', agentPct:50, teamPct:50, payTo: 'team' },
+        { id: 'p6', n: 'RM Fee', a: 300, p: 'Both', payTo: 'team' },
         { id: 'p7', n: 'Team Admin Fee', a: 250, p: 'Team', payTo: 'team' },
         { id: 'p8', n: 'Vendor Referral Fee', a: 500, p: 'Agent', wire: true, info: 'Escrow to contact vendor directly for payment instructions.', payTo: 'external', payee: 'Referral Partner' }
       ],
-      OTHERFEES = [], postSeq = 12, radSeq = 2,
+      postSeq = 12, radSeq = 2,
       PAYICON = { Agent: 'ph-user', Both: 'ph-users', Team: 'ph-buildings', Group: 'ph-users-three' },
       PLANS = [
         { name: '80/20 Standard', split: 80 },
@@ -3554,17 +3046,13 @@ Thanks</textarea></div>
   function feeSummaryData(fee, data) {
     var summary = Object.assign({}, data), known = data.rows.filter(function (entry) { return entry.amount != null; }), agents, mine;
     if (!data.complete) {
-      summary.label = 'Payer details incomplete'; summary.linkText = 'Details ›'; summary.linkAria = 'View incomplete payer details';
+      summary.label = 'Payer details incomplete'; summary.linkText = 'View details ›'; summary.linkAria = 'View incomplete payer details';
       return summary;
     }
     if (agentFinancialView()) {
       mine = known.filter(function (entry) { return entry.name === breakdownAgent().name; })[0];
       if (mine) {
-        /* The row's amount column already prints the agent's deducted amount;
-           repeating it here would show the same figure twice on one line. */
-        var onlyAgents = known.every(function (entry) { return entry.role !== 'Team lead' && entry.role !== 'Group'; });
-        summary.label = onlyAgents ? 'You pay all' : 'Shared fee';
-        summary.linkText = 'Details ›'; summary.linkAria = 'View fee payer details';
+        summary.label = 'Your share: ' + cur(mine.amount); summary.linkText = 'View payers ›'; summary.linkAria = 'View fee payers';
         return summary;
       }
     }
@@ -3572,7 +3060,7 @@ Thanks</textarea></div>
     summary.label = agents.length === known.length
       ? 'Paid by ' + agents.length + ' ' + (agents.length === 1 ? 'agent' : 'agents')
       : 'Paid by ' + known.length + ' ' + (known.length === 1 ? 'payer' : 'payers');
-    summary.linkText = 'Details ›'; summary.linkAria = 'View fee payers';
+    summary.linkText = 'View payers ›'; summary.linkAria = 'View fee payers';
     return summary;
   }
   function teamOwnedFeeSplit(amount) {
@@ -3675,12 +3163,11 @@ Thanks</textarea></div>
         share = Math.max(0, Number(allocationPct == null ? (100 / n) : allocationPct)) / 100,
         aBasis = basis * share,
         aGross = sideGross * share,
-        aPre = preSplit * share + POSTDEDS.reduce(function(sum,fee){return sum+(fee.stage==='presplit'?agentFeeAmount(fee,a,n,share):0);},0),
+        aPre = preSplit * share,
         commissionBeforeSplit = Math.max(0, aBasis - aPre),
         aDed = POSTDEDS.reduce(function (total, fee) {
-          return total + (fee.stage==='presplit'?0:(fee.direction === 'addition' ? -1 : 1) * agentFeeAmount(fee, a, n, share));
+          return total + (fee.direction === 'addition' ? -1 : 1) * agentFeeAmount(fee, a, n, share);
         }, 0),
-        splitBeforeFees = s.flat != null ? Math.max(0, aBasis - s.flat) : aBasis * s.split / 100,
         splitAmt = s.flat != null ? Math.max(0, commissionBeforeSplit - s.flat) : commissionBeforeSplit * s.split / 100,
         pc = s.capped && postCapActiveFor(s, 'group') ? postCapCharge('group', aGross) : 0,
         tpc = s.team && postCapActiveFor(s, 'team') ? postCapCharge('team', aGross) : 0,
@@ -3701,27 +3188,16 @@ Thanks</textarea></div>
     rows.push({ head: 'Commission', cardhide: true });
     rows.push({ k: 'Sale price', v: cur(price), cardhide: true });
     rows.push({ k: 'Commission %', v: '2.0%', cardhide: true });
-    rows.push({ k: 'Commission basis', cardk:'Gross after credits and referrals', sub2: n > 1 ? pctLbl(share) + ' of this side' : 'This side after credits and referrals', v: cur(aBasis) });
+    rows.push({ k: 'Commission basis', sub2: n > 1 ? pctLbl(share) + ' of this side' : 'This side after credits and referrals', v: cur(aBasis) });
     /* `ed` marks the rows a person actually sets. It is inert everywhere the
        chain is read-only — only the card's edit mode turns it into a target,
        and only on the reader's own chain. */
-    /* On the compact card the agent's split amount reads as "Your commission
-       before fees": every deduction below it (underSplit) is subtracted from
-       this figure, and "Your payout" stays the single final amount. The
-       internal key keeps the ` split` suffix so bucketing and the detail page
-       keep working unchanged. */
-    var splitCardLabel = a.me ? 'Your commission before fees' : null;
     rows.push(s.flat != null
-      ? { k: a.me ? 'Agent split' : firstName(a.name) + ' split', cardk: splitCardLabel, badge: '$' + s.flat + ' flat', sub2: '$' + s.flat + ' flat instead of the split', v: cur(splitBeforeFees) }
-      : { k: a.me ? 'Agent split' : firstName(a.name) + ' split', cardk: splitCardLabel, badge: s.split + '%', sub2: s.split + '%', v: cur(splitBeforeFees) });
+      ? { k: a.me ? 'Agent split' : firstName(a.name) + ' split', badge: '$' + s.flat + ' flat', sub2: '$' + s.flat + ' flat instead of the split', v: cur(splitAmt) }
+      : { k: a.me ? 'Agent split' : firstName(a.name) + ' split', badge: s.split + '%', sub2: s.split + '%', v: cur(splitAmt) });
     rows.push({ k: 'Brokerage', sub2: s.flat != null ? 'Remainder after capped agent amount' : (100 - s.split) + '%', v: cur(Math.max(0, commissionBeforeSplit - splitAmt)), cardhide: true });
-    DEDS.mine.filter(function (d) { return d.kind === 'presplit'; }).forEach(function (d) {
-      var feeAmount = d.amt * share * (s.flat != null ? 1 : s.split / 100);
-      rows.push({ k:d.name, v:neg(feeAmount), amt:feeAmount, underSplit:true, preDed:d.id,
-        payerLabel:'Paid by ' + a.name,
-        det:[{ k:'Your share', v:cur(feeAmount) }, { k:'Paid to', v:d.payee || 'Not specified' }] });
-    });
-    /* Every fee paid from this agent's share stays directly under Agent split. */
+    /* Every amount removed after the split stays directly under Agent split.
+       Do not add a second subtotal: it hides fees and repeats the math. */
     if (tpc) rows.push({ k: selectedPostCap('team').name, sub2: selectedPostCap('team').formula, v: neg(tpc), amt: tpc, underSplit:true, psub: true, ed: 'fee:team', det: [{ k: 'Rule', v: selectedPostCap('team').formula }] });
     rows.push({ k: 'Radius fee', v: neg(radiusFee), amt: radiusFee, underSplit:true, ed: 'fee:radius', det: [{ k: 'Rule', v: '$' + radiusFee + ' flat' }] });
     if (pc) rows.push({ k: selectedPostCap('group').name, sub2: selectedPostCap('group').formula, v: neg(pc), amt: pc, underSplit:true, det: [
@@ -3744,7 +3220,7 @@ Thanks</textarea></div>
     rows.push({ addpost: 'radius' });
     var netA = Math.max(0, splitAmt - radiusFee - pc - tpc - aDed - aRad);
     rows.push({ k: a.me ? 'Your payout' : 'Agent payout · ' + firstName(a.name), v: cur(netA), tot: true });
-    return { net: netA, splitAmt: splitAmt, beforeFees:splitBeforeFees, radius: radiusFee + pc, team: tpc, rows: rows };
+    return { net: netA, splitAmt: splitAmt, radius: radiusFee + pc, team: tpc, rows: rows };
   }
   function computeAgents() {
     var n = AG.mine.length || 1, i, c, sn = 0, ss = 0, sr = 0, st = 0;
@@ -3772,6 +3248,8 @@ Thanks</textarea></div>
       [['Dana Whitfield', '$10,120'], ['Luis Ramos', '$8,640']].forEach(function (member, index) {
         members.push({ name:member[0], role:'Group member', id:'preview-gm-' + index,
           pay:member[1], side:'preview', allocationStatic:true, rows:[
+            { k:'Fees before the split', v:cur(0) },
+            { k:'Fees after the split', v:cur(0) },
             { k:'Payable to Radius', v:cur(0) },
             { k:'Net commission', v:member[1], tot:true }
           ] });
@@ -4109,20 +3587,15 @@ Thanks</textarea></div>
     ['mine', 'other'].forEach(function (side, index) {
       var number = index + 1, other = side === 'other', roster = other ? AG.other : AG.mine,
           participant = roster.filter(function (agent) { return agent.me; })[0],
-          show = !!participant && (!other || role === 'dual_role' || dualRoleSeed),
+          show = !!participant && (!other || role === 'dual_role'),
           card = document.getElementById('sbody' + number).closest('.card.sides');
       card.hidden = !show;
       if (!show) return;
-      if(!card.querySelector('.personal-side-mark')) {
-        var marker=document.createElement('span');marker.className='personal-side-mark';marker.setAttribute('aria-hidden','true');
-        ['ph-plus','ph-minus'].forEach(function(name){var icon=document.createElement('i');icon.className='ph '+name;marker.appendChild(icon);});
-        card.querySelector('.side').appendChild(marker);
-      }
       var share = Number(participant.allocation == null ? 100 / roster.length : participant.allocation) / 100,
           grossAmount = (other ? otherGross : sideGross) * share,
           credits = DEDS[side].filter(function (d) { return d.kind === 'credit'; }),
           after = grossAmount - credits.reduce(function (sum, d) { return sum + d.amt * share; }, 0),
-          payout = other ? otherAgentPayout() * share : myChain().net;
+          payout = other ? (otherGross - otherDed) * share : myChain().net;
       document.getElementById('s' + number + 'Val').textContent = cur(grossAmount);
       document.getElementById('s' + number + 'Sub').textContent = person.name;
       document.getElementById('m' + number + 'Gross').textContent = cur(grossAmount);
@@ -4154,21 +3627,12 @@ Thanks</textarea></div>
     agentDetailLine(commissions, 'Team commission', cur(teamNet));
     agentDetailLine(commissions, 'Group commission', cur(groupNet));
   }
-  function syncSideVisibility() {
-    var primaryCard = document.getElementById('primarySideCard'),
-        opposingCard = document.getElementById('opposingSideCard'),
-        hasBothSides = dualRoleSeed || role === 'dual_role';
-    if (primaryCard) primaryCard.hidden = false;
-    if (opposingCard) opposingCard.hidden = !hasBothSides;
-  }
   function syncFinancialVisibility() {
     var restricted = agentFinancialView();
-    ['r1Rad', 'r1Team', 'r1Group'].forEach(function (id) {
+    ['m1Team', 'r1Rad', 'r1Team', 'r1Group'].forEach(function (id) {
       var value = document.getElementById(id), row = value && value.closest('.side-metric');
       if (row) row.hidden = restricted;
     });
-    var removedTeamSummary = document.getElementById('m1Team');
-    if (removedTeamSummary && removedTeamSummary.closest('.side-metric')) removedTeamSummary.closest('.side-metric').hidden = true;
     var title = document.querySelector('#sec-commissions .sec-title');
     if (title && restricted) title.textContent = 'Your commission';
   }
@@ -4190,25 +3654,17 @@ Thanks</textarea></div>
     });
   }
   function renderPops() {
-    function preFeeAgentImpact(deduction) {
-      return AG.mine.reduce(function (sum, agent) {
-        var schedule = SCHED[agent.name] || { split:80 }, share = Math.max(0, Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation)) / 100;
-        return sum + deduction.amt * share * (schedule.flat != null ? 1 : schedule.split / 100);
-      }, 0);
-    }
-    var i, sumBeforeFees = 0, sumRad = 0, sumPc = 0, sumTpc = 0;
+    var i, sumSplit = 0, sumRad = 0, sumPc = 0, sumTpc = 0;
     for (i = 0; i < MINE.length; i++) {
-      sumBeforeFees += MINE[i].beforeFees;
+      sumSplit += MINE[i].splitAmt;
       sumRad += radiusFee;
       sumPc += MINE[i].radius - radiusFee;
       sumTpc += MINE[i].team;
     }
-    var teamSplit = basis - sumBeforeFees;
+    var teamSplit = basis - sumSplit;
     var rows = [{ k: 'Commission basis', v: cur(basis), head: true },
                 { k: 'Team split', v: neg(teamSplit) }];
-    DEDS.mine.filter(function (d) { return d.kind === 'presplit'; }).forEach(function (d) {
-      rows.push({ k: d.name, v: neg(preFeeAgentImpact(d)) });
-    });
+    if (preSplit) rows.push({ k: 'Fees before the split', v: neg(preSplit) });
     rows.push({ k: 'Radius fee', v: neg(sumRad) });
     if (sumPc) rows.push({ k: selectedPostCap('group').name, v: neg(sumPc) });
     if (sumTpc) rows.push({ k: selectedPostCap('team').name, v: neg(sumTpc) });
@@ -4227,15 +3683,13 @@ Thanks</textarea></div>
     radiusRows.push({ k: 'Radius commission', v: cur(radiusNet), tot: true });
     popRows('pop1RadB', radiusRows);
 
-    var teamRows = [{ k: 'Team split', v: cur(teamSplit), head: true }];
-    DEDS.mine.filter(function (d) { return d.kind === 'presplit'; }).forEach(function (d) {
-      teamRows.push({ k:d.name, v:neg(Math.max(0, d.amt - preFeeAgentImpact(d))) });
-    });
-    teamRows.push({ k: selectedPostCap('team').name, v: '+ ' + cur(sumTpc) });
-    teamRows.push({ k: 'Team admin fee', v: '+ ' + cur(teamAdminFee) });
-    teamRows.push({ sep:true });
-    teamRows.push({ k:'Team commission', v:cur(teamNet), tot:true });
-    popRows('pop1TeamB', teamRows);
+    popRows('pop1TeamB', [
+      { k: 'Team split', v: cur(teamSplit), head: true },
+      { k: selectedPostCap('team').name, v: '+ ' + cur(sumTpc) },
+      { k: 'Team admin fee', v: '+ ' + cur(teamAdminFee) },
+      { sep: true },
+      { k: 'Team commission', v: cur(teamNet), tot: true }
+    ]);
 
     popRows('pop1GroupB', [
       { k: 'Team commission', v: cur(teamNet), head: true },
@@ -4342,7 +3796,7 @@ Thanks</textarea></div>
       var shareO = Math.max(0, Number(AG.other[i].allocation == null ? (100 / on) : AG.other[i].allocation)) / 100, amt = oBasis * shareO,
           isDualAgent = role === 'dual_role' && AG.other[i].me;
       o = { name: AG.other[i].name, role: AG.other[i].role, id: 'apay-o' + i, pay: cur(amt), rows: [
-        { k: 'Side after credits and referrals', v: cur(oBasis) }
+        { k: 'Side after deductions', v: cur(oBasis) }
       ], allocation: shareO * 100, side: 'other', index: i, removable: true };
       if (on > 1) o.rows.push({ k: 'Allocation \u00b7 ' + pctLbl(shareO), v: cur(amt) });
       o.rows.push({ k: isDualAgent ? 'Your payout' : 'Paid by ' + COOP[mySide], v: cur(amt), tot: true });
@@ -4611,520 +4065,6 @@ Thanks</textarea></div>
   });
 
   /* every number that moves when the allocation moves */
-  /* Team Lead owns an independent result for each represented side. */
-  function teamLeadSideKeys() { return dualRoleSeed ? ['mine', 'other'] : ['mine']; }
-  function teamLeadSideModel(key) {
-    var money = function (n) { return Math.round((n + Number.EPSILON) * 100) / 100; };
-    var roster = AG[key], deductions = DEDS[key], fees = key === 'mine' ? POSTDEDS : OTHERFEES;
-    var side = key === 'mine' ? myTitle : coopTitle;
-    var grossAmount = key === 'mine' ? sideGross : otherGross;
-    var credits = deductions.filter(function (d) { return d.kind === 'credit'; });
-    var before = deductions.filter(function (d) { return d.kind === 'presplit'; });
-    var after = money(grossAmount - credits.reduce(function (sum, d) { return sum + d.amt; }, 0));
-    var preTotal = before.reduce(function (sum, d) { return sum + d.amt; }, 0);
-    var complete = roster.length > 0 && Math.abs(roster.reduce(function (sum, a) { return sum + Number(a.allocation || 0); }, 0) - 100) < .001;
-    var teamIncome = [], teamCosts = [], groupCosts = [], agents = [];
-    function cost(list, label, amount, fee, deduction) {
-      if (!amount) return;
-      list.push({ k:label, amount:money(amount), fee:fee || null, deduction:deduction || null });
-    }
-    roster.forEach(function (agent, index) {
-      var schedule = SCHED[agent.name], share = Number(agent.allocation || 0) / 100;
-      if (!schedule || (schedule.flat == null && !Number.isFinite(schedule.split))) complete = false;
-      var allocated = money(after * share), planAmount = !schedule ? 0 : schedule.flat != null ? Math.max(0, allocated - schedule.flat) : money(allocated * schedule.split / 100);
-      var preAgent = !schedule ? 0 : schedule.flat != null ? money(preTotal * share) : money(preTotal * share * schedule.split / 100);
-      var teamSplit = money(allocated - planAmount), costs = [];
-      teamIncome.push({ k:agent.name, amount:teamSplit, sub:side + ' · ' + (schedule ? schedule.flat != null ? cur(schedule.flat) + ' flat to team' : splitPct(100 - schedule.split) + ' to team' : 'Choose plan') });
-      before.forEach(function (d) {
-        var fullShare = money(d.amt * share), agentShare = !schedule ? 0 : schedule.flat != null ? fullShare : money(fullShare * schedule.split / 100);
-        cost(costs, d.name, agentShare, null, d);
-        cost(teamCosts, d.name + ' · ' + agent.name, money(fullShare - agentShare), null, d);
-      });
-      var teamCap = schedule && schedule.team && postCapActiveFor(schedule, 'team') ? postCapCharge('team', grossAmount * share) : 0;
-      var radiusCap = schedule && schedule.capped && postCapActiveFor(schedule, 'group') ? postCapCharge('group', grossAmount * share) : 0;
-      cost(costs, 'Radius fee', radiusFee);
-      cost(costs, selectedPostCap('team').name, teamCap);
-      cost(costs, selectedPostCap('group').name, radiusCap);
-      if (teamCap) teamIncome.push({ k:agent.name + ' · ' + selectedPostCap('team').name, amount:money(teamCap), sub:side });
-      fees.forEach(function (fee) { cost(costs, fee.n, (fee.direction === 'addition' ? -1 : 1) * agentFeeAmount(fee, agent, roster.length, share), fee); });
-      if (key === 'mine') PAYRADIUS.forEach(function (fee) { cost(costs, fee.n, (fee.direction === 'addition' ? -1 : 1) * agentFeeAmount(fee, agent, roster.length, share), fee); });
-      var netAmount = money(planAmount - costs.reduce(function (sum, c) { return sum + c.amount; }, 0));
-      var rows = [{ k:'Commission basis', cardk:'Gross after credits and referrals', v:cur(allocated) },
-        { k:'Agent split', cardk:'Your commission before fees', v:cur(planAmount) }];
-      costs.forEach(function (c) {
-        rows.push({ k:c.k, v:c.amount < 0 ? cur(-c.amount) : neg(c.amount), amt:Math.abs(c.amount), underSplit:true,
-          post:c.fee, preDed:c.deduction && c.deduction.id, feeSide:key, ed:c.k === 'Radius fee' ? 'fee:radius' : undefined, list:c.fee && PAYRADIUS.indexOf(c.fee) > -1 ? 'radius' : key === 'other' ? 'other' : 'post', payerLabel:'Paid by ' + agent.name });
-      });
-      rows.push({ k:'Your payout', v:cur(netAmount), tot:true });
-      agents.push({ agent:agent, index:index, beforeFees:planAmount, net:netAmount, costs:costs, rows:rows, preAgent:preAgent });
-    });
-    fees.concat(key === 'mine' ? PAYRADIUS : []).forEach(function (fee) {
-      cost(teamCosts, fee.n, (fee.direction === 'addition' ? -1 : 1) * fee.a * feeShare(fee, 'Team'), fee);
-      cost(groupCosts, fee.n, (fee.direction === 'addition' ? -1 : 1) * fee.a * feeShare(fee, 'Group'), fee);
-      var payers = feePayers(fee.p);
-      if (payers.length > 1 && Math.abs(payers.reduce(function (sum, payer) { return sum + feeShare(fee, payer); }, 0) - 1) > .001) complete = false;
-    });
-    if (key === 'mine') {
-      cost(teamCosts, 'Team admin fee', teamAdminFee);
-      cost(teamCosts, 'Team office fee', teamPostCap);
-    }
-    var earnings = money(teamIncome.reduce(function (sum, row) { return sum + row.amount; }, 0));
-    var groupEarnings = money(earnings * groupSplitPct / 100);
-    cost(teamCosts, 'Group commission · ' + splitPct(groupSplitPct), groupEarnings);
-    var teamNetAmount = money(earnings - teamCosts.reduce(function (sum, row) { return sum + row.amount; }, 0));
-    var groupNetAmount = money(groupEarnings - groupCosts.reduce(function (sum, row) { return sum + row.amount; }, 0));
-    return { key:key, side:side, gross:grossAmount, after:after, credits:credits, agents:agents, complete:complete,
-      teamIncome:teamIncome, teamCosts:teamCosts, earnings:earnings, teamNet:teamNetAmount,
-      groupEarnings:groupEarnings, groupCosts:groupCosts, groupNet:groupNetAmount };
-  }
-  function teamLeadSelectedChain() {
-    var model = teamLeadSideModel(leadMemberSelection.side);
-    return model.agents[leadMemberSelection.index];
-  }
-  /* Jessica's September 28 examples. These fixtures are isolated from the
-     Agent demo and do not define production fees, visibility, or permissions. */
-  var sheetScenario = 'single', sheetOpen = {}, sheetEditing = false, sheetScenarioActive = false, sheetAgentName = 'Agent Ally', sheetTeamPersonal = false;
-  var sheetExamples = {
-    single: [{ name:'Buying side', award:2.5, gross:12500, credit:1000, referral:2500,
-      agents:[{ name:'Agent Ally', allocation:100, split:80, fees:[['TC Fee',700],['Home Warranty Fee',400],['Office Fee To Group',400,'group']] }], groupFees:[['Photography Fee',400]] }],
-    dual: [{ name:'Buying side', award:1, gross:5000, credit:1000, referral:0,
-      agents:[{ name:'Agent Ally', allocation:50, split:80, fees:[['TC Fee',350],['Home Warranty Fee',200],['Office Fee To Group',400,'group']] },
-        { name:'Agent Benny', allocation:50, split:70, fees:[['TC Fee',350],['Home Warranty Fee',200]] }], groupFees:[['Photography Fee',400]], disputed:true },
-      { name:'Listing side', award:1.5, gross:7500, credit:0, referral:1500,
-      agents:[{ name:'Agent Ally', allocation:100, split:80, fees:[['Photography Fee',500]] }], groupFees:[['Photography Fee',500]] }]
-  };
-  function sheetViewActive() {
-    return !leadMemberSelection && (['team_lead','group_lead','group_lead_agent','dual_role'].indexOf(role) !== -1 || (sheetScenarioActive && ['agent','group_agent'].indexOf(role) !== -1));
-  }
-  function sheetSideMath(side) {
-    var round = function (n) { return Math.round(n * 100) / 100; };
-    var basis = round(side.gross - side.credit - side.referral), teamSplit = round(basis * .1), radius = round(basis * .05);
-    var shared = round(basis - teamSplit), group = 0;
-    var agents = side.agents.map(function (a) {
-      var allocated = round(shared * a.allocation / 100), pre=a.fees.reduce(function(sum,f){return sum+(f.stage==='presplit'?f[1]:0);},0), commission = round((allocated-pre) * a.split / 100);
-      var contribution = round(allocated - pre - commission);
-      group += contribution + a.fees.reduce(function (sum, f) { return sum + (f[2] === 'group' ? f[1] : 0); }, 0);
-      return { source:a, basis:allocated, commission:commission, group:contribution,
-        net:round(commission - a.fees.reduce(function (sum, f) { return sum + (f.stage==='presplit'?0:f[1]); }, 0)) };
-    });
-    return { side:side, basis:basis, teamSplit:teamSplit, radius:radius, team:round(teamSplit-radius-(side.teamFees||[]).reduce(function(s,f){return s+f[1];},0)), shared:shared,
-      agents:agents, group:round(group-side.groupFees.reduce(function (sum,f) { return sum+f[1]; },0)) };
-  }
-  function sheetFeeShareText(side, selected, payer, dual) {
-    // Sheet examples store each payer's amount, not a commission percentage.
-    var fees = (side.groupFees || []).concat(side.teamFees || []);
-    side.agents.forEach(function(agent){ fees = fees.concat(agent.fees); });
-    var total = fees.reduce(function(sum, fee){ return sum + ((selected.feeId ? fee.feeId===selected.feeId : fee[0]===selected[0]) ? fee[1] : 0); }, 0);
-    var percentage = total > 0 ? Math.round(selected[1] / total * 10000) / 100 : null;
-    return payer + ' share · ' + (percentage === null ? 'No amount allocated' : percentage + '% of ' + cur(total)) + (dual ? ' · ' + side.name : '');
-  }
-  function sheetFeeEntries(side, selected) {
-    var entries=[];
-    function collect(fees,payer,agent){fees.forEach(function(f){if(!selected || (selected.feeId ? f.feeId===selected.feeId : f[0]===selected[0]))entries.push({fee:f,payer:payer,agent:agent,fees:fees});});}
-    side.agents.forEach(function(a){collect(a.fees,'Agent',a);});
-    collect(side.groupFees,'Group');collect(side.teamFees||[],'Team');return entries;
-  }
-  function openSheetExampleFee(side, selected, trigger, deductionKey) {
-    if(isFinalizedStatus(status))return;
-    if(deductionKey){
-      if(role!=='team_lead' || !sheetEditing)return;
-      openClientCreditSheet('mine',trigger,deductionKey);
-      clientCreditCtx.sheetSide=side;clientCreditCtx.originalType=deductionKey;
-      document.getElementById('ccAmount').value=side[deductionKey];
-      document.getElementById('ccPayee').value=side[deductionKey+'Payee'] || (deductionKey==='credit'?'Buyer':'Keller Williams');
-      document.getElementById('ccSave').textContent='Save '+(deductionKey==='credit'?'Credit':'Referral');
-      updateClientCreditSave();return;
-    }
-    var entries=sheetFeeEntries(side,selected), total=entries.reduce(function(sum,e){return sum+e.fee[1];},0), shares={Agent:0,Team:0,Group:0};
-    entries.forEach(function(e){shares[e.payer]+=e.fee[1];});
-    var data=selected?{id:'sheet-fee',n:selected[0],a:total,p:Object.keys(shares).filter(function(k){return shares[k]>0;}).join(' + '),
-      payTo:selected[2]==='group'?'team':selected.payTo||'external',payee:selected.payee||'',
-      agentPct:total?shares.Agent/total*100:100,teamPct:total?shares.Team/total*100:0,groupPct:total?shares.Group/total*100:0,
-      stage:selected.stage||'postsplit',editable:true,createdByAgent:selected.createdByAgent}:null;
-    openCommissionFee(data,trigger);
-    if(!dedCtx || dedCtx.fee!==data)return;
-    dedCtx.sheetExample={side:side,selected:selected,entries:entries};
-    document.getElementById('fFeeSide').hidden=sheetExamples[sheetScenario].length===1;
-    document.getElementById('feeSideMine').textContent=sheetExamples[sheetScenario][0].name;
-    document.getElementById('feeSideOther').textContent=sheetExamples[sheetScenario][1]?sheetExamples[sheetScenario][1].name:'';
-    document.getElementById('feeDealSide').value=side===sheetExamples[sheetScenario][0]?'mine':'other';
-  }
-  function addSheetExampleFee(trigger) {
-    openSheetExampleFee(sheetExamples[sheetScenario][0],null,trigger);
-  }
-  function saveSheetExampleFee(ctx, data) {
-    var target=sheetExamples[sheetScenario][document.getElementById('feeDealSide').value==='other'?1:0] || ctx.sheetExample.side;
-    var previous=ctx.sheetExample.entries;
-    if(ctx.sheetExample.selected)previous.forEach(function(e){var i=e.fees.indexOf(e.fee);if(i>=0)e.fees.splice(i,1);});
-    var id=ctx.sheetExample.selected && ctx.sheetExample.selected.feeId || 'sheet-'+(++postSeq);
-    function add(fees,amount){if(!amount)return;var f=[data.n,Math.round(amount*100)/100,data.payTo==='team'?'group':undefined];f.feeId=id;f.stage=data.stage;f.payTo=data.payTo;f.payee=data.payee;f.createdByAgent=data.createdByAgent;fees.push(f);}
-    var agentTotal=data.a*(data.agentPct||0)/100;
-    var recipients=target.agents;
-    if(agentFinancialView())recipients=recipients.filter(function(a){return a.name===(role==='dual_role'?'Agent Ally':sheetAgentName);});
-    var priorTotal=previous.filter(function(e){return e.payer==='Agent';}).reduce(function(sum,e){return sum+e.fee[1];},0);
-    var used=0;
-    recipients.forEach(function(a,i){
-      var existing=previous.filter(function(e){return e.agent===a;}).reduce(function(sum,e){return sum+e.fee[1];},0);
-      var weight=priorTotal && target===ctx.sheetExample.side?existing/priorTotal:recipients.length===1?1:a.allocation/100;
-      var amount=i===recipients.length-1?Math.round((agentTotal-used)*100)/100:Math.round(agentTotal*weight*100)/100;used+=amount;add(a.fees,amount);
-    });
-    if(!target.teamFees)target.teamFees=[];
-    add(target.teamFees,data.a*(data.teamPct||0)/100);add(target.groupFees,data.a*(data.groupPct||0)/100);
-    close();renderSheetBreakdown();
-  }
-  function renderSheetBreakdown() {
-    var active = sheetViewActive();
-    document.querySelectorAll('[data-sheet-scenario]').forEach(function(b){b.setAttribute('aria-pressed',String(active && b.dataset.sheetScenario===sheetScenario));});
-    screenEl.classList.toggle('sheet-breakdown', active);
-    var root = document.getElementById('sheetBreakdown');
-    if (!active) { if (root) root.hidden = true; return false; }
-    if (!root) { root = document.createElement('section'); root.id = 'sheetBreakdown'; root.className = 'tl-fee-details'; detailPage.querySelector('.detail-scroll').appendChild(root); }
-    root.hidden = false; root.textContent = '';
-    var models = sheetExamples[sheetScenario].map(sheetSideMath);
-    var personalOnly = ['agent','group_agent','dual_role'].indexOf(role) !== -1;
-    var groupViewer = role === 'group_lead' || role === 'group_lead_agent';
-    var hasPersonal = personalOnly || role === 'group_lead_agent' || (role === 'team_lead' && sheetTeamPersonal);
-    var viewerName = role === 'dual_role' ? 'Agent Ally' : sheetAgentName;
-    var visibleModels = personalOnly ? models.filter(function(m){return m.agents.some(function(a){return a.source.name === viewerName;});}) : models;
-    function visibleAgents(m) { return personalOnly ? m.agents.filter(function(a){return a.source.name === viewerName;}) : m.agents; }
-    var personalTotal = models.reduce(function(sum,m){return sum + m.agents.reduce(function(n,a){return n + (a.source.name === viewerName ? a.net : 0);},0);},0);
-
-    function el(tag, cls, text) { var node=document.createElement(tag); node.className=cls||''; if(text!=null) node.textContent=text; return node; }
-    function row(host, label, amount, sub, kind) {
-      var node=el('div','agent-fee-row sheet-row'+(kind==='total'?' sheet-total':'')+(kind==='fee'?' neg':''));
-      var icon=el('i','agent-fee-direction ph '+(kind==='fee'?'ph-receipt':kind==='total'?'ph-wallet':'ph-currency-dollar')); icon.setAttribute('aria-hidden','true');
-      var copy=el('span','',label); if(sub) copy.appendChild(el('small','fee-subtext',sub));
-      node.appendChild(icon); node.appendChild(copy); var value=el('b','',typeof amount==='number'?cur(amount):amount); node.appendChild(value); applyRadiusItem(node,copy,value,icon); host.appendChild(node); return node;
-    }
-    function section(host, title) { var block=el('section','sheet-section'); block.appendChild(el('h3','sheet-heading',title)); host.appendChild(block); return block; }
-    function disclosure(host,title,sub,key,open) {
-      var box=el('details','sheet-disclosure'); box.open=Object.prototype.hasOwnProperty.call(sheetOpen,key)?sheetOpen[key]:!!open;
-      var head=el('summary',''); var copy=el('span','',title); if(sub) copy.appendChild(el('small','fee-subtext',sub)); head.appendChild(copy);
-      var mark=el('span','sheet-disclosure-mark'); mark.setAttribute('aria-hidden','true');
-      mark.appendChild(el('i','ph ph-plus')); mark.appendChild(el('i','ph ph-minus'));
-      head.appendChild(mark); box.appendChild(head);
-      box.addEventListener('toggle',function(){ sheetOpen[key]=box.open; }); host.appendChild(box); return box;
-    }
-    function fee(host, f, payer, side) {
-      var node=row(host,f[0],-f[1],sheetFeeShareText(side,f,payer,models.length > 1),'fee');
-      if (personalOnly) return;
-      var button=el('button',node.className+' rds-item--button');button.type='button';button.setAttribute('aria-haspopup','dialog');
-      var editable = sheetEditing && !isFinalizedStatus(status);
-      button.setAttribute('aria-label',(editable?'Edit ':'View ')+f[0]+' full amount and allocation');
-      if(editable) {
-        node.querySelector('i').className='ph ph-pencil-simple';
-        button.className += ' sheet-fee-editable';
-      }
-      while(node.firstChild)button.appendChild(node.firstChild);node.replaceWith(button);
-      button.addEventListener('click',function(){openSheetExampleFee(side,f,button);});
-    }
-    function deduction(host, side, key) {
-      var label=key==='credit'?'Credit':'Referral';
-      if(key==='referral' && side.gross>0)label+=' ('+(Math.round(side.referral/side.gross*10000)/100)+'%)';
-      var node=row(host,label,-side[key],'Paid to '+(side[key+'Payee'] || (key==='credit'?'Buyer':'Keller Williams')),'fee');
-      if(role!=='team_lead' || !sheetEditing || isFinalizedStatus(status))return;
-      var button=el('button',node.className+' sheet-fee-editable');button.type='button';
-      button.setAttribute('aria-label','Edit '+(key==='credit'?'Credit':'Referral'));
-      button.setAttribute('aria-haspopup','dialog');
-      node.querySelector('i').className='ph ph-pencil-simple';
-      while(node.firstChild)button.appendChild(node.firstChild);node.replaceWith(button);
-      button.addEventListener('click',function(){openSheetExampleFee(side,[key==='credit'?'Credit':'Referral',side[key]],button,key);});
-    }
-    root.className = 'tl-fee-details';
-    row(root,'Sale price',500000);
-    if(models.length>1) {
-      visibleModels.slice().reverse().forEach(function(m){row(root,m.side.name === 'Listing side' ? 'List Side Award' : 'Buy Side Award',m.side.award+'%');});
-      if (!personalOnly || visibleModels.length > 1) row(root,'Total Award',models.reduce(function(sum,m){return sum+m.side.award;},0)+'%');
-      row(root,'Gross commission',models.reduce(function(sum,m){return sum+m.side.gross;},0));
-    } else row(root,'Award',models[0].side.award+'%');
-    visibleModels.forEach(function(m,sideIndex){
-      var body=disclosure(root,m.side.name,'Award '+m.side.award+'% · '+cur(m.side.gross),'side-'+sheetScenario+'-'+sideIndex,true);
-      body.className += ' sheet-side-card';
-      var agentsWithPlans=visibleAgents(m).filter(function(a){return typeof a.source.split==='number' && Number.isFinite(a.source.split);});
-      if(agentsWithPlans.length) {
-        var plans=section(body,'Commission plans');
-        agentsWithPlans.forEach(function(a){
-          var planRow=el('div','sheet-agent-plan');
-          var copy=el('span','',a.source.name);
-          if(m.agents.length>1)copy.appendChild(el('small','fee-subtext',a.source.allocation+'% co-agent allocation'));
-          var anchor=el('div','sheet-plan-anchor');
-          var select=el('button','rds-combobox__trigger sheet-plan-trigger');select.type='button';
-          select.setAttribute('aria-label',a.source.name+' commission plan · '+m.side.name);
-          select.setAttribute('aria-haspopup','listbox');select.setAttribute('aria-expanded','false');
-          select.disabled=personalOnly || !sheetEditing || isFinalizedStatus(status);
-          select.appendChild(el('span','',a.source.split+'% Agent / '+(100-a.source.split)+'% Group'));
-          var caret=el('i','ph ph-caret-down');caret.setAttribute('aria-hidden','true');select.appendChild(caret);
-          var menu=el('div','rds-combobox__panel sheet-plan-menu');menu.setAttribute('popover','auto');menu.setAttribute('role','listbox');
-          menu.id='sheetPlan-'+sideIndex+'-'+agentsWithPlans.indexOf(a);select.setAttribute('aria-controls',menu.id);
-          menu.setAttribute('aria-label',a.source.name+' commission plans');
-          var options=[];
-          Array.from(new Set([70,80,90,a.source.split])).sort(function(a,b){return a-b;}).forEach(function(p){
-            var option=el('button','rds-command__item');option.type='button';option.value=p;option.setAttribute('role','option');
-            option.setAttribute('aria-selected',String(p===a.source.split));
-            var check=el('i','ph ph-check');check.setAttribute('aria-hidden','true');check.style.visibility=p===a.source.split?'visible':'hidden';
-            option.appendChild(check);option.appendChild(el('span','',p+'% Agent / '+(100-p)+'% Group'));
-            option.addEventListener('click',function(){
-              if(personalOnly || !sheetEditing || isFinalizedStatus(status))return;
-              a.source.split=p;menu.hidePopover();renderSheetBreakdown();
-              var replacement=document.getElementById(menu.id);if(replacement)replacement.previousElementSibling.focus();
-            });
-            options.push(option);menu.appendChild(option);
-          });
-          select.addEventListener('click',function(){
-            if(select.disabled)return;
-            if(menu.matches(':popover-open')){menu.hidePopover();return;}
-            var bounds=select.getBoundingClientRect();
-            menu.style.width=Math.min(280,window.innerWidth-24)+'px';
-            menu.style.left=Math.max(12,Math.min(bounds.right-280,window.innerWidth-292))+'px';
-            menu.style.top=Math.max(12,Math.min(bounds.bottom+6,window.innerHeight-160))+'px';
-            menu.showPopover();select.setAttribute('aria-expanded','true');
-            options.filter(function(option){return Number(option.value)===a.source.split;})[0].focus();
-          });
-          menu.addEventListener('toggle',function(event){select.setAttribute('aria-expanded',String(event.newState==='open'));});
-          menu.addEventListener('keydown',function(event){
-            var index=options.indexOf(document.activeElement);
-            if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();options[(index+(event.key==='ArrowDown'?1:-1)+options.length)%options.length].focus();}
-            if(event.key==='Escape'||event.key==='Tab'){menu.hidePopover();if(event.key==='Escape'){event.preventDefault();select.focus();}}
-          });
-          anchor.appendChild(select);anchor.appendChild(menu);planRow.appendChild(copy);planRow.appendChild(anchor);plans.appendChild(planRow);
-        });
-      }
-      var gross=section(body,'Commission breakdown'); row(gross,'Gross commission',m.side.gross);
-      if(m.side.credit || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'credit');
-      if(m.side.referral || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'referral');
-      row(gross,'Gross after credits and referrals',m.basis,null,'total');
-      if (!personalOnly && !groupViewer) {
-      var team=section(body,'Team commission');
-      row(team,'Teams Commission Basis',m.basis,'Master Plan · 90% Group / 10% Team');
-      row(team,'Team Split 10%',m.teamSplit);
-      row(team,'Radius Fee 5%',-m.radius,'Paid by Team · 5% of '+cur(m.basis)+(models.length > 1 ? ' · '+m.side.name : ''),'fee');
-      (m.side.teamFees||[]).forEach(function(f){fee(team,f,'Team',m.side);});
-      row(team,'Team Payout (net)',m.team,null,'total');
-      }
-      var shared=section(body,'Agent & Group'); row(shared,'Agent & Group Commission Basis',m.shared);
-      visibleAgents(m).forEach(function(a,index){
-        var agent=disclosure(body,a.source.name,cur(a.net)+' payout','agent-'+sheetScenario+'-'+sideIndex+'-'+index,true);
-        row(agent,'Commission basis',a.basis,a.source.allocation+'% co-agent allocation');
-        a.source.fees.filter(function(f){return f.stage==='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
-        row(agent,'Agent split '+a.source.split+'%',a.commission,'Group share: '+cur(a.group)+' · Already excluded');
-        a.source.fees.filter(function(f){return f.stage!=='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
-        row(agent,a.source.name==='Agent Ally'?'AA Payout (net)':'Agent Benny Payout (net)',a.net,null,'total');
-      });
-      if (!personalOnly) {
-      var group=section(body,'Best Agents Ever (Group)');
-      m.agents.forEach(function(a){
-        row(group,(100-a.source.split)+'% Group Split from '+a.source.name,a.group);
-        a.source.fees.filter(function(f){return f[2]==='group';}).forEach(function(f){row(group,'Office Fee From '+a.source.name,f[1]);});
-      });
-      m.side.groupFees.forEach(function(f){fee(group,f,'Best Agents Ever',m.side);});
-      row(group,'BAE Payout (net)',m.group,null,'total');
-      }
-    });
-    var teamTotal=models.reduce(function(sum,m){return sum+m.team;},0);
-    var groupTotal=models.reduce(function(sum,m){return sum+m.group;},0);
-    if (models.length > 1 || (hasPersonal && !personalOnly)) {
-      var overall=section(root,models.length > 1 ? 'Commission Overview' : 'Your payouts');
-      if (personalOnly) {
-        visibleModels.forEach(function(m){visibleAgents(m).forEach(function(a){row(overall,m.side.name,a.net);});});
-        row(overall,'Your payout',personalTotal,null,'total');
-      } else {
-        models.forEach(function(m){
-          if (groupViewer) {
-            m.agents.forEach(function(a){row(overall,'Group split from '+a.source.name,a.group,m.side.name);});
-            m.agents.forEach(function(a){a.source.fees.filter(function(f){return f[2]==='group';}).forEach(function(f){row(overall,f[0],f[1],a.source.name+' · '+m.side.name);});});
-            m.side.groupFees.forEach(function(f){row(overall,f[0],-f[1],sheetFeeShareText(m.side,f,'Best Agents Ever',models.length > 1),'fee');});
-          } else {
-            row(overall,'Team Split 10%',m.teamSplit,m.side.name);
-            row(overall,'Radius Fee',-m.radius,'Paid by Team · 5% of '+cur(m.basis)+' · '+m.side.name,'fee');
-            (m.side.teamFees||[]).forEach(function(f){row(overall,f[0],-f[1],sheetFeeShareText(m.side,f,'Team',models.length > 1),'fee');});
-          }
-        });
-        row(overall,groupViewer?'Group Net Commission':'Team Net Commission',groupViewer?groupTotal:teamTotal,null,'total');
-        if(hasPersonal)row(overall,'Personal payout',personalTotal,viewerName,'total');
-      }
-    }
-    var preview=disclosure(root,'CDA Preview','See payout amounts.','cda-'+sheetScenario+'-'+role,true);
-    visibleModels.forEach(function(m){
-      var block=section(preview,m.side.name);
-      if (!personalOnly && !groupViewer) {
-        if(m.side.credit)row(block,'Buyer credit',m.side.credit);
-        if(m.side.referral)row(block,'Keller Williams',m.side.referral,'Referral');
-        row(block,'Team',m.team);row(block,'Radius',m.radius);
-      }
-      visibleAgents(m).forEach(function(a){row(block,a.source.name,a.net);});
-      if (!personalOnly) row(block,'Best Agents Ever',m.group);
-      if (!personalOnly) {
-        var external={};m.agents.forEach(function(a){a.source.fees.forEach(function(f){if(f[2]!=='group')external[f[0]]=(external[f[0]]||0)+f[1];});});
-        m.side.groupFees.forEach(function(f){external[f[0]]=(external[f[0]]||0)+f[1];});
-        if(!groupViewer)(m.side.teamFees||[]).forEach(function(f){external[f[0]]=(external[f[0]]||0)+f[1];});
-        Object.keys(external).forEach(function(name){row(block,name,external[name],'Recipient not supplied in sheet');});
-        if(!groupViewer)row(block,'Total disbursements',m.side.gross,null,'total');
-      }
-    });
-    var leadTotal = groupViewer ? groupTotal : teamTotal;
-    document.getElementById('netFloatLabel').textContent=personalOnly?'Your payout':hasPersonal?'Personal + '+(groupViewer?'Group':'Team')+' payout':groupViewer?'Group payout':'Team payout';
-    document.getElementById('netFloatValue').textContent=cur(personalOnly?personalTotal:leadTotal+(hasPersonal?personalTotal:0));
-    document.getElementById('netFloatSub').textContent=visibleModels.map(function(m){return m.side.name;}).join(' + ');
-    return true;
-  }
-  // Vanilla DOM adapter for Radius components/data-display/Item.jsx.
-  // Reuse its markup and shipped CSS; keep existing nodes and event handlers.
-  function applyRadiusItem(row, copy, amount, icon) {
-    var addition = row.classList.contains('agent-addition');
-    var negative = row.classList.contains('neg');
-    row.className = 'rds-item commission-item' + (row.tagName === 'BUTTON' ? ' rds-item--button' : '') + (addition ? ' commission-item--addition' : negative ? ' commission-item--deduction' : '');
-    var content = document.createElement('span'); content.className = 'rds-item__content';
-    var title = document.createElement('span'); title.className = 'rds-item__title'; title.style.display = 'block';
-    var descriptions = [];
-    Array.from(copy.childNodes).forEach(function(child) {
-      if (child.nodeType === 1 && child.classList.contains('fee-subtext')) descriptions.push(child);
-      else title.appendChild(child);
-    });
-    content.appendChild(title);
-    descriptions.forEach(function(description) {
-      description.classList.remove('fee-subtext'); description.classList.add('rds-item__desc');
-      description.style.display = 'block'; content.appendChild(description);
-    });
-    copy.replaceWith(content);
-    if (icon) {
-      var media = document.createElement('span'); media.className = 'rds-item__media';
-      icon.classList.remove('agent-fee-direction'); icon.style.fontSize = '16px'; icon.style.lineHeight = '1';
-      icon.replaceWith(media); media.appendChild(icon);
-    }
-    var actions = document.createElement('span'); actions.className = 'rds-item__actions';
-    amount.replaceWith(actions); actions.appendChild(amount);
-    Array.from(row.children).forEach(function(child) {
-      if (child !== content && child !== actions && !child.classList.contains('rds-item__media')) actions.appendChild(child);
-    });
-    return row;
-  }
-  function renderTeamLeadOverview() {
-    if (renderSheetBreakdown()) return;
-    var active = role === 'team_lead' && !leadMemberSelection;
-    detailPage.classList.toggle('team-lead-overview', active);
-    if (!active) return;
-    var models = teamLeadSideKeys().map(teamLeadSideModel), complete = models.every(function (m) { return m.complete; });
-    var total = models.reduce(function (sum, m) { return sum + m.teamNet; }, 0);
-    var summary = document.getElementById('teamLeadOverall');
-    if (!summary) { summary = document.createElement('section'); summary.id = 'teamLeadOverall'; document.getElementById('sec-sides').before(summary); }
-    summary.textContent = '';
-    document.getElementById('commissionsStackCard').hidden = true;
-    function line(host, label, amount, tone, sub, action) {
-      var row = document.createElement(action ? 'button' : 'div'); row.className = 'tl-line' + (tone ? ' tl-' + tone : '');
-      if (action) { row.type = 'button'; row.disabled = isFinalizedStatus(status); row.addEventListener('click', action); }
-      var text = document.createElement('span'); text.className = 'tl-copy'; var title = document.createElement('span'); title.textContent = label; text.appendChild(title);
-      if (sub) { var small = document.createElement('small'); small.textContent = sub; text.appendChild(small); }
-      var value = document.createElement('b'); value.textContent = typeof amount === 'number' ? cur(amount) : amount;
-      if (host.className.split(' ').indexOf('tl-agent-style') !== -1 && ((tone || '').split(' ').indexOf('fee') !== -1 || label === 'Credit' || label === 'Referral')) {
-        row.className += ' tl-icon-row';
-        var icon = document.createElement('i'); icon.className = 'ph ph-receipt tl-fee-icon';
-        icon.setAttribute('aria-hidden', 'true'); row.appendChild(icon);
-      }
-      row.appendChild(text); row.appendChild(value); host.appendChild(row); return row;
-    }
-    function heading(host, name) { var h = document.createElement('h3'); h.className = 'tl-heading'; h.textContent = name; host.appendChild(h); }
-    function feeRows(host, model, costs) {
-      costs.forEach(function (c) {
-        var action = c.fee ? function () { teamLeadFeeSide = model.key; openCommissionFee(c.fee, this); }
-          : c.deduction ? function () { openDed(model.key, c.deduction, false, c.deduction.kind, this); }
-          : c.k === 'Radius fee' ? function () { openFee('radius', this); }
-          : c.k === 'Team admin fee' ? function () { openFee('team_admin', this); }
-          : c.k === 'Team office fee' ? function () { openFee('team', this); } : null;
-        line(host, c.k, c.amount < 0 ? cur(-c.amount) : neg(c.amount), c.amount < 0 ? 'addition fee' : 'deduction fee', null, action);
-      });
-    }
-    function agentFeeRows(host, model, entry) {
-      entry.costs.forEach(function (c) {
-        var action = c.fee ? function () { teamLeadFeeSide = model.key; openCommissionFee(c.fee, this); }
-          : c.deduction ? function () { openDed(model.key, c.deduction, false, c.deduction.kind, this); }
-          : c.k === 'Radius fee' ? function () { openFee('radius', this); } : null;
-        var row = document.createElement(action ? 'button' : 'div');
-        row.className = 'agent-fee-row' + (c.amount < 0 ? ' agent-addition' : ' neg');
-        if (action) { row.type = 'button'; }
-        var icon = document.createElement('i'); icon.className = 'agent-fee-direction ph ph-receipt'; icon.setAttribute('aria-hidden', 'true');
-        var copy = document.createElement('span'); copy.textContent = c.k;
-        var subtext = document.createElement('small'); subtext.className = 'fee-subtext';
-        subtext.textContent = c.deduction ? 'Deducted from ' + entry.agent.name + '\u2019s commission'
-          : c.amount < 0 ? 'Added to ' + entry.agent.name : 'Paid by ' + entry.agent.name;
-        copy.appendChild(subtext);
-        var amount = document.createElement('b'); amount.textContent = c.amount < 0 ? cur(-c.amount) : neg(c.amount);
-        row.appendChild(icon); row.appendChild(copy); row.appendChild(amount); applyRadiusItem(row,copy,amount,icon); host.appendChild(row);
-      });
-    }
-    summary.hidden = models.length === 1;
-    if (models.length > 1) line(summary, 'Team net commission', complete ? total : 'Needs details', 'total', 'Buying + Listing sides');
-    models.forEach(function (model) {
-      var card = document.getElementById(model.key === 'mine' ? 'representedSideCard' : 'opposingSideCard');
-      if (!card) card = document.getElementById(model.key === 'mine' ? 'sbody1' : 'sbody2').closest('.sides');
-      var body = document.getElementById(model.key === 'mine' ? 'sbody1' : 'sbody2');
-      var host = body.querySelector('.tl-side-content');
-      if (!host) { host = document.createElement('div'); host.className = 'tl-side-content'; body.appendChild(host); }
-      host.className = 'tl-side-content' + (model.side === 'Buying side' ? ' tl-agent-style' : '');
-      host.textContent = '';
-      document.getElementById(model.key === 'mine' ? 's1Val' : 's2Val').textContent = model.complete ? cur(model.teamNet) : 'Needs details';
-      document.getElementById(model.key === 'mine' ? 's1Sub' : 's2Sub').textContent = model.agents.length + (model.agents.length === 1 ? ' agent' : ' agents');
-
-      line(host, 'Gross commission', model.gross);
-      heading(host, 'Agents on this side');
-      function feeDisclosure(entry) {
-        var stateKey = model.key + ':' + entry.agent.name;
-        var details = document.createElement('div');
-        details.id = 'tl-fees-' + model.key + '-' + entry.index;
-        details.className = 'tl-fee-details' + (model.side === 'Buying side' ? ' tl-agent-style' : '');
-        details.hidden = Object.prototype.hasOwnProperty.call(teamLeadFeeOpen, stateKey) ? !teamLeadFeeOpen[stateKey] : false;
-        var totalFees = entry.costs.reduce(function (sum, cost) { return sum + cost.amount; }, 0);
-        var toggle = line(host, entry.agent.name + ' fees', totalFees < 0 ? cur(-totalFees) : neg(totalFees), 'fee-toggle', null, function () {
-          details.hidden = !details.hidden;
-          teamLeadFeeOpen[stateKey] = !details.hidden;
-          toggle.setAttribute('aria-expanded', String(!details.hidden));
-          if (typeof sideSprings !== 'undefined' && sideSprings) syncSideStack(true);
-        });
-        toggle.disabled = false;
-        toggle.setAttribute('aria-expanded', String(!details.hidden));
-        toggle.setAttribute('aria-controls', details.id);
-        var chevron = document.createElement('i'); chevron.className = 'ph ph-caret-right tl-fee-chevron';
-        chevron.setAttribute('aria-hidden', 'true'); toggle.querySelector('.tl-copy').appendChild(chevron);
-        line(details, 'Commission before fees', entry.beforeFees);
-        agentFeeRows(details, model, entry);
-        line(details, 'Agent net commission', entry.net, 'total');
-        host.appendChild(details);
-      }
-      model.agents.forEach(function (entry) {
-        var agent = entry.agent;
-        line(host, agent.name, entry.net, '', splitPct(agent.allocation) + ' allocation', function () {
-          openAgentDetail({ name:agent.name, side:model.key, index:entry.index, rows:entry.rows, pay:cur(entry.net), teamModel:true }, this);
-        });
-        var plan = line(host, 'Commission plan', (SCHED[agent.name] || {}).plan || 'Choose plan', 'plan', null, function () {});
-        plan.setAttribute('data-plan', agent.name); plan.setAttribute('data-plan-rel', 'agent_team');
-        var allocation = line(host, 'Agent allocation', splitPct(agent.allocation), 'plan', null, function () {});
-        allocation.setAttribute('data-agentalloc', model.key);
-        feeDisclosure(entry);
-      });
-      if (!model.agents.length) line(host, 'No agents assigned', '', '', 'Add a Radius agent to calculate this side.');
-      var add = line(host, 'Add agent', '+', '', null, function () {}); add.setAttribute('data-addagent', model.side); add.setAttribute('data-agent-side', model.key);
-      model.credits.forEach(function (d) { line(host, d.type === 'referral' ? 'Referral' : 'Credit', neg(d.amt), 'deduction', null, function () { openDed(model.key, d, false, d.kind, this); }); });
-      line(host, 'Gross after credits and referrals', model.after);
-      heading(host, 'Team commission');
-      /* Team receives each agent's contribution, then carries only its own
-         fee shares. The Group transfer belongs in the Rise Group statement. */
-      model.teamIncome.forEach(function (r) { line(host, r.k, r.amount, '', r.sub); });
-      var teamFeeShares = model.teamCosts.filter(function (cost) { return cost.k.indexOf('Group commission ·') !== 0; });
-      if (teamFeeShares.length) heading(host, 'Team fee shares');
-      feeRows(host, model, teamFeeShares);
-      line(host, 'Team net commission', model.complete ? model.teamNet : 'Needs details', 'total');
-      if (model.groupEarnings || model.groupCosts.length) {
-        heading(host, TEAM); line(host, 'From team', model.groupEarnings, '', 'Group share of team commission');
-        feeRows(host, model, model.groupCosts); line(host, 'Group net commission', model.groupNet, 'total');
-      }
-      line(host, 'Add fee', '+', '', null, function () { teamLeadFeeSide = model.key; openCommissionFee(null, this); });
-    });
-    document.getElementById('netFloatLabel').textContent = 'Team net commission';
-    document.getElementById('netFloatValue').textContent = complete ? cur(total) : 'Needs details';
-    document.getElementById('netFloatSub').textContent = models.length > 1 ? 'Across Buying and Listing' : models[0].side;
-    if (typeof sideSprings !== 'undefined' && sideSprings) syncSideStack(true);
-  }
-  var teamLeadFeeSide = 'mine', teamLeadFeeReturn = null, teamLeadFeeOpen = {};
-
   function applyNumbers() {
     compute();
     var other = 100 - allocPct;
@@ -5166,8 +4106,6 @@ Thanks</textarea></div>
     renderPostCapBanners();
     syncFinancialVisibility();
     renderAgentCommissionOverview();
-    syncSideVisibility();
-    renderTeamLeadOverview();
     if (agentDetailPage && !agentDetailPage.hidden && agentDetailSelection) {
       var selectedRow = Array.prototype.find.call(detailPage.querySelectorAll('.agentrow'), function (row) { return row.agentBreakdown && row.agentBreakdown.id === agentDetailSelection.id; });
       if (selectedRow) openAgentDetail(selectedRow.agentBreakdown, null, true); else closeAgentDetail();
@@ -5350,7 +4288,7 @@ Thanks</textarea></div>
   /* which fee groups are open, kept across re-renders so editing a fee does
      not fold the list you were reading */
   var ybdFull = true, ybdPost = false, ybdAsm = false, ybdEditing = false,
-      ybdGrp = { basis: false, pre: true, plan: true, post: true, radius: true, commissions: false, groupMembers: false },
+      ybdGrp = { basis: false, pre: false, plan: false, post: false, radius: false, commissions: false, groupMembers: false },
       ybdTeamPeopleCount = null, ybdGroupMemberCount = null,
       ybdMotion = { frame:0, card:null, det:null, row:null, chev:null,
         h:0, vh:0, rot:90, vrot:0, th:0, trot:90, closing:false, last:0 },
@@ -5518,13 +4456,11 @@ Thanks</textarea></div>
   }
   var leadMemberSelection = null, leadMemberTrigger = null;
   function breakdownAgent() {
-    if (leadMemberSelection && leadMemberSelection.teamModel) return AG[leadMemberSelection.side][leadMemberSelection.index];
     return leadMemberSelection && leadMemberSelection.side === 'mine'
       ? AG.mine[leadMemberSelection.index]
       : AG.mine.filter(function (a) { return a.me; })[0] || AG.mine[0];
   }
   function myChain() {
-    if (leadMemberSelection && leadMemberSelection.teamModel) return teamLeadSelectedChain();
     if (leadMemberSelection) return leadMemberSelection.side === 'mine' ? MINE[leadMemberSelection.index]
       : { rows:leadMemberSelection.rows, net:Number(String(leadMemberSelection.pay).replace(/[^0-9.-]/g, '')) || 0 };
     for (var i = 0; i < AG.mine.length; i++) if (AG.mine[i].me) return MINE[i];
@@ -5540,39 +4476,41 @@ Thanks</textarea></div>
   /* Credits/referrals are visible before the plan. They reduce the basis, so
      hiding them below the split obscures the calculation's first step. */
   function ybdAsmRows() {
-    if (leadMemberSelection && leadMemberSelection.side !== 'mine' && !leadMemberSelection.teamModel) return [];
-    var agent = breakdownAgent(), schedule = SCHED[agent.name] || {},
-        side = leadMemberSelection && leadMemberSelection.teamModel ? leadMemberSelection.side : isDualOtherSide() ? 'other' : 'mine',
-        share = side === 'other' && !(leadMemberSelection && leadMemberSelection.teamModel) ? 1 : Math.max(0, Number(agent.allocation == null ? 100 / (AG[side].length || 1) : agent.allocation)) / 100;
-    return [{ k:'Commission plan', v:schedule.plan, txt:true, planStatic:true, summary:true, nav:usesPersonalAgentLayout() ? 'plan' : null },
-      { k:'Gross commission', v:cur((side === 'other' ? otherGross : sideGross) * share), summary:true }]
-      .concat(DEDS[side].filter(function (d) { return d.kind === 'credit'; })
-      .sort(function (a, b) { return Number(a.type === 'referral') - Number(b.type === 'referral'); })
-      .map(function (d) { return { k:d.type === 'referral' ? 'Referral' : 'Credit', v:neg(d.amt * share), summary:true,
-        creditDed:ybdEditing && !isFinalizedStatus(status) ? side + '|' + d.id : null }; }));
-  }
-  function otherAgentPayout() {
-    return Math.max(0, otherGross - otherDed - OTHERFEES.reduce(function (total, fee) {
-      return total + (fee.direction === 'addition' ? -1 : 1) * agentFeeAmount(fee, breakdownAgent(), 1, 1);
-    }, 0));
+    if (leadMemberSelection && leadMemberSelection.side !== 'mine') return [];
+    var agent = breakdownAgent(), s = SCHED[agent.name] || {},
+        share = agent ? Math.max(0, Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation)) / 100 : 1,
+        credits = DEDS.mine.filter(function (d) { return d.kind === 'credit'; }),
+        rows = [
+          { k: 'Sale price', v: cur(price), financial: ybdEditing ? 'price' : null, summary: true },
+          { k: 'Gross commission', v: cur(gross), financial: ybdEditing ? 'gross' : null, summary: true }
+        ].concat(credits.map(function (d) {
+          return { k: d.type === 'referral' ? 'Referral' : 'Credit', v: cur(d.amt * share), summary: true, creditDed: ybdEditing && !isFinalizedStatus(status) ? 'mine|' + d.id : null };
+        }));
+    rows.push({ k: 'Commission plan', v: s.plan, txt: true, planStatic: true, summary: true });
+    if (role === 'dual_role') {
+      rows.push({ k: 'Listing side commission', v: cur(agentNetCommission()), summary: true });
+      rows.push({ k: 'Buying side commission', v: cur(otherGross - otherDed), summary: true });
+    }
+    if (agentFinancialView()) return rows;
+    return rows;
   }
   function isDualOtherSide() {
     var activeSide = dualSide === 'buying' ? 'Buying side' : 'Listing side';
     return role === 'dual_role' && activeSide !== myTitle;
   }
   function dualSidePayout() {
-    return isDualOtherSide() ? otherAgentPayout() : agentNetCommission();
+    return isDualOtherSide() ? otherGross - otherDed : agentNetCommission();
   }
   function ybdLadder() {
     var n = AG.mine.length || 1, share = 1 / n, ch;
     if (role === 'agent' || role === 'group_agent' || role === 'group_lead_agent' || role === 'dual_role') {
       ch = isDualOtherSide()
-        ? { rows:[{ k:'Gross after credits and referrals', v:cur(otherGross - otherDed) },
-            { k:'Agent split', cardk:'Your commission before fees', v:cur(otherGross - otherDed) }]
-          .concat(OTHERFEES.filter(function (fee) { return feeShare(fee, 'Agent') > 0; }).map(function (fee) {
-            var amount = agentFeeAmount(fee, breakdownAgent(), 1, 1);
-            return { k:fee.n, v:feeDisplay(fee, amount), amt:amount, underSplit:true, post:fee, list:'other' };
-          })).concat([{ k:'Your payout', v:cur(otherAgentPayout()), tot:true }]) }
+        ? { rows: [{ head:'Commission', cardhide:true }, { k:'Gross commission', v:cur(otherGross) }]
+          .concat(DEDS.other.map(function (deduction) {
+            return { k:deduction.type === 'referral' ? 'Referral' : 'Credit', v:neg(deduction.amt), creditDed:deduction.kind === 'credit' && !isFinalizedStatus(status) ? 'other|' + deduction.id : null };
+          }))
+          .concat([{ k:'Commission basis', sub2:'This side after credits and referrals', v:cur(otherGross - otherDed) },
+                   { k:'Your payout', v:cur(otherGross - otherDed), tot:true }]) }
         : myChain();
       if (role === 'group_lead_agent') {
         ch = { rows: ch.rows.filter(function (r) { return !r.tot; }).concat([
@@ -5657,13 +4595,29 @@ Thanks</textarea></div>
   }
   /* the map from a chain row to the sheet that owns it — null means the number
      is derived or set by the plan, so there is nothing to open */
+  function ybdPreSplitGroup() {
+    if (leadMemberSelection && leadMemberSelection.side !== 'mine') return null;
+    var participant = role === 'agent' || role === 'group_agent' || role === 'group_lead_agent' || role === 'dual_role',
+        agent = breakdownAgent(),
+        share = participant && agent ? Math.max(0, Number(agent.allocation == null ? 100 / (AG.mine.length || 1) : agent.allocation)) / 100 : 1,
+        rows = DEDS.mine.filter(function (d) { return d.kind === 'presplit'; }).map(function (d) {
+          var amount = d.amt * share;
+          return { k: d.name, v: neg(amount), amt: amount, preDed: participant ? d.id : null,
+            det: [{ k: participant ? 'Your share' : 'Side deduction', v: cur(amount) },
+                  { k: 'Paid to', v: d.payee || 'Not specified' }] };
+        });
+    if (!rows.length) return null;
+    return {
+      key: 'pre', label: 'Fees before the split', rows: rows
+    };
+  }
   function ybdFullTarget(r) {
     if (isFinalizedStatus(status)) return null;
     if (r.creditDed && !isFinalizedStatus(status)) return { 'data-editded':r.creditDed };
     if (r.post && r.post.feeMode && r.post.id && canEditCommissionFee(r.post)) return { 'data-editpost':r.post.id, 'data-list':r.list || 'post' };
-    if (agentFinancialView()) return r.post && canEditCommissionFee(r.post) && r.post.id && r.list
+    if (agentFinancialView()) return r.post && r.post.agentEditable && r.post.id && r.list
       ? { 'data-editpost':r.post.id, 'data-list':r.list } : null;
-    if (r.preDed) return { 'data-editded': (r.feeSide || 'mine') + '|' + r.preDed };
+    if (r.preDed) return { 'data-editded': 'mine|' + r.preDed };
     /* three seeded deductions carry no id, so there is no sheet to open for
        them — they stay locked rather than becoming a target that does nothing */
     if (r.post && r.list) return r.post.id ? { 'data-editpost': r.post.id, 'data-list': r.list } : null;
@@ -5687,7 +4641,7 @@ Thanks</textarea></div>
         share = Math.max(0, Number(agent.allocation == null ? 100 / count : agent.allocation)) / 100;
         amount = basisForOther * share;
         records.push({ name:agent.name, role:agent.role, id:'team-roster-o-' + index,
-          pay:cur(amount), rows:[{ k:'Side after credits and referrals', v:cur(basisForOther) },
+          pay:cur(amount), rows:[{ k:'Side after deductions', v:cur(basisForOther) },
             { k:'Allocation · ' + pctLbl(share), v:cur(amount) }, { k:'Agent payout', v:cur(amount), tot:true }],
           allocation:share * 100, side:'other', index:index, removable:false, allocationStatic:true });
       }
@@ -5792,7 +4746,6 @@ Thanks</textarea></div>
     if (o.v) {
       var v = document.createElement('span'); v.className = 'v' + (o.txt ? ' txt' : ''); v.textContent = o.v;
       if (o.planStatic && !o.nav) {
-        row.classList.add('plan-static-row');
         v.classList.add('plan-static-value');
         var planParts = String(o.v).match(/^(\S+)\s+(.+)$/);
         if (planParts) {
@@ -5832,21 +4785,6 @@ Thanks</textarea></div>
       valueWell.className = 'plan-select-value';
       row.insertBefore(valueWell, valueNode);
       valueWell.appendChild(valueNode); valueWell.appendChild(chev);
-      if (usesPersonalAgentLayout()) {
-        row.className = 'rds-combobox__trigger agent-summary-row';
-        row.disabled = !ybdEditing || isFinalizedStatus(status);
-        row.setAttribute('aria-label', 'Commission plan: ' + o.v);
-        k.className = ''; valueNode.className = '';
-        valueWell.className = '';
-        valueWell.style.cssText = 'display:flex;align-items:center;gap:8px';
-        k.className = 'agent-summary-copy';
-        valueWell.className = 'agent-summary-value';
-        var planLock = document.createElement('i');
-        planLock.className = 'ph ph-lock-simple agent-plan-lock';
-        planLock.setAttribute('aria-hidden', 'true');
-        valueWell.insertBefore(planLock, valueNode);
-
-      }
       row.setAttribute('data-plan-dropdown', breakdownAgent().name);
       row.setAttribute('aria-haspopup', 'listbox');
       row.setAttribute('aria-expanded', 'false');
@@ -5886,7 +4824,7 @@ Thanks</textarea></div>
     var kind = o.full ? 'full' : (o.asm ? 'asm' : 'post'),
         isFull = kind === 'full',
         id = isFull ? 'ybdFullDet' : kind === 'asm' ? 'ybdAsmDet' : 'ybdPostDet',
-        openNow = isFull ? (usesPersonalAgentLayout() ? true : ybdFull) : kind === 'asm' ? ybdAsm : ybdPost,
+        openNow = isFull ? ybdFull : kind === 'asm' ? ybdAsm : ybdPost,
         n = AG.mine.length || 1,
         det = document.createElement('div');
     det.className = 'ybd-det' + (kind === 'asm' ? ' asm' : ''); det.id = id; det.hidden = !openNow;
@@ -5937,25 +4875,9 @@ Thanks</textarea></div>
             var sharedFeeSplit = feeSplitData(r.post);
             feeSubtext.className += ' split-subtext' + (sharedFeeSplit.complete ? '' : ' is-incomplete');
             appendSplitSummary(feeSubtext, feeSummaryData(r.post, sharedFeeSplit), function (e, link) { openFeePayerDetails(r.post, link); });
-          } else if (r.post.teamShare) {
-            feeSubtext.textContent = 'Team-owned fee';
-          } else if (agentFinancialView()) {
-            /* Compact agent rows: title on the left, one quiet subtext with a
-               Details link, agent's deducted amount on the right. */
-            var payerList = feePayers(r.post.p),
-                agentOnly = payerList.length === 1 && payerList[0] === 'Agent',
-                agentPays = payerList.indexOf('Agent') >= 0;
-            feeSubtext.className += ' split-subtext';
-            appendSplitSummary(feeSubtext, {
-              complete: true,
-              label: r.post.direction === 'addition' ? 'Added to you'
-                : agentOnly ? 'You pay all'
-                : agentPays ? 'Shared fee'
-                : 'Paid by ' + feePayerLabel(r.post.p),
-              linkText: 'Details ›',
-              linkAria: 'View fee payer details for ' + r.k
-            }, function (e, link) { openFeePayerDetails(r.post, link); });
-          } else feeSubtext.textContent = r.post.feeMode
+          } else feeSubtext.textContent = r.post.teamShare
+            ? 'Team-owned fee'
+            : r.post.feeMode
             ? 'Paid by ' + feePayerBadge(r.post)
             : agentFeeDistributionLabel(r.post)
             ? agentFeeDistributionLabel(r.post)
@@ -5963,35 +4885,9 @@ Thanks</textarea></div>
             ? 'Addition · Paid by ' + r.post.p
             : 'Fixed fee · Paid by ' + r.post.p;
           s.appendChild(feeSubtext);
-        } else if (r.payerLabel) {
-          var payerSubtext = document.createElement('span');
-          payerSubtext.className = 'fee-subtext';
-          payerSubtext.textContent = r.payerLabel;
-          s.appendChild(payerSubtext);
         }
         var a = document.createElement('b'); a.textContent = r.v;
         l.appendChild(s); l.appendChild(a);
-        if (usesPersonalAgentLayout() && (r.underSplit || r.statement || r.k === 'Commission basis' || / split$/.test(r.k))) {
-          l.classList.add('agent-fee-row');
-          if (r.post && r.post.direction === 'addition') l.classList.add('agent-addition');
-          var detailsLink = s.querySelector('.split-summary-link');
-          if (detailsLink) detailsLink.textContent = 'View Details';
-          var directionIcon = document.createElement('i');
-          directionIcon.className = 'agent-fee-direction ph ph-receipt';
-          directionIcon.setAttribute('aria-hidden', 'true');
-          if (r.underSplit || r.k === 'Credit' || r.k === 'Referral') l.insertBefore(directionIcon, s);
-          else l.classList.add('agent-calculation-row');
-          var compactSummary = ['Gross commission', 'Credit', 'Referral', 'Commission basis'].indexOf(r.k) !== -1 || r.cardk === 'Your commission before fees';
-          if (compactSummary) {
-            l.classList.add('agent-compact-summary');
-            s.querySelectorAll('.fee-subtext').forEach(function (note) { note.remove(); });
-          }
-          if (!compactSummary && !s.querySelector('.fee-subtext')) {
-            var explanation = document.createElement('span'); explanation.className = 'fee-subtext';
-            explanation.textContent = (r.statement ? (r.k === 'Gross commission' ? 'Your share before credits and referrals' : r.k === 'Credit' ? 'Client credit' : 'Referral deduction') : r.k === 'Commission basis' ? 'After credits and referrals' : / split$/.test(r.k) ? 'Your plan applied, before fees' : '') || r.sub2 || (r.det && r.det.filter(function (item) { return item.k === 'Rule'; }).map(function (item) { return item.v; }).join('')) || 'Deducted from your commission';
-            s.appendChild(explanation);
-          }
-        }
         if (agentTarget) {
           l.type = 'button';
           l.setAttribute('aria-haspopup', 'dialog');
@@ -6032,18 +4928,17 @@ Thanks</textarea></div>
           l.appendChild(c);
           l.setAttribute('aria-label', 'Edit ' + (r.cardk || r.k) + ', ' + String(r.v).replace(/^[\u2212-]/, ''));
         }
-        if (l.classList.contains('agent-fee-row')) applyRadiusItem(l,s,a,l.querySelector('.agent-fee-direction'));
         host.appendChild(l);
       }
       /* the chain, bucketed: what stands on its own above the groups (the
          split), and the three fee groups the card collapses. */
       var loose = [], splitFees = [], groups = [], cur_ = null, flagged = [];
-      if (role === 'dual_role' || role === 'agent' || role === 'group_agent' || role === 'group_lead_agent') {
-        ybdAsmRows().forEach(function (r) {
-          if (usesPersonalAgentLayout() && !r.planStatic) {
-            ybdFeeEl(Object.assign({}, r, { statement:true }), det);
-          } else det.appendChild(ybdRowEl(r));
-        });
+      if (role === 'dual_role') {
+        var dualSummaryRows = ybdAsmRows();
+        dualSummaryRows.filter(function (r) { return r.k === 'Sale price' || r.k === 'Gross commission'; }).forEach(function (r) { det.appendChild(ybdRowEl(r)); });
+        dualSummaryRows.filter(function (r) { return r.k !== 'Sale price' && r.k !== 'Gross commission'; }).forEach(function (r) { det.appendChild(ybdRowEl(r)); });
+      } else if (role === 'agent' || role === 'group_agent' || role === 'group_lead_agent') {
+        ybdAsmRows().forEach(function (r) { det.appendChild(ybdRowEl(r)); });
       }
       o.full.rows.forEach(function (r) {
         /* Payout already lives in the persistent floating summary. */
@@ -6071,14 +4966,16 @@ Thanks</textarea></div>
       if (agentSplitRow && splitFees.length) {
         var splitFeeBox = document.createElement('div');
         splitFeeBox.className = 'd-fees' + (role === 'team_lead' && agentSplitRow.textContent.indexOf('Team split') > -1 ? ' team-fee-list' : '');
-        if (splitFeeBox.className.indexOf('team-fee-list') === -1) {
-          var feesHead = document.createElement('div');
-          feesHead.className = 'd-fees-head';
-          feesHead.textContent = leadMemberSelection ? 'Fees paid by ' + breakdownAgent().name : 'Fees';
-          splitFeeBox.appendChild(feesHead);
-        }
         deductionsFirst(splitFees).forEach(function (r) { ybdFeeEl(r, splitFeeBox); });
         det.insertBefore(splitFeeBox, agentSplitRow.nextSibling);
+      }
+      /* Each fee belongs to exactly one visible group. Do not manufacture a
+         second "pre-split" subtotal from these groups: that made the screen
+         look as if the same fees were removed twice even though the final
+         agent net only subtracts them once. */
+      if ((role === 'agent' || role === 'group_agent' || role === 'group_lead_agent' || role === 'dual_role') && !isDualOtherSide()) {
+        var preSplitGroup = ybdPreSplitGroup();
+        if (preSplitGroup) groups.unshift(preSplitGroup);
       }
       groups.forEach(function (g) {
         g.amt = g.rows.reduce(function (t, r) { return t + (r.amt || 0); }, 0);
@@ -6167,7 +5064,6 @@ Thanks</textarea></div>
           det.appendChild(gb); det.appendChild(box);
         }
       });
-      if (usesPersonalAgentLayout() && agentSplitRow) wrapPersonalFeeCard(det, agentSplitRow);
       var completeBtn = document.createElement('button');
       completeBtn.type = 'button'; completeBtn.className = 'ybd-sep'; completeBtn.id = 'addDetBtn';
       completeBtn.setAttribute('aria-haspopup', 'dialog'); completeBtn.setAttribute('aria-controls', 'detailPage');
@@ -6236,8 +5132,7 @@ Thanks</textarea></div>
     addFee.appendChild(addIcon);
     addFee.title = 'Add fee';
     addFee.addEventListener('click', function (e) { e.stopPropagation(); openCommissionFee(null, addFee); });
-    if ((role !== 'agent' && role !== 'group_agent') || leadMemberSelection) head.appendChild(row);
-    head.appendChild(ed); head.appendChild(addFee);
+    head.appendChild(row); head.appendChild(ed); head.appendChild(addFee);
     if (role === 'dual_role') head.appendChild(ybdDualSideSelector());
     wrap.appendChild(head);
     wrap.appendChild(det);
@@ -6298,7 +5193,6 @@ Thanks</textarea></div>
       if (leadMemberSelection) role = 'agent';
       renderYbdContent();
     } finally { role = viewerRole; }
-    renderSheetBreakdown();
     if (leadMemberSelection) {
       document.getElementById('netFloatLabel').textContent = leadMemberSelection.name + '’s payout';
     }
@@ -6334,8 +5228,9 @@ Thanks</textarea></div>
       var row = document.createElement('div'); row.className = 'kv';
       var key = document.createElement('span'); key.className = 'k';
       var name = document.createElement('b'); name.textContent = entry.name;
-      var meta = document.createElement('em'); meta.textContent = [entry.meta, entry.note].filter(Boolean).join(' · ');
+      var meta = document.createElement('em'); meta.textContent = entry.meta;
       key.appendChild(name); key.appendChild(meta);
+      if (entry.note) { var note = document.createElement('em'); note.textContent = entry.note; key.appendChild(note); }
       var value = document.createElement('span'); value.className = 'v' + (/^[−-]/.test(entry.value) ? ' neg' : ' pos'); value.textContent = entry.value;
       row.appendChild(key); row.appendChild(value); host.appendChild(row);
     });
@@ -6417,33 +5312,8 @@ Thanks</textarea></div>
     if (!fee) return;
     close(true); openCommissionFee(fee, this);
   });
-  var personalFeesOpen = true;
-  function wrapPersonalFeeCard(host, heading) {
-    var card=document.createElement('details');card.className='personal-fee-card';card.open=personalFeesOpen;
-    var summary=document.createElement('summary');summary.className='personal-fee-summary';
-    var mark=document.createElement('span');mark.className='personal-fee-mark';mark.setAttribute('aria-hidden','true');
-    ['ph-plus','ph-minus'].forEach(function(name){var icon=document.createElement('i');icon.className='ph '+name;mark.appendChild(icon);});
-    var body=document.createElement('div');body.className='personal-fee-body';
-    var following=[], next=heading.nextSibling;
-    while(next){following.push(next);next=next.nextSibling;}
-    var title=document.createElement('span');title.className='personal-fee-title';title.textContent='Fees';
-    host.insertBefore(card,heading.nextSibling);summary.appendChild(title);summary.appendChild(mark);card.appendChild(summary);
-    following.forEach(function(node){body.appendChild(node);});card.appendChild(body);
-    card.addEventListener('toggle',function(){personalFeesOpen=card.open;});
-  }
-  function usesPersonalAgentLayout() {
-    return (role === 'agent' || role === 'group_agent') && (!leadMemberSelection || !!leadMemberSelection.teamModel);
-  }
   function renderYbdContent() {
     syncDockEdit();
-    document.getElementById('commissionWallet').classList.toggle('agent-flat', usesPersonalAgentLayout());
-    var flatAgent = role === 'team_lead' || usesPersonalAgentLayout();
-    var saleSummary = document.getElementById('transactionSummary');
-    saleSummary.classList.toggle('agent-sale-summary', flatAgent);
-    saleSummary.querySelector('.fin-row').innerHTML = flatAgent
-      ? '<span class="agent-summary-copy"><i class="ph ph-house-line agent-sale-icon" aria-hidden="true"></i><b>Sale price</b></span><b id="summaryPrice"></b>'
-      : '<span><i class="ph ph-house-line fin-icon" aria-hidden="true"></i>Sale price</span><b id="summaryPrice"></b>';
-
     var c = ROLE[role], lad = document.getElementById('ybdLad'), ppl = document.getElementById('ybdPpl');
     /* Role, amount and edit changes rebuild this card. End any live disclosure
        motion before replacing its DOM so no frame can paint detached nodes. */
@@ -6741,8 +5611,9 @@ Thanks</textarea></div>
     var hh = headEl.offsetHeight;
     /* the head is an absolute overlay and can measure 0 before first layout —
        the CSS padding is the base, JS only grows it (CDA bar, wrapped status) */
-    /* Keep the first context row close to the header while preserving clearance. */
-    scrollEl.style.paddingTop = hh > 0 ? 'max(calc(44px + env(safe-area-inset-top) + 4px), ' + (hh + 4) + 'px)' : '';
+    /* 12px, not 6: at 6 the card's top edge sat against the strip and a focus
+       ring on the first row was clipped by the head */
+    scrollEl.style.paddingTop = hh > 0 ? 'max(calc(44px + env(safe-area-inset-top) + 12px), ' + (hh + 12) + 'px)' : '';
     /* the hero wash climbs by exactly this much so it reaches the top of the screen
        and the header has something to blur — keep the two in lockstep */
     screenEl.style.setProperty('--scrollpad', getComputedStyle(scrollEl).paddingTop);
@@ -6836,10 +5707,6 @@ Thanks</textarea></div>
   });
   /* Agent detail repeats payer meaning. Private fees never render for agents. */
   function agentDetailFeeMeta(key, fee) {
-    if (fee && fee.payerLabel) {
-      var payerNote = document.createElement('span'); payerNote.className = 'ybd-fee-meta'; payerNote.textContent = fee.payerLabel;
-      key.appendChild(payerNote); return;
-    }
     if (!fee || !fee.post || fee.list !== 'post') return;
     var meta = document.createElement('span'); meta.className = 'ybd-fee-meta';
     var paid = document.createElement('span'); paid.className = 'paid-by';
@@ -6850,10 +5717,6 @@ Thanks</textarea></div>
     key.appendChild(meta);
   }
   function agentDetailFeeSubtext(key, fee) {
-    if (fee && fee.payerLabel) {
-      var payerNote = document.createElement('span'); payerNote.className = 'fee-subtext'; payerNote.textContent = fee.payerLabel;
-      key.appendChild(payerNote); return;
-    }
     if (!fee || !fee.post) return;
     var note = document.createElement('span'); note.className = 'fee-subtext';
     if (fee.post.direction === 'addition') note.textContent = 'Addition · Paid by Radius';
@@ -6938,7 +5801,6 @@ Thanks</textarea></div>
     if (!refreshing && usesLeadLayout()) {
       if (openSheetEl) close(true);
       leadMemberSelection = o; leadMemberTrigger = trigger;
-      detailPage.classList.remove('team-lead-overview');
       ybdEditing = false; ybdFull = true;
       detailPage.hidden = true; agentDetailPage.hidden = true;
       screenEl.setAttribute('data-role', 'agent');
@@ -6987,7 +5849,7 @@ Thanks</textarea></div>
       agentDetailLine(host, 'Referral fee', neg(referralFee));
       var basisRow = chain.rows.filter(function (r) { return r.k === 'Commission basis'; })[0];
       agentDetailLine(host, 'Commission plan', schedule.plan).classList.add('agent-detail-divider');
-      agentDetailLine(host, 'Gross after credits and referrals', basisRow.v);
+      agentDetailLine(host, 'Commission basis', basisRow.v);
       var planCards = document.createElement('div'); planCards.id = 'agentDetailPlanCards'; planCards.className = 'agent-detail-plan-cards';
       planCards.setAttribute('data-expanded', String(agentPlanOpen));
       [
@@ -7017,6 +5879,10 @@ Thanks</textarea></div>
       if (caps.internal_team) capCards.appendChild(capEl(caps.internal_team));
       if (!capCards.childElementCount) agentDetailLine(capCards, 'Cap details', 'Not provided');
       host.appendChild(capCards);
+      agentDetailSection(host, 'Fees before the split');
+      DEDS.mine.filter(function (deduction) { return deduction.kind === 'presplit'; }).forEach(function (deduction) {
+        agentDetailLine(host, deduction.name, neg(deduction.amt * share));
+      });
       agentDetailSection(host, 'Agent Split');
       if (splitRow) agentDetailLine(host, 'Agent split', splitRow.v, splitRow.badge);
       deductionsFirst(chain.rows.filter(function (r) { return r.underSplit && r.k !== 'Agent split' && !(agentFinancialView() && r.post && r.post.private); })).forEach(function (r) { agentDetailEditableFee(host, r); });
@@ -7040,12 +5906,12 @@ Thanks</textarea></div>
       agentDetailLine(host, 'Commission plan', 'Managed by ' + COOP[mySide]);
       agentDetailLine(host, 'Commission basis', cur(otherGross * allocation));
       var deductions = DEDS.other.filter(function (d) { return d.kind === 'presplit'; }).map(function (d) { return { k:d.name, v:neg(d.amt * allocation), amt:d.amt * allocation }; });
-      deductions.forEach(function (deduction) { agentDetailLine(host, deduction.k, deduction.v, null, { payerLabel:'Paid by ' + otherAgent.name }); });
+      agentDetailDisclosure(host, 'Fees before the split', deductions, cur(deductions.reduce(function (sum, r) { return sum + r.amt; }, 0)), deductions.length === 1 ? 'fee' : 'fees');
       agentDetailLine(host, 'Agent allocation', o.pay, pctLbl(allocation));
       agentDetailLine(host, 'Payable to Radius', cur(0));
       agentDetailLine(host, 'Co-op payout', o.pay).classList.add('agent-detail-net');
       var note = document.createElement('p'); note.className = 'ybd-note';
-      note.textContent = 'Additional co-op fees are not provided. This is the allocation paid by ' + COOP[mySide] + ', before any co-op fees.'; host.appendChild(note);
+      note.textContent = 'Co-op plan splits and fees after the split are not provided. This is the allocation paid by ' + COOP[mySide] + ', before any co-op fees.'; host.appendChild(note);
     } else {
       o.rows.forEach(function (r) { if (r.k) agentDetailLine(host, r.k, r.v); });
     }
@@ -7080,7 +5946,7 @@ Thanks</textarea></div>
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
   function usesLeadLayout() {
-    return sheetViewActive() || role === 'team_lead' || role === 'group_lead' || role === 'group_lead_agent' || role === 'dual_role';
+    return role === 'team_lead' || role === 'group_lead' || role === 'group_lead_agent';
   }
   function setDetailBackground(hidden) {
     var overview = hidden && !usesLeadLayout();
@@ -7114,7 +5980,7 @@ Thanks</textarea></div>
     leadMemberSelection = null; ybdEditing = false;
     screenEl.setAttribute('data-role', role);
     detailPage.hidden = false;
-    renderYbd(); renderTeamLeadOverview(); syncDualRoleView(true); syncDockEdit();
+    renderYbd(); renderBuyingTeamSplit(); syncDockEdit();
     document.getElementById('backLink').setAttribute('aria-label', 'Back to home');
     if (leadMemberTrigger && leadMemberTrigger.isConnected) leadMemberTrigger.focus();
     return true;
@@ -7171,7 +6037,7 @@ Thanks</textarea></div>
   var dockAddTrigger = document.getElementById('dockAddBtn'), dockAddMenu = document.createElement('div');
   dockAddMenu.id = 'dockAddMenu'; dockAddMenu.hidden = true;
   dockAddMenu.setAttribute('role', 'menu'); dockAddMenu.setAttribute('aria-label', 'Add to breakdown');
-  dockAddMenu.innerHTML = '<button type="button" role="menuitem" data-dock-add="credit"><i class="ph ph-hand-coins" aria-hidden="true"></i><span>Client credit</span></button><button type="button" role="menuitem" data-dock-add="referral"><i class="ph ph-users" aria-hidden="true"></i><span>Referral</span></button><button type="button" role="menuitem" data-dock-add="fee"><i class="ph ph-receipt" aria-hidden="true"></i><span>Fee</span></button>';
+  dockAddMenu.innerHTML = '<button type="button" role="menuitem" data-dock-add="credit"><i class="ph ph-hand-coins" aria-hidden="true"></i><span>Client credit</span></button><button type="button" role="menuitem" data-dock-add="referral"><i class="ph ph-users" aria-hidden="true"></i><span>Referral</span></button><button type="button" role="menuitem" data-dock-add="fee"><i class="ph ph-receipt" aria-hidden="true"></i><span>Fee</span></button><button type="button" role="menuitem" data-dock-add="presplit"><i class="ph ph-minus-circle" aria-hidden="true"></i><span>Fee before the split</span></button><button type="button" role="menuitem" data-dock-add="postsplit"><i class="ph ph-minus-square" aria-hidden="true"></i><span>Fee after the split</span></button>';
   decisionDockEl.appendChild(dockAddMenu);
   dockAddTrigger.setAttribute('aria-label', 'Add to breakdown');
   dockAddTrigger.title = 'Add to breakdown';
@@ -7200,12 +6066,13 @@ Thanks</textarea></div>
     var type = option.getAttribute('data-dock-add'), side = role === 'dual_role' && isDualOtherSide() ? 'other' : 'mine';
     closeDockAddMenu(false);
     if (type === 'fee') {
-      if(sheetViewActive()){addSheetExampleFee(dockAddTrigger);return;}
       openCommissionFee(null, dockAddTrigger);
       return;
     }
-    openClientCreditSheet(side, dockAddTrigger, type);
-    if(sheetViewActive())clientCreditCtx.sheetSide=sheetExamples[sheetScenario][0];
+    if (type === 'presplit') { openDed(side, null, true, 'presplit', dockAddTrigger); return; }
+    if (type === 'postsplit') { openPost('post', null, dockAddTrigger); return; }
+    openDed(side, null, true, 'credit', dockAddTrigger);
+    setDedType(type);
   });
   document.addEventListener('click', function (event) {
     if (!dockAddMenu.hidden && !dockAddMenu.contains(event.target) && !dockAddTrigger.contains(event.target)) closeDockAddMenu(false);
@@ -7220,7 +6087,7 @@ Thanks</textarea></div>
     } else if (event.key === 'Tab') closeDockAddMenu(false);
   }, true);
   function syncDockEdit() {
-    var button = document.getElementById('dockEditBtn'), active = sheetViewActive() ? sheetEditing && !isFinalizedStatus(status) : detailPage && !detailPage.hidden ? detailEditing : ybdEditing;
+    var button = document.getElementById('dockEditBtn'), active = detailPage && !detailPage.hidden ? detailEditing : ybdEditing;
     button.setAttribute('aria-pressed', String(!!active));
     button.setAttribute('aria-label', active ? 'Done editing breakdown' : 'Edit breakdown');
     button.title = active ? 'Done editing breakdown' : 'Edit breakdown';
@@ -7401,11 +6268,7 @@ Thanks</textarea></div>
   var nonTeamRoster = null, teamLeadRoster = null;
   function setRole(r) {
     leadMemberSelection = null;
-    if (r !== 'team_lead') sheetTeamPersonal = false;
-    if (r === 'group_lead_agent') sheetAgentName = 'Agent Ally';
-    if (r === 'dual_role') sheetScenario = 'dual';
     if (r === 'team_lead' && role !== 'team_lead') {
-      POSTDEDS.concat(OTHERFEES, PAYRADIUS).forEach(function (fee) { if (!fee.id) fee.id = 'p' + (++postSeq); });
       nonTeamRoster = AG.mine;
       if (!teamLeadRoster) {
         teamLeadRoster = AG.mine.map(function (agent) { return Object.assign({}, agent); });
@@ -7452,48 +6315,8 @@ Thanks</textarea></div>
       detailPage.setAttribute('role', 'dialog');
       detailPage.setAttribute('aria-modal', 'true');
     }
-    renderSheetBreakdown();
     fitBar();
   }
-  document.addEventListener('click', function(e) {
-    if(e.target.closest('[data-setrole="team_lead"]')) sheetTeamPersonal=false;
-    var person=e.target.closest('[data-sheet-person]'), team=e.target.closest('[data-sheet-team-personal]');
-    if(!person && !team)return;
-    sheetScenarioActive=true;
-    sheetAgentName=person && person.getAttribute('data-sheet-person')==='benny'?'Agent Benny':'Agent Ally';
-    if(sheetAgentName==='Agent Benny')sheetScenario='dual';
-    sheetTeamPersonal=!!team;
-    setRole(team?'team_lead':'group_agent');
-    close();
-  });
-  document.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-sheet-scenario]'); if (!b) return;
-    sheetScenarioActive = true;
-    sheetScenario = b.getAttribute('data-sheet-scenario');
-    if(sheetScenario === 'single') sheetAgentName = 'Agent Ally';
-    setRole(role === 'group_lead' || role === 'group_lead_agent' ? role : 'team_lead');
-    close();
-  });
-  document.addEventListener('click', function (e) {
-    if (!sheetViewActive()) return;
-    if(e.target.closest('#netFloatInfo, #netFloatOpen')) {
-      e.preventDefault();e.stopImmediatePropagation();
-      var preview=document.querySelector('#sheetBreakdown > details:last-child');
-      if(preview){preview.open=true;preview.querySelector('summary').focus();preview.scrollIntoView({block:'nearest'});}
-      return;
-    }
-    var edit = e.target.closest('#dockEditBtn, #detailEditBtn');
-    if (edit) {
-      e.preventDefault(); e.stopImmediatePropagation();
-      if(isFinalizedStatus(status)){sheetEditing=false;syncDockEdit();return;}
-      sheetEditing = !sheetEditing;
-      edit.setAttribute('aria-pressed',String(sheetEditing));
-      edit.setAttribute('aria-label',sheetEditing?'Done editing breakdown':'Edit breakdown');
-      edit.title=sheetEditing?'Done editing breakdown':'Edit breakdown';
-      edit.querySelector('i').className=sheetEditing?'ph ph-check':'ph ph-pencil-simple';
-      renderSheetBreakdown();
-    }
-  }, true);
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-setstatus]'); if (!b) return;
     status = b.getAttribute('data-setstatus'); renderStatus();
@@ -7523,8 +6346,6 @@ Thanks</textarea></div>
   document.getElementById('screen').setAttribute('data-sections', 'folder');
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-setrole]'); if (!b) return;
-    sheetScenarioActive = false;
-    sheetEditing = false;
     setRole(b.getAttribute('data-setrole')); close();
     toast('Viewing as ' + ROLE[role].chip.replace(' view', ''));
   });
@@ -7555,7 +6376,6 @@ Thanks</textarea></div>
     close(true);
     setTimeout(function () { open(document.getElementById('trackerSheet'), document.getElementById('moreBtn')); }, 300);
   });
-  if (q.get('view') === 'tracker') setTimeout(function () { open(document.getElementById('trackerSheet'), document.getElementById('moreBtn')); }, 300);
 
   /* ── commission tracker ────────────────────────────── */
   var trackerState = 'zero';
@@ -7695,7 +6515,6 @@ Thanks</textarea></div>
     });
     renderCda();
     syncDetailActions();
-    renderSheetBreakdown();
     fitHead();
   }
 
@@ -7730,7 +6549,7 @@ Thanks</textarea></div>
     document.getElementById('confirmAmountLabel').textContent = dualRole ? myTitle + ' payout' : agentView ? 'Your payout' : role === 'team_lead' ? 'Net to team lead' : 'Group commission';
     document.getElementById('confirmOtherSideRow').hidden = !dualRole;
     document.getElementById('confirmOtherSideLabel').textContent = coopTitle + ' payout';
-    document.getElementById('confirmOtherSideNet').textContent = cur(otherAgentPayout());
+    document.getElementById('confirmOtherSideNet').textContent = cur(otherGross - otherDed);
     document.getElementById('confirmPlanRow').hidden = !agentView || dualRole;
     document.getElementById('confirmNet').textContent = cur(agentView ? agentNetCommission() : leadNet);
     document.getElementById('confirmSub').textContent = dualRole
@@ -8219,7 +7038,7 @@ Thanks</textarea></div>
     retargetPlanDrop(p, false, after);
   }
   function openPlanDropdown(focusOption) {
-    var p = planDropParts(); if (!p || p.trigger.disabled) return;
+    var p = planDropParts(); if (!p) return;
     closeAddDropdown();
     p.anchor.classList.remove('closing'); p.menu.classList.remove('closing');
     p.menu.hidden = false;
@@ -8241,7 +7060,8 @@ Thanks</textarea></div>
     if (kind === 'presplit') { openDed('mine', null, true, 'presplit', trigger); return; }
     if (kind === 'post') { openPost('post', null, trigger, 'Add fee after the split'); return; }
     if (kind === 'credit' || kind === 'referral') {
-      openClientCreditSheet('mine', trigger, kind);
+      openDed('mine', null, true, 'credit', trigger);
+      setDedType(kind);
       return;
     }
     openCommissionFee(null, trigger);
@@ -8305,7 +7125,6 @@ Thanks</textarea></div>
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-plan]'); if (!b) return;
     planAgent = b.getAttribute('data-plan');
-    if (role === 'team_lead' && !SCHED[planAgent]) SCHED[planAgent] = { team:true, capped:false };
     planRelationship = b.getAttribute('data-plan-rel') || 'agent_team';
     document.getElementById('planSub').textContent = planRelationshipLabel(planRelationship) + ' · ' + planAgent;
     renderPlanList();
@@ -8568,15 +7387,38 @@ Thanks</textarea></div>
   function renderBuyingTeamSplit() {
     var previous = document.getElementById('buyingTeamSplit');
     if (previous) previous.remove();
+    if (role !== 'team_lead') return;
+    var host = document.getElementById(mySide === 'buyer' ? 'deds1' : 'deds2'),
+        split = document.querySelector('#ybdFullDet > .agent-split'),
+        fees = document.querySelector('#ybdFullDet > .team-fee-list');
+    if (!host || !split) return;
+    // Reuse the current read-only team statement so amounts and fee copy stay aligned.
+    var section = document.createElement('div');
+    section.id = 'buyingTeamSplit'; section.className = 'ybd-det';
+    section.appendChild(split.cloneNode(true));
+    if (fees) section.appendChild(fees.cloneNode(true));
+    host.appendChild(section);
   }
   function renderDeds() {
     ['mine', 'other'].forEach(function (k) {
       var host = document.getElementById(k === 'mine' ? 'deds1' : 'deds2');
       if (!host) return;
       host.textContent = '';
-      ['credit', 'presplit'].forEach(function (kind) {
-        var items = DEDS[k].filter(function (d) { return d.kind === kind; });
+      [['credit', ''], ['presplit', 'Before the split']].forEach(function (grp) {
+        var items = DEDS[k].filter(function (d) { return d.kind === grp[0]; });
         if (!items.length) return;
+        if (grp[1]) {
+          var h = document.createElement('div'); h.className = 'ssub'; h.textContent = grp[1];
+          if (usesLeadLayout()) {
+            h.classList.add('team-pre-heading'); h.textContent = '';
+            var label = document.createElement('span'); label.textContent = 'Fees before the split';
+            var count = document.createElement('em'); count.textContent = ' · ' + items.length + (items.length === 1 ? ' fee' : ' fees');
+            label.appendChild(count);
+            var total = document.createElement('b'); total.textContent = neg(items.reduce(function (sum, item) { return sum + item.amt; }, 0));
+            h.appendChild(label); h.appendChild(total);
+          }
+          host.appendChild(h);
+        }
         items.forEach(function (d) { host.appendChild(dedRow(k, d)); });
       });
     });
@@ -8622,205 +7464,8 @@ Thanks</textarea></div>
     external: { to: '', hint: 'Wired out at closing, so it needs a name and wire instructions.' }
   };
   var PAYTOLABEL = { radius: 'Radius Agent Realty', team: TEAM, external: 'External recipient' };
-  var clientCreditCtx = null;
-  function closeClientCreditLists() {
-    Array.prototype.forEach.call(document.querySelectorAll('#clientCreditSheet .cc-select-list'), function (list) { list.hidden = true; });
-    document.getElementById('ccTypeButton').setAttribute('aria-expanded', 'false');
-    document.getElementById('ccPayToButton').setAttribute('aria-expanded', 'false');
-    document.getElementById('ccPayee').setAttribute('aria-expanded', 'false');
-  }
-  function setClientCreditType(type) {
-    if (!clientCreditCtx) return;
-    clientCreditCtx.type = type;
-    document.getElementById('ccTypeValue').textContent = type === 'other' ? 'Other' : type === 'referral' ? 'Referral' : 'Credit';
-    document.getElementById('ccNameField').hidden = type !== 'other';
-    Array.prototype.forEach.call(document.querySelectorAll('[data-client-credit-type]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-client-credit-type') === type)); });
-    document.getElementById('ccSave').textContent = type === 'other' ? 'Add Deduction' : type === 'referral' ? 'Add Referral' : 'Add Credit';
-    updateClientCreditSave();
-  }
-  function setClientCreditPayTo(payTo) {
-    if (!clientCreditCtx) return;
-    clientCreditCtx.payTo = payTo;
-    document.getElementById('ccPayToValue').textContent = payTo === 'radius' ? 'Radius' : payTo === 'team' ? 'Team' : 'External / Referral';
-    document.getElementById('ccPayeeField').hidden = payTo !== 'external';
-    Array.prototype.forEach.call(document.querySelectorAll('[data-client-credit-payto]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-client-credit-payto') === payTo)); });
-    updateClientCreditSave();
-  }
-  function updateClientCreditSave() {
-    if (!clientCreditCtx) return;
-    var amount = Number(String(document.getElementById('ccAmount').value).replace(/[^0-9.]/g, '')) || 0,
-        name = document.getElementById('ccName').value.trim(),
-        payee = document.getElementById('ccPayee').value.trim(),
-        valid = amount > 0 && (clientCreditCtx.type !== 'other' || !!name) && (clientCreditCtx.payTo !== 'external' || !!payee);
-    document.getElementById('ccSave').disabled = !valid;
-  }
-  function openClientCreditSheet(side, trigger, initialType) {
-    clientCreditCtx = { side: side || 'mine', type: initialType === 'referral' ? 'referral' : 'credit', payTo: 'external' };
-    document.getElementById('ccAmount').value = '';
-    document.getElementById('ccName').value = '';
-    document.getElementById('ccPayee').value = '';
-    closeClientCreditLists();
-    setClientCreditType(clientCreditCtx.type);
-    setClientCreditPayTo(clientCreditCtx.payTo);
-    open(document.getElementById('clientCreditSheet'), trigger);
-  }
-  document.getElementById('ccTypeButton').addEventListener('click', function () {
-    var list = document.getElementById('ccTypeList'), show = list.hidden;
-    closeClientCreditLists(); list.hidden = !show; this.setAttribute('aria-expanded', String(show));
-  });
-  document.getElementById('ccPayToButton').addEventListener('click', function () {
-    var list = document.getElementById('ccPayToList'), show = list.hidden;
-    closeClientCreditLists(); list.hidden = !show; this.setAttribute('aria-expanded', String(show));
-  });
-  document.getElementById('ccPayeeToggle').addEventListener('click', function () {
-    var list = document.getElementById('ccPayeeList'), show = list.hidden;
-    closeClientCreditLists(); list.hidden = !show; document.getElementById('ccPayee').setAttribute('aria-expanded', String(show));
-  });
-  document.getElementById('ccTypeList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-client-credit-type]'); if (!option) return;
-    setClientCreditType(option.getAttribute('data-client-credit-type')); closeClientCreditLists(); document.getElementById('ccTypeButton').focus();
-  });
-  document.getElementById('ccPayToList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-client-credit-payto]'); if (!option) return;
-    setClientCreditPayTo(option.getAttribute('data-client-credit-payto')); closeClientCreditLists(); document.getElementById('ccPayToButton').focus();
-  });
-  document.getElementById('ccPayeeList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-client-credit-payee]'); if (!option) return;
-    document.getElementById('ccPayee').value = option.getAttribute('data-client-credit-payee'); closeClientCreditLists(); updateClientCreditSave(); document.getElementById('ccPayee').focus();
-  });
-  ['ccAmount', 'ccName', 'ccPayee'].forEach(function (id) { document.getElementById(id).addEventListener('input', updateClientCreditSave); });
-  document.getElementById('ccCancel').addEventListener('click', function () { close(); });
-  document.getElementById('ccSave').addEventListener('click', function () {
-    if (!clientCreditCtx || this.disabled) return;
-    var ctx = clientCreditCtx, amount = Number(String(document.getElementById('ccAmount').value).replace(/[^0-9.]/g, '')) || 0,
-        customName = document.getElementById('ccName').value.trim(), payee = document.getElementById('ccPayee').value.trim(),
-        name = ctx.type === 'other' ? customName : ctx.type === 'referral' ? 'Referral' : 'Credits',
-        finalPayee = ctx.payTo === 'external' ? payee : PAYTO[ctx.payTo].to;
-    if(isFinalizedStatus(status))return;
-    if(ctx.sheetSide){
-      if(role!=='team_lead' || ['credit','referral'].indexOf(ctx.type)===-1)return;
-      var other=ctx.type==='credit'?'referral':'credit';
-      if(amount>ctx.sheetSide.gross-(ctx.originalType===other?0:ctx.sheetSide[other])){toast('Amount exceeds available commission.');return;}
-      if(ctx.originalType && ctx.originalType!==ctx.type)ctx.sheetSide[ctx.originalType]=0;
-      ctx.sheetSide[ctx.type]=amount;ctx.sheetSide[ctx.type+'Payee']=finalPayee;close();renderSheetBreakdown();return;
-    }
-    if(ctx.existing)Object.assign(ctx.existing,{name:name,amt:amount,payee:finalPayee,type:ctx.type,payTo:ctx.payTo});
-    else {dedSeq++;DEDS[ctx.side].push({ id: 'd' + dedSeq, name: name, amt: amount, payee: finalPayee, kind: 'credit', type: ctx.type, payTo: ctx.payTo });}
-    applyNumbers(); close();
-    if (status !== 'draft') { status = 'draft'; renderStatus(); }
-    logActivity('Jessica Hall', 'aud', 'Added “' + name + '” at ' + cur(amount) + ' on the ' + (ctx.side === 'mine' ? myTitle : coopTitle).toLowerCase() + '.', true);
-    toast(name + ' added — basis recalculated.');
-  });
-  document.addEventListener('click', function (event) {
-    if (!event.target.closest('#clientCreditSheet .cc-select, #clientCreditSheet .cc-payee-select')) closeClientCreditLists();
-  });
-  var preSplitFeeCtx = null;
-  function closePreSplitFeeLists() {
-    Array.prototype.forEach.call(document.querySelectorAll('#preSplitFeeSheet .psf-select-list'), function (list) { list.hidden = true; });
-    ['psfTemplateButton', 'psfModeButton', 'psfBasisButton', 'psfPayerButton', 'psfPayToButton'].forEach(function (id) { document.getElementById(id).setAttribute('aria-expanded', 'false'); });
-  }
-  function setPreSplitFeeMode(mode) {
-    if (!preSplitFeeCtx) return;
-    preSplitFeeCtx.mode = mode;
-    var percentage = mode === 'percentage', icon = document.querySelector('#psfAmountWrap i');
-    document.getElementById('psfModeValue').textContent = percentage ? 'Percentage' : 'Flat Fee';
-    document.getElementById('psfAmountLabel').textContent = percentage ? 'Fee %' : 'Flat Fee';
-    document.getElementById('psfAmountWrap').classList.toggle('suffix', percentage);
-    icon.textContent = percentage ? '%' : '$';
-    document.getElementById('psfBasisField').hidden = !percentage;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-psf-mode]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-psf-mode') === mode)); });
-    updatePreSplitFeeSave();
-  }
-  function setPreSplitFeePayer(payer) {
-    if (!preSplitFeeCtx) return;
-    preSplitFeeCtx.payer = payer;
-    document.getElementById('psfPayerValue').textContent = payer;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-psf-payer]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-psf-payer') === payer)); });
-  }
-  function setPreSplitFeePayTo(payTo) {
-    if (!preSplitFeeCtx) return;
-    preSplitFeeCtx.payTo = payTo;
-    document.getElementById('psfPayToValue').textContent = payTo === 'radius' ? 'Radius' : payTo === 'team' ? 'Team' : 'External / Referral';
-    document.getElementById('psfPayee').disabled = payTo !== 'external';
-    if (payTo !== 'external') document.getElementById('psfPayee').value = PAYTO[payTo].to;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-psf-payto]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-psf-payto') === payTo)); });
-    updatePreSplitFeeSave();
-  }
-  function updatePreSplitFeeSave() {
-    if (!preSplitFeeCtx) return;
-    var name = document.getElementById('psfName').value.trim(), amount = Number(String(document.getElementById('psfAmount').value).replace(/[^0-9.]/g, '')) || 0,
-        payee = document.getElementById('psfPayee').value.trim();
-    document.getElementById('psfSave').disabled = !name || amount <= 0 || (preSplitFeeCtx.payTo === 'external' && !payee);
-  }
-  function setPreSplitFeeTemplate(template) {
-    if (!preSplitFeeCtx) return;
-    preSplitFeeCtx.template = template;
-    document.getElementById('psfTemplateValue').textContent = template === 'create' ? '＋ Create a fee type' : template;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-psf-template]'), function (option) { option.setAttribute('aria-selected', String(option.getAttribute('data-psf-template') === template)); });
-    if (template !== 'create') document.getElementById('psfName').value = template;
-    updatePreSplitFeeSave();
-  }
-  function openPreSplitFeeSheet(side, fee, trigger) {
-    preSplitFeeCtx = { side: side || 'mine', id: fee ? fee.id : null, isNew: !fee, mode: fee && fee.feeType === 'percentage' ? 'percentage' : 'flat', payer: fee && fee.p ? fee.p : 'Both', payTo: fee && fee.payTo ? fee.payTo : 'radius', template: 'create' };
-    document.getElementById('psfName').value = fee ? fee.name : '';
-    document.getElementById('psfAmount').value = fee ? String(fee.feeType === 'percentage' ? fee.rate : fee.amt) : '';
-    document.getElementById('psfPayee').value = fee && fee.payee ? fee.payee : '';
-    document.getElementById('psfContributes').checked = !!(fee && fee.contributes);
-    document.getElementById('psfPrivate').checked = !!(fee && fee.private);
-    document.getElementById('preSplitFeeSheetT').firstChild.textContent = fee ? 'Edit Fee Type' : 'Fee Type';
-    document.getElementById('psfSave').textContent = fee ? 'Save Fee' : 'Add Fee';
-    closePreSplitFeeLists();
-    setPreSplitFeeTemplate('create');
-    setPreSplitFeeMode(preSplitFeeCtx.mode);
-    setPreSplitFeePayer(preSplitFeeCtx.payer);
-    setPreSplitFeePayTo(preSplitFeeCtx.payTo);
-    updatePreSplitFeeSave();
-    open(document.getElementById('preSplitFeeSheet'), trigger);
-  }
-  ['psfTemplateButton', 'psfModeButton', 'psfBasisButton', 'psfPayerButton', 'psfPayToButton'].forEach(function (id) {
-    document.getElementById(id).addEventListener('click', function () {
-      var list = document.getElementById(id.replace('Button', 'List')), show = list.hidden;
-      closePreSplitFeeLists(); list.hidden = !show; this.setAttribute('aria-expanded', String(show));
-    });
-  });
-  document.getElementById('psfTemplateList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-psf-template]'); if (!option) return;
-    setPreSplitFeeTemplate(option.getAttribute('data-psf-template')); closePreSplitFeeLists(); document.getElementById('psfTemplateButton').focus();
-  });
-  document.getElementById('psfModeList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-psf-mode]'); if (!option) return;
-    setPreSplitFeeMode(option.getAttribute('data-psf-mode')); closePreSplitFeeLists(); document.getElementById('psfModeButton').focus();
-  });
-  document.getElementById('psfPayerList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-psf-payer]'); if (!option) return;
-    setPreSplitFeePayer(option.getAttribute('data-psf-payer')); closePreSplitFeeLists(); document.getElementById('psfPayerButton').focus();
-  });
-  document.getElementById('psfPayToList').addEventListener('click', function (event) {
-    var option = event.target.closest('[data-psf-payto]'); if (!option) return;
-    setPreSplitFeePayTo(option.getAttribute('data-psf-payto')); closePreSplitFeeLists(); document.getElementById('psfPayToButton').focus();
-  });
-  document.getElementById('psfBasisList').addEventListener('click', function () { closePreSplitFeeLists(); document.getElementById('psfBasisButton').focus(); });
-  ['psfName', 'psfAmount', 'psfPayee'].forEach(function (id) { document.getElementById(id).addEventListener('input', updatePreSplitFeeSave); });
-  document.getElementById('psfCancel').addEventListener('click', function () { close(); });
-  document.getElementById('psfSave').addEventListener('click', function () {
-    if (!preSplitFeeCtx || this.disabled) return;
-    var ctx = preSplitFeeCtx, rate = Number(String(document.getElementById('psfAmount').value).replace(/[^0-9.]/g, '')) || 0,
-        rawGross = ctx.side === 'other' ? otherGross : sideGross,
-        amount = ctx.mode === 'percentage' ? rawGross * rate / 100 : rate,
-        name = document.getElementById('psfName').value.trim(), payee = ctx.payTo === 'external' ? document.getElementById('psfPayee').value.trim() : PAYTO[ctx.payTo].to,
-        record = { id: ctx.id || 'd' + (++dedSeq), name:name, amt:amount, payee:payee, kind:'presplit', type:'fee', payTo:ctx.payTo, p:ctx.payer, feeType:ctx.mode, rate:ctx.mode === 'percentage' ? rate : null, contributes:document.getElementById('psfContributes').checked, private:document.getElementById('psfPrivate').checked };
-    if (ctx.isNew) DEDS[ctx.side].push(record);
-    else DEDS[ctx.side].forEach(function (item, index) { if (item.id === ctx.id) DEDS[ctx.side][index] = record; });
-    applyNumbers(); close();
-    if (status !== 'draft') { status = 'draft'; renderStatus(); }
-    logActivity(actor()[0], actor()[1], (ctx.isNew ? 'Added' : 'Updated') + ' “' + name + '” fee before the split.', true);
-    toast(name + (ctx.isNew ? ' added.' : ' saved.'));
-  });
-  document.addEventListener('click', function (event) {
-    if (!event.target.closest('#preSplitFeeSheet .psf-select')) closePreSplitFeeLists();
-  });
   var INFOTXT = {
-    post: 'Each fee is deducted from the share assigned to its payer.',
+    post: 'Fees after the split come out of each agent\u2019s share after the split \u2014 every agent on this side feels them.',
     radius: 'Radius fees are collected by Radius at closing and netted out of the disbursement.'
   };
   function closeDD(dd) {
@@ -8855,8 +7500,7 @@ Thanks</textarea></div>
       e.preventDefault(); openDD(btn.closest('.dd'), true); return;
     }
     if (!option) return;
-    var dd = option.closest('.dd'); if (!dd) return;
-    var options = Array.prototype.slice.call(dd.querySelectorAll('[role="option"]')),
+    var dd = option.closest('.dd'), options = Array.prototype.slice.call(dd.querySelectorAll('[role="option"]')),
         index = options.indexOf(option), next = null;
     if (e.key === 'ArrowDown') next = options[(index + 1) % options.length];
     else if (e.key === 'ArrowUp') next = options[(index - 1 + options.length) % options.length];
@@ -8988,11 +7632,9 @@ Thanks</textarea></div>
     document.getElementById(id).addEventListener('input', updateFeeSplitSummary);
   });
   /* fees after the split: same sheet, name + amount only (paid-by is fixed by the fee) */
-  var LISTS = { other: function () { return OTHERFEES; }, post: function () { return POSTDEDS; }, radius: function () { return PAYRADIUS; } };
+  var LISTS = { post: function () { return POSTDEDS; }, radius: function () { return PAYRADIUS; } };
   function actor() { return role === 'team_lead' || role === 'group_lead' ? ['Andy Martin', 'lead'] : ['Mark Perez', 'ag']; }
   function openPost(list, d, trigger, titleTxt, keepOpen) {
-    openCommissionFee(d,trigger);return;
-    document.getElementById('fFeeSide').hidden = true;
     if (d && d.feeMode) { openCommissionFee(d, trigger); return; }
     var isR = list === 'radius';
     dedCtx = { k: list, id: d ? d.id : null, isNew: !d, kind: 'post', type: null,
@@ -9041,33 +7683,20 @@ Thanks</textarea></div>
     }
   }
   function canEditCommissionFee(fee) {
-    if (!fee || fee.editable === false || isFinalizedStatus(status)) return false;
-    if (agentFinancialView()) {
-      var viewer=breakdownAgent();
-      return !!viewer && fee.createdByAgent === (viewer.id || viewer.name);
-    }
-    return role !== 'team_lead' || fee.teamLeadEditable !== false;
+    return !!fee && (role !== 'team_lead' ? fee.editable !== false : !!fee.teamLeadEditable);
   }
   function openCommissionFee(d, trigger) {
     if (isFinalizedStatus(status)) return;
     if (d && !canEditCommissionFee(d)) { toast('You cannot edit this fee.'); return; }
-    if (d && !d.id) d.id = 'p' + (++postSeq);
-    if (role === 'team_lead') {
-      teamLeadFeeReturn = { scroll:scrollEl.scrollTop, detailScroll:detailPage.querySelector('.detail-scroll').scrollTop };
-    }
     dedCtx = { k:'post', id:d ? d.id : null, isNew:!d, kind:'fee', type:null,
       payTo:d ? d.payTo : null, p:d ? d.p : 'Agent', agent:d ? d.agent : 'primary', agentDistribution:d ? (d.agentDistribution || 'allocation') : 'equal',
-      stage:d ? (d.stage || 'postsplit') : 'postsplit', side:d ? (d.side || (OTHERFEES.indexOf(d) > -1 ? 'other' : 'mine')) : role === 'team_lead' ? (leadMemberSelection ? leadMemberSelection.side : teamLeadFeeSide) : (isDualOtherSide() ? 'other' : 'mine'), fee:d || null };
+      stage:'postsplit', fee:d || null };
     document.getElementById('dedSheetT').firstChild.textContent = d ? 'Edit fee' : 'Add fee';
     document.getElementById('dedSub').hidden = true;
     document.getElementById('fType').hidden = true;
     document.getElementById('fName').hidden = false;
     document.getElementById('fFeePayer').hidden = false;
     document.getElementById('fFeeStage').hidden = false;
-    document.getElementById('fFeeSide').hidden = !(role === 'dual_role' || role === 'team_lead' && dualRoleSeed);
-    document.getElementById('feeSideMine').textContent = myTitle;
-    document.getElementById('feeSideOther').textContent = coopTitle;
-    document.getElementById('feeDealSide').value = dedCtx.side;
     document.getElementById('fPayTo').hidden = false;
     document.getElementById('fContributes').hidden = true;
     document.getElementById('fPrivate').hidden = true;
@@ -9094,7 +7723,7 @@ Thanks</textarea></div>
   }
   function removePost(list, id) {
     var gone = '', arr = LISTS[list]().filter(function (x) { if (x.id === id) { gone = x.n; return false; } return true; });
-    if (list === 'radius') PAYRADIUS = arr; else if (list === 'other') OTHERFEES = arr; else POSTDEDS = arr;
+    if (list === 'radius') PAYRADIUS = arr; else POSTDEDS = arr;
     applyNumbers();
     if (status !== 'draft') { status = 'draft'; renderStatus(); }
     var a = actor();
@@ -9109,10 +7738,7 @@ Thanks</textarea></div>
     var row = eb.closest('.prow.swipe');
     if (row && row.classList.contains('open')) { row.classList.remove('open'); return; }
     var lst = eb.getAttribute('data-list'), pd = LISTS[lst]().filter(function (x) { return x.id === eb.getAttribute('data-editpost'); })[0];
-    if (pd) {
-      if (role === 'team_lead' && leadMemberSelection && leadMemberSelection.teamModel) openCommissionFee(pd, eb);
-      else openPost(lst, pd, eb);
-    }
+    if (pd) openPost(lst, pd, eb);
   });
   /* swipe-left on a post-split row uncovers Remove; vertical scroll keeps priority */
   (function () {
@@ -9150,20 +7776,7 @@ Thanks</textarea></div>
     });
   })();
   function openDed(k, d, isNew, kind, trigger, keepOpen) {
-    document.getElementById('fFeeSide').hidden = true;
     kind = d ? d.kind : kind;
-    if(kind==='credit'){
-      if(isFinalizedStatus(status))return;
-      openClientCreditSheet(k,trigger,d?d.type:'credit');
-      if(d){clientCreditCtx.existing=d;document.getElementById('ccAmount').value=d.amt;document.getElementById('ccPayee').value=d.payee||'';setClientCreditPayTo(d.payTo||'external');document.getElementById('ccSave').textContent='Save';updateClientCreditSave();}
-      return;
-    }
-    if (kind === 'presplit') {
-      var fee=d?{id:d.id,n:d.name,a:d.amt,p:'Agent',payTo:d.payTo||'external',payee:d.payee,stage:'presplit',createdByAgent:d.createdByAgent}:null;
-      openCommissionFee(fee,trigger);
-      if(dedCtx && dedCtx.fee===fee){dedCtx.originalDed=d?{side:k,id:d.id}:null;dedCtx.side=k;setFeeStage('presplit');}
-      return;
-    }
     if (agentFinancialView() && (kind !== 'credit' || isFinalizedStatus(status))) return;
     document.getElementById('fPayTo').hidden = false;
     dedCtx = { k: k, id: d ? d.id : null, isNew: !!isNew, kind: kind,
@@ -9240,7 +7853,6 @@ Thanks</textarea></div>
       return;
     }
     if (ctx.kind === 'fee') {
-      if(isFinalizedStatus(status) || (!ctx.isNew && !canEditCommissionFee(ctx.fee)))return;
       var payers = feePayers(ctx.p), shares = {};
       payers.forEach(function (payer) { shares[payer] = Number(document.getElementById('fee' + payer + 'Pct').value); });
       var total = payers.reduce(function (sum, payer) { return sum + shares[payer]; }, 0);
@@ -9248,31 +7860,14 @@ Thanks</textarea></div>
         toast('Selected payer shares must total 100%.'); return;
       }
       var agentPct = shares.Agent || 0, teamPct = shares.Team || 0, groupPct = shares.Group || 0;
-      var fee = Object.assign({}, ctx.fee || {}, { id:ctx.id || 'p' + (++postSeq), n:typed, a:amt, p:ctx.p, payTo:ctx.payTo,
+      var fee = { id:ctx.id || 'p' + (++postSeq), n:typed, a:amt, p:ctx.p, payTo:ctx.payTo,
         payee:ctx.payTo === 'external' ? payee : PAYTO[ctx.payTo].to, feeMode:true, agent:ctx.agent,
         agentPct:agentPct, teamPct:teamPct, groupPct:groupPct, agentDistribution:ctx.agentDistribution, stage:ctx.stage, editable:true,
         teamLeadEditable:true,
-        editableFields:['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'feeGroupPct', 'dedPayee', 'payTo', 'payer', 'agent', 'agentDistribution', 'stage'] });
-      if(ctx.isNew)fee.createdByAgent=agentFinancialView() ? (ctx.sheetExample ? (role==='dual_role'?'Agent Ally':sheetAgentName) : (breakdownAgent().id || breakdownAgent().name)) : null;
-      if(ctx.sheetExample){saveSheetExampleFee(ctx,fee);return;}
-      fee.side = (role === 'dual_role' || role === 'team_lead' && dualRoleSeed) ? document.getElementById('feeDealSide').value : (ctx.side || 'mine');
-      if(ctx.originalDed)DEDS[ctx.originalDed.side]=DEDS[ctx.originalDed.side].filter(function(d){return d.id!==ctx.originalDed.id;});
-      if (!ctx.isNew) {
-        POSTDEDS = POSTDEDS.filter(function (x) { return x.id !== ctx.id; });
-        OTHERFEES = OTHERFEES.filter(function (x) { return x.id !== ctx.id; });
-      }
-      var radiusIndex = ctx.fee ? PAYRADIUS.indexOf(ctx.fee) : -1;
-      if (radiusIndex > -1 && fee.side === 'mine') PAYRADIUS[radiusIndex] = fee;
-      else {
-        if (radiusIndex > -1) PAYRADIUS.splice(radiusIndex, 1);
-        (fee.side === 'other' ? OTHERFEES : POSTDEDS).push(fee);
-      }
+        editableFields:['dedName', 'dedAmt', 'feeAgentPct', 'feeTeamPct', 'feeGroupPct', 'dedPayee', 'payTo', 'payer', 'agent', 'agentDistribution', 'stage'] };
+      if (ctx.isNew) POSTDEDS.push(fee);
+      else POSTDEDS.forEach(function (x, i) { if (x.id === ctx.id) POSTDEDS[i] = fee; });
       applyNumbers(); close();
-      if (teamLeadFeeReturn && role === 'team_lead') {
-        scrollEl.scrollTop = teamLeadFeeReturn.scroll;
-        detailPage.querySelector('.detail-scroll').scrollTop = teamLeadFeeReturn.detailScroll;
-        teamLeadFeeReturn = null;
-      }
       if (status !== 'draft') { status = 'draft'; renderStatus(); }
       logActivity(actor()[0], actor()[1], (ctx.isNew ? 'Added' : 'Updated') + ' “' + typed + '” fee.', true);
       toast(typed + (ctx.isNew ? ' added.' : ' saved.'));
@@ -9351,9 +7946,9 @@ Thanks</textarea></div>
     var button = e.target.closest('[data-removefee]');
     if (!button) return;
     e.preventDefault(); e.stopPropagation();
-    var fee = POSTDEDS.concat(OTHERFEES).filter(function (item) { return item.id === button.getAttribute('data-removefee'); })[0];
+    var fee = POSTDEDS.filter(function (item) { return item.id === button.getAttribute('data-removefee'); })[0];
     if (!fee || !canEditCommissionFee(fee)) return;
-    dedCtx = { k:fee.side === 'other' ? 'other' : 'post', id:fee.id, isNew:false, kind:'post' };
+    dedCtx = { k:'post', id:fee.id, isNew:false, kind:'post' };
     openDedRemoveDialog(button);
   });
   document.getElementById('dedCancel').addEventListener('click', function () { close(); });
@@ -9448,19 +8043,16 @@ Thanks</textarea></div>
   function syncDualRoleView(immediate) {
     var dual = role === 'dual_role';
     sideCards.forEach(function (card) {
-      if (role === 'team_lead') {
-        card.hidden = card.id === 'commissionsStackCard' || (!dualRoleSeed && sideName(card) !== (mySide === 'buyer' ? 'buying' : 'listing'));
-        return;
-      }
       card.hidden = card.id !== 'commissionsStackCard' && (agentFinancialView() ? role !== 'dual_role' && sideName(card) !== (mySide === 'buyer' ? 'buying' : 'listing') : dual && sideName(card) !== dualSide);
     });
     if (!detailPage.hidden) syncSideStack(immediate);
   }
   function setDefaultSideOpen() {
-    /* Show breakdown sections initially; users can collapse them. */
+    /* First Commission Overview view stays scan-first. Opening a side is
+       always a deliberate tap, never inferred from the transaction side. */
     sideCards.forEach(function (card) {
-      card.querySelector('.sgo').setAttribute('aria-expanded', 'true');
-      card.querySelector('.sidebody').hidden = false;
+      card.querySelector('.sgo').setAttribute('aria-expanded', 'false');
+      card.querySelector('.sidebody').hidden = true;
     });
   }
 
