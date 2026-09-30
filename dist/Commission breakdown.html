@@ -2440,7 +2440,9 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
   display:block; flex:none; white-space:nowrap;
 }
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .commission-plan-label > b { white-space:nowrap; }
-#sheetBreakdown .commission-plan-label > .fee-subtext { display:block; }
+#sheetBreakdown .commission-plan-label > .fee-subtext { display:block; font-size:var(--text-caption); color:var(--muted-foreground); }
+#sheetBreakdown .commission-plan-label .allocation-edit { font-size:inherit; font-weight:inherit; line-height:inherit; color:var(--primary); padding:0; height:auto; border:0; }
+#sheetBreakdown .commission-plan-label .allocation-edit > i { font-size:inherit; }
 /* One compact selector width; only the selected value may truncate. */
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value,
 #sheetBreakdown .sheet-plan-trigger {
@@ -2463,14 +2465,16 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 .screen .commission-item .rds-item__media > i.ph-receipt { color:var(--tint-red-fg); }
 .screen .commission-plan-icon > i { color:var(--primary); }
 /* Shared mobile fee actions; vertical scrolling retains priority. */
-.fee-action-shell { position:relative; overflow:hidden; }
-.fee-action-content { position:relative; z-index:1; touch-action:pan-y; background:var(--card)!important; }
-.fee-action-tray { position:absolute; right:0; top:0; bottom:0; display:flex; align-items:center; gap:var(--space-1); }
-.fee-action-tray > button { width:44px; height:44px; }
-.fee-action-tray i { font-size:16px; }
-.fee-action-tray .fee-action-edit { color:var(--primary); }
-.fee-action-tray .fee-action-delete { color:var(--tint-red-fg); }
-.fee-action-shell.editing .fee-action-tray { position:static; justify-content:flex-end; }
+.fee-action-shell { position:relative; overflow:hidden; isolation:isolate; }
+.fee-action-content { position:relative; z-index:1; width:100%; box-sizing:border-box; touch-action:pan-y; background:var(--card)!important; }
+.fee-action-tray { visibility:hidden; position:absolute; right:0; top:0; bottom:0; display:flex; align-items:center; gap:var(--space-2); }
+.fee-action-tray > button { flex:0 0 44px; width:44px; height:44px; padding:0; border-radius:var(--radius-button); }
+.fee-action-tray i { font-size:16px; color:inherit; }
+.fee-action-tray .fee-action-edit { background:var(--primary); color:var(--primary-foreground); }
+.fee-action-tray .fee-action-delete { background:var(--destructive); color:var(--destructive-foreground); }
+.fee-action-shell.editing { display:block; }
+.fee-action-shell.editing .fee-action-content { width:100%; min-width:0; }
+.fee-action-shell.editing .fee-action-tray { position:static; justify-content:flex-end; padding-bottom:var(--space-2); }
 .fee-action-shell.editing .fee-action-content { background:transparent!important; }
 </style>
 </head>
@@ -4800,28 +4804,37 @@ Thanks</textarea></div>
     row.replaceWith(shell); shell.appendChild(row); row.classList.add('fee-action-content');
     var tray=document.createElement('div');tray.className='fee-action-tray';shell.appendChild(tray);
     function button(kind, icon, handler) {
-      var b=document.createElement('button');b.type='button';b.className='rds-btn rds-btn--ghost rds-btn--icon fee-action-'+kind;
+      var b=document.createElement('button');b.type='button';b.className='rds-btn rds-btn--icon'+(kind==='delete'?' rds-btn--destructive':'')+' fee-action-'+kind;
       b.setAttribute('aria-label',(kind==='edit'?'Edit ':'Delete ')+label);b.title=kind==='edit'?'Edit fee':'Delete fee';
       var i=document.createElement('i');i.className='ph '+icon;i.setAttribute('aria-hidden','true');b.appendChild(i);
       b.addEventListener('click',function(e){e.stopPropagation();if(allowed())handler(b);});tray.appendChild(b);return b;
     }
     button('edit','ph-pencil-simple',edit);button('delete','ph-trash',remove);
     var opened=editing, start=null, offset=0, dragging=false, suppress=false;
-    function show(open) { opened=open;row.style.transform=editing?'':'translateX('+(open?-96:0)+'px)';tray.inert=!open;tray.setAttribute('aria-hidden',String(!open)); }
+    function show(open) { opened=open;row.style.transform=editing?'':'translateX('+(open?-104:0)+'px)';tray.inert=!open;tray.style.visibility=open?'visible':'hidden';tray.setAttribute('aria-hidden',String(!open)); }
     show(editing);
     if (editing) return;
     row.tabIndex=0;row.setAttribute('aria-label',label+'; press Enter for fee actions');
     row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(true);tray.firstChild.focus();}if(e.key==='Escape')show(false);});
     shell.addEventListener('keydown',function(e){if(e.key==='Escape'){show(false);row.focus();}});
-    row.addEventListener('pointerdown',function(e){if(!e.isPrimary || e.button!==0 || !allowed())return;start={x:e.clientX,y:e.clientY,id:e.pointerId,base:opened?-96:0};dragging=false;});
+    row.addEventListener('pointerdown',function(e){if(!e.isPrimary || e.button!==0 || !allowed())return;start={x:e.clientX,y:e.clientY,id:e.pointerId,base:opened?-104:0};dragging=false;});
     row.addEventListener('pointermove',function(e){
       if(!start || e.pointerId!==start.id)return;
       var dx=e.clientX-start.x,dy=e.clientY-start.y;
       if(!dragging){if(Math.abs(dy)>10 && Math.abs(dy)>Math.abs(dx)){start=null;return;}if(Math.abs(dx)<10)return;dragging=true;row.setPointerCapture(e.pointerId);}
-      e.preventDefault();offset=Math.max(-96,Math.min(0,start.base+dx));row.style.transform='translateX('+offset+'px)';
+      e.preventDefault();tray.style.visibility='visible';offset=Math.max(-104,Math.min(0,start.base+dx));row.style.transform='translateX('+offset+'px)';
     });
     function finish(e){if(!start || e.pointerId!==start.id)return;suppress=dragging;show(e.type==='pointercancel'?opened:dragging?offset < -40:opened);start=null;dragging=false;}
     row.addEventListener('pointerup',finish);row.addEventListener('pointercancel',finish);
+    // Trackpad horizontal gestures emit wheel events, not pointer drags.
+    var wheelTimer=null;
+    row.addEventListener('wheel',function(e){
+      if(!allowed() || Math.abs(e.deltaX)<=Math.abs(e.deltaY) || !e.deltaX)return;
+      e.preventDefault();
+      tray.style.visibility='visible';if(wheelTimer===null)offset=opened?-104:0;
+      offset=Math.max(-104,Math.min(0,offset-e.deltaX));row.style.transform='translateX('+offset+'px)';
+      clearTimeout(wheelTimer);wheelTimer=setTimeout(function(){show(offset < -40);wheelTimer=null;},120);
+    },{passive:false});
     row.addEventListener('click',function(e){if(suppress||opened){e.preventDefault();e.stopImmediatePropagation();if(!suppress)show(false);suppress=false;}},true);
   }
   function sheetFeeShareText(side, selected, payer, dual) {
@@ -4997,7 +5010,8 @@ Thanks</textarea></div>
           if(m.agents.length>1) {
             var allocationNote=el('small','fee-subtext',a.source.allocation+'% allocation');
             if(!personalOnly && sheetEditing && !isFinalizedStatus(status)) {
-              var allocationButton=el('button','rds-btn rds-btn--link',a.source.allocation+'% allocation');
+              var allocationButton=el('button','rds-btn rds-btn--link allocation-edit',a.source.allocation+'% allocation');
+              var allocationPencil=el('i','ph ph-pencil-simple');allocationPencil.setAttribute('aria-hidden','true');allocationButton.appendChild(allocationPencil);
               allocationButton.type='button';allocationButton.setAttribute('aria-label','Edit agent allocations · '+m.side.name);
               allocationButton.addEventListener('click',function(){openAgentAllocation('mine',allocationButton,null,m.side);});
               allocationNote.textContent='';allocationNote.appendChild(allocationButton);
@@ -6106,7 +6120,7 @@ Thanks</textarea></div>
             agentTarget = r.agentIndex != null,
             teamTarget = !!r.teamAgentDetails,
             payerTarget = !!r.payerDetails && !ybdEditing,
-            removableFee = !!(tgt && r.post && r.post.feeMode && r.post.id && canEditCommissionFee(r.post)),
+            removableFee = !!(tgt && r.post && r.post.id && canEditCommissionFee(r.post)),
             l = document.createElement(removableFee ? 'div' : (tgt || agentTarget ? 'button' : 'div'));
         l.className = 'd' + amountTone(r.v, r.post) + (r.post && r.post.teamShare ? ' team-share-fee' : '');
         if (removableFee) l.classList.add('fee-edit-actions');
@@ -6243,13 +6257,22 @@ Thanks</textarea></div>
         }
         if (l.classList.contains('agent-fee-row')) applyRadiusItem(l,s,a,l.querySelector('.agent-fee-direction'));
         host.appendChild(l);
-        if (r.post && r.post.feeMode && r.post.id && canEditCommissionFee(r.post)) {
+        if (r.post && r.post.id && canEditCommissionFee(r.post)) {
           l.querySelectorAll('.fee-row-action').forEach(function(action){action.remove();});
           attachFeeActions(l,ybdEditing,function(trigger){openCommissionFee(r.post,trigger);},function(trigger){
             if(!canEditCommissionFee(r.post))return;
-            dedCtx={k:r.post.side==='other'?'other':'post',id:r.post.id,isNew:false,kind:'post'};
+            dedCtx={k:r.list || (r.post.side==='other'?'other':'post'),id:r.post.id,isNew:false,kind:'post'};
             openDedRemoveDialog(trigger);
           },function(){return canEditCommissionFee(r.post);},r.k);
+        } else if (r.preDed) {
+          var deductionSide=r.feeSide || 'mine';
+          var ownDeduction=DEDS[deductionSide].find(function(d){return d.id===r.preDed;});
+          if (ownDeduction && canEditCommissionFee(ownDeduction)) {
+            attachFeeActions(l,ybdEditing,function(trigger){openPreSplitFeeSheet(deductionSide,ownDeduction,trigger);},function(trigger){
+              if(!canEditCommissionFee(ownDeduction))return;
+              dedCtx={k:deductionSide,id:ownDeduction.id,isNew:false,kind:'presplit'};openDedRemoveDialog(trigger);
+            },function(){return canEditCommissionFee(ownDeduction);},r.k);
+          }
         }
       }
       /* the chain, bucketed: what stands on its own above the groups (the
@@ -9520,7 +9543,7 @@ Thanks</textarea></div>
           finalPayeeP = ctx.payTo === 'external' ? payee : PAYTO[ctx.payTo].to;
       if (ctx.isNew) {
         if (isR) { radSeq++; ctx.id = 'r' + radSeq; } else { postSeq++; ctx.id = 'p' + postSeq; }
-        arr.push({ id: ctx.id, n: typed, a: amt, p: ctx.p || 'Agent', payTo: ctx.payTo, payee: finalPayeeP, contributes: document.getElementById('dedContributes').checked, private: document.getElementById('dedPrivate').checked });
+        arr.push({ id: ctx.id, n: typed, a: amt, p: ctx.p || 'Agent', payTo: ctx.payTo, payee: finalPayeeP, contributes: document.getElementById('dedContributes').checked, private: document.getElementById('dedPrivate').checked, createdByAgent:agentFinancialView() ? (breakdownAgent().id || breakdownAgent().name) : null });
       } else arr.forEach(function (x) { if (x.id === ctx.id) { x.n = typed; x.a = amt; x.p = ctx.p || 'Agent'; x.payTo = ctx.payTo; x.payee = finalPayeeP; x.contributes = document.getElementById('dedContributes').checked; x.private = document.getElementById('dedPrivate').checked; } });
       applyNumbers(); close();
       if (status !== 'draft') { status = 'draft'; renderStatus(); }
@@ -9534,7 +9557,7 @@ Thanks</textarea></div>
     if (ctx.isNew) {
       dedSeq++;
       ctx.id = 'd' + dedSeq;
-      DEDS[ctx.k].push({ id: ctx.id, name: name, amt: amt, payee: finalPayee, kind: ctx.kind, type: ctx.type, payTo: ctx.payTo });
+      DEDS[ctx.k].push({ id: ctx.id, name: name, amt: amt, payee: finalPayee, kind: ctx.kind, type: ctx.type, payTo: ctx.payTo, createdByAgent:agentFinancialView() ? (breakdownAgent().id || breakdownAgent().name) : null });
     } else {
       DEDS[ctx.k].forEach(function (d) {
         if (d.id === ctx.id) { d.name = name; d.amt = amt; d.payee = finalPayee; d.type = ctx.type; d.payTo = ctx.payTo; }
