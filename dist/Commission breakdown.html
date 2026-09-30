@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-mobile-no-hover>
 <head>
+<script src="assets/radius-fee-banner.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commission breakdown — Radius</title>
@@ -2293,6 +2294,9 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 .screen.sheet-breakdown #detailPage > .detail-scroll { flex:none; overflow:visible; padding:0; }
 .screen.sheet-breakdown #detailPage > .detail-scroll > :not(#sheetBreakdown) { display:none !important; }
 #sheetBreakdown .sheet-title { margin:0 0 var(--statement-inset); font:600 var(--text-body)/var(--leading-body) var(--font); }
+#sheetBreakdown .sheet-wire-button { margin-left:var(--space-1); vertical-align:middle; }
+#sheetBreakdown .sheet-wire-missing { color:var(--status-yellow); }
+#decisionDock > .sheet-edit-banner { position:absolute; bottom:calc(100% + var(--space-2)); left:0; right:0; }
 #sheetBreakdown .sheet-section { margin-block:var(--statement-section); }
 #sheetBreakdown .sheet-heading { margin:0 0 calc(var(--statement-unit) * 2); font:600 var(--text-body)/var(--leading-body) var(--font); }
 #sheetBreakdown .sheet-row { padding-block:var(--statement-gap); gap:var(--statement-gap); }
@@ -2320,6 +2324,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 #sheetBreakdown summary:active { background:var(--muted); }
 #sheetBreakdown .sheet-side-card { border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); overflow:hidden; }
 #sheetBreakdown .sheet-side-card > summary { padding:12px; }
+#sheetBreakdown .sheet-side-card > summary > .sheet-add-agent { margin-left:auto; flex:none; }
 #sheetBreakdown .sheet-side-card[open] > summary { border-bottom:1px solid var(--border); }
 #sheetBreakdown .sheet-side-card > .sheet-section,
 #sheetBreakdown .sheet-side-card > .sheet-disclosure { margin:12px; }
@@ -2426,6 +2431,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 /* Shared compact summary rhythm: Agent is the reference for every role. */
 #sheetBreakdown .sheet-summary-plans,
 #sheetBreakdown .sheet-summary-breakdown { margin:0; }
+#sheetBreakdown .sheet-side-card > .sheet-summary-breakdown { margin:var(--space-3); }
 #sheetBreakdown .sheet-summary-plans .sheet-agent-plan {
   display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center;
   min-height:44px; box-sizing:border-box; padding:var(--space-2) 0; gap:var(--space-3); border-top:0;
@@ -2472,13 +2478,13 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 .fee-action-shell { position:relative; overflow:hidden; isolation:isolate; }
 .fee-action-content { position:relative; z-index:1; width:100%; box-sizing:border-box; touch-action:pan-y; background:var(--card)!important; }
 .fee-action-tray { visibility:hidden; position:absolute; right:0; top:0; bottom:0; display:flex; align-items:center; gap:var(--space-2); }
-.fee-action-tray > button { flex:0 0 44px; width:44px; height:44px; padding:0; border-radius:var(--radius-button); }
+.fee-action-tray > button { flex:none; }
 .fee-action-tray i { font-size:16px; color:inherit; }
 .fee-action-tray .fee-action-edit { background:var(--primary); color:var(--primary-foreground); }
 .fee-action-tray .fee-action-delete { background:var(--destructive); color:var(--destructive-foreground); }
-.fee-action-shell.editing { display:block; }
-.fee-action-shell.editing .fee-action-content { width:100%; min-width:0; }
-.fee-action-shell.editing .fee-action-tray { position:static; justify-content:flex-end; padding-bottom:var(--space-2); }
+.fee-action-shell.editing { display:flex; align-items:center; gap:var(--space-2); }
+.fee-action-shell.editing .fee-action-content { flex:1; width:auto; min-width:0; }
+.fee-action-shell.editing .fee-action-tray { position:static; flex:none; justify-content:flex-end; padding:0; }
 .fee-action-shell.editing .fee-action-content { background:transparent!important; }
 </style>
 </head>
@@ -3310,6 +3316,7 @@ Thanks</textarea></div>
     </div>
   </aside>
   <div class="native-downloads" aria-label="Native source downloads">
+    <small><strong>Dev note:</strong> Hide Credit and Referral sections when no entries exist, including in Edit mode.</small>
     <a class="rds-btn rds-btn--outline" href="downloads/radius-office-ios-source.zip" download>Download iOS source</a>
     <a class="rds-btn rds-btn--outline" href="downloads/radius-office-android-source.zip" download>Download Android source</a>
     <small>Developer previews · partial native port</small>
@@ -3335,6 +3342,8 @@ Thanks</textarea></div>
   document.addEventListener('keydown',function(e){ if(e.key==='Escape' && tweaksTrigger.getAttribute('aria-expanded')==='true') setTweaksOpen(false); });
   themeBtn.addEventListener('click', function(){
     var light=screenEl.classList.toggle('light');
+    var editBanner=document.getElementById('sheetEditBanner');
+    if(editBanner)editBanner.setAttribute('data-theme',light?'light':'dark');
     themeBtn.innerHTML = light ? '<i class="ph ph-sun" aria-hidden="true"></i>Light' : '<i class="ph ph-moon" aria-hidden="true"></i>Dark';
     themeBtn.setAttribute('aria-pressed', String(light));
   });
@@ -4802,50 +4811,84 @@ Thanks</textarea></div>
     return { side:side, basis:basis, teamSplit:teamSplit, radius:radius, team:round(teamSplit-radius-(side.teamFees||[]).reduce(function(s,f){return s+f[1];},0)), shared:shared,
       agents:agents, group:round(group-side.groupFees.reduce(function (sum,f) { return sum+f[1]; },0)) };
   }
+  function feeLeadAccess() { return ['team_lead','group_lead','group_lead_agent'].indexOf(role)!==-1; }
+  var sheetWireContext = null;
+  function sheetWireRequired(fee) { return fee[2]!=='group' && (!fee.payTo || fee.payTo==='external'); }
+  function openSheetFeeWire(side, selected, trigger) {
+    if(!feeLeadAccess())return;
+    var total=sheetFeeEntries(side,selected).reduce(function(sum,e){return sum+e.fee[1];},0),wire=selected.wire;
+    openWireSheet(selected[0],cur(total),(wire&&wire.to)||selected.payee||'Payee not set yet',wire&&wire.status||'missing',trigger);
+    sheetWireContext={side:side,fee:selected};
+    document.getElementById('wireHint').textContent=wire&&wire.status==='on-file'?'Account ending '+String(wire.account||'').slice(-4):'Needed before this fee can be disbursed';
+  }
+  function openSheetFeeDetails(side, selected, payer, trigger) {
+    if(!feeLeadAccess())return;
+    var entries=sheetFeeEntries(side,selected),total=entries.reduce(function(sum,e){return sum+e.fee[1];},0);
+    var wire=selected.wire;
+    openTeamLeadRowDetails({k:selected[0],detailType:'sheetFee',sheetSide:side,sheetFee:selected,detailRows:[
+      {name:'Amount',value:cur(total)},
+      {name:'Paid by',value:entries.map(function(e){return e.agent?e.agent.name:e.payer;}).filter(function(v,i,a){return a.indexOf(v)===i;}).join(' + ')},
+      {name:'Recipient',value:(wire && wire.to)||selected.payee||(selected[2]==='group'?'Best Agents Ever':'Recipient missing')},
+      {name:'Side',value:side.name},
+      {name:'Wire instructions',value:sheetWireRequired(selected)?wire&&wire.status==='on-file'?'On file':'Missing':'Not required'}
+    ]},trigger);
+    document.getElementById('teamLeadRowEdit').hidden=!canEditSheetFee(selected);
+    if(sheetWireRequired(selected)) {
+      var action=document.createElement('button');action.type='button';action.className='rds-btn rds-btn--outline';
+      action.textContent=wire&&wire.status==='on-file'?'View wire instructions':'Add wire instructions';
+      action.addEventListener('click',function(){
+        openWireSheet(selected[0],cur(total),(wire&&wire.to)||selected.payee||'Payee not set yet',wire&&wire.status||'missing',action);
+        sheetWireContext={side:side,fee:selected};
+        document.getElementById('wireHint').textContent=wire&&wire.status==='on-file'?'Account ending '+wire.account.slice(-4):'Needed before this fee can be disbursed';
+      });
+      document.getElementById('teamLeadRowSheetRows').appendChild(action);
+    }
+  }
   function canEditSheetFee(fee) {
+    if(!feeLeadAccess())return false;
     if (!fee || fee.editable === false || isFinalizedStatus(status)) return false;
     if (agentFinancialView()) return fee.createdByAgent === (role === 'dual_role' ? 'Agent Ally' : sheetAgentName);
     return role !== 'team_lead' || fee.teamLeadEditable !== false;
   }
   function attachFeeActions(row, editing, edit, remove, allowed, label) {
-    if (!allowed()) return;
+    if (!feeLeadAccess() || !allowed()) return;
     // A shared tray keeps gestures separate from the existing fee editor.
     var shell=document.createElement('div'); shell.className='fee-action-shell'+(editing?' editing':'');
     row.replaceWith(shell); shell.appendChild(row); row.classList.add('fee-action-content');
     var tray=document.createElement('div');tray.className='fee-action-tray';shell.appendChild(tray);
     function button(kind, icon, handler) {
-      var b=document.createElement('button');b.type='button';b.className='rds-btn rds-btn--icon'+(kind==='delete'?' rds-btn--destructive':'')+' fee-action-'+kind;
+      var b=document.createElement('button');b.type='button';b.className='rds-btn rds-btn--icon rds-btn--sm'+(kind==='delete'?' rds-btn--destructive':'')+' fee-action-'+kind;
       b.setAttribute('aria-label',(kind==='edit'?'Edit ':'Delete ')+label);b.title=kind==='edit'?'Edit fee':'Delete fee';
       var i=document.createElement('i');i.className='ph '+icon;i.setAttribute('aria-hidden','true');b.appendChild(i);
       b.addEventListener('click',function(e){e.stopPropagation();if(allowed())handler(b);});tray.appendChild(b);return b;
     }
     button('edit','ph-pencil-simple',edit);button('delete','ph-trash',remove);
     var opened=editing, start=null, offset=0, dragging=false, suppress=false;
-    function show(open) { opened=open;row.style.transform=editing?'':'translateX('+(open?-104:0)+'px)';tray.inert=!open;tray.style.visibility=open?'visible':'hidden';tray.setAttribute('aria-hidden',String(!open)); }
+    function show(open) { opened=open;row.style.transform=editing?'':'translateX('+(open?-72:0)+'px)';tray.inert=!open;tray.style.visibility=open?'visible':'hidden';tray.setAttribute('aria-hidden',String(!open)); }
     show(editing);
     if (editing) return;
     row.tabIndex=0;row.setAttribute('aria-label',label+'; press Enter for fee actions');
     row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(true);tray.firstChild.focus();}if(e.key==='Escape')show(false);});
     shell.addEventListener('keydown',function(e){if(e.key==='Escape'){show(false);row.focus();}});
-    row.addEventListener('pointerdown',function(e){if(!e.isPrimary || e.button!==0 || !allowed())return;start={x:e.clientX,y:e.clientY,id:e.pointerId,base:opened?-104:0};dragging=false;});
+    row.addEventListener('pointerdown',function(e){if(e.target.closest('.sheet-wire-button') || !e.isPrimary || e.button!==0 || !allowed())return;start={x:e.clientX,y:e.clientY,id:e.pointerId,base:opened?-72:0};dragging=false;});
     row.addEventListener('pointermove',function(e){
       if(!start || e.pointerId!==start.id)return;
       var dx=e.clientX-start.x,dy=e.clientY-start.y;
       if(!dragging){if(Math.abs(dy)>10 && Math.abs(dy)>Math.abs(dx)){start=null;return;}if(Math.abs(dx)<10)return;dragging=true;row.setPointerCapture(e.pointerId);}
-      e.preventDefault();tray.style.visibility='visible';offset=Math.max(-104,Math.min(0,start.base+dx));row.style.transform='translateX('+offset+'px)';
+      e.preventDefault();tray.style.visibility='visible';offset=Math.max(-72,Math.min(0,start.base+dx));row.style.transform='translateX('+offset+'px)';
     });
-    function finish(e){if(!start || e.pointerId!==start.id)return;suppress=dragging;show(e.type==='pointercancel'?opened:dragging?offset < -40:opened);start=null;dragging=false;}
+    function finish(e){if(!start || e.pointerId!==start.id)return;suppress=dragging;show(e.type==='pointercancel'?opened:dragging?offset < -28:opened);start=null;dragging=false;}
     row.addEventListener('pointerup',finish);row.addEventListener('pointercancel',finish);
     // Trackpad horizontal gestures emit wheel events, not pointer drags.
     var wheelTimer=null;
     row.addEventListener('wheel',function(e){
       if(!allowed() || Math.abs(e.deltaX)<=Math.abs(e.deltaY) || !e.deltaX)return;
       e.preventDefault();
-      tray.style.visibility='visible';if(wheelTimer===null)offset=opened?-104:0;
-      offset=Math.max(-104,Math.min(0,offset-e.deltaX));row.style.transform='translateX('+offset+'px)';
-      clearTimeout(wheelTimer);wheelTimer=setTimeout(function(){show(offset < -40);wheelTimer=null;},120);
+      tray.style.visibility='visible';if(wheelTimer===null)offset=opened?-72:0;
+      offset=Math.max(-72,Math.min(0,offset-e.deltaX));row.style.transform='translateX('+offset+'px)';
+      clearTimeout(wheelTimer);wheelTimer=setTimeout(function(){show(offset < -28);wheelTimer=null;},120);
     },{passive:false});
-    row.addEventListener('click',function(e){if(suppress||opened){e.preventDefault();e.stopImmediatePropagation();if(!suppress)show(false);suppress=false;}},true);
+    row.addEventListener('click',function(e){if(e.target.closest('.sheet-wire-button'))return;if(suppress||opened){e.preventDefault();e.stopImmediatePropagation();if(!suppress)show(false);suppress=false;}},true);
   }
   function sheetFeeShareText(side, selected, payer, dual) {
     // Sheet examples store each payer's amount, not a commission percentage.
@@ -4900,7 +4943,7 @@ Thanks</textarea></div>
     var previous=ctx.sheetExample.entries;
     if(ctx.sheetExample.selected)previous.forEach(function(e){var i=e.fees.indexOf(e.fee);if(i>=0)e.fees.splice(i,1);});
     var id=ctx.sheetExample.selected && ctx.sheetExample.selected.feeId || 'sheet-'+(++postSeq);
-    function add(fees,amount){if(!amount)return;var f=[data.n,Math.round(amount*100)/100,data.payTo==='team'?'group':undefined];f.feeId=id;f.stage=data.stage;f.payTo=data.payTo;f.payee=data.payee;f.createdByAgent=data.createdByAgent;fees.push(f);}
+    function add(fees,amount){if(!amount)return;var f=[data.n,Math.round(amount*100)/100,data.payTo==='team'?'group':undefined];f.feeId=id;f.stage=data.stage;f.payTo=data.payTo;f.payee=data.payee;f.createdByAgent=data.createdByAgent;if(ctx.sheetExample.selected && ctx.sheetExample.selected.payee===data.payee && ctx.sheetExample.selected.payTo===data.payTo)f.wire=ctx.sheetExample.selected.wire;fees.push(f);}
     var agentTotal=data.a*(data.agentPct||0)/100;
     var recipients=target.agents;
     if(agentFinancialView())recipients=recipients.filter(function(a){return a.name===(role==='dual_role'?'Agent Ally':sheetAgentName);});
@@ -4917,6 +4960,8 @@ Thanks</textarea></div>
   }
   function renderSheetBreakdown() {
     var active = sheetViewActive();
+    var previousBanner=document.getElementById('sheetEditBanner');
+    if(previousBanner){if(previousBanner.disposeRadiusBanner)previousBanner.disposeRadiusBanner();previousBanner.remove();}
     document.querySelectorAll('[data-sheet-scenario]').forEach(function(b){b.setAttribute('aria-pressed',String(active && b.dataset.sheetScenario===sheetScenario));});
     screenEl.classList.toggle('sheet-breakdown', active);
     var root = document.getElementById('sheetBreakdown');
@@ -4959,6 +5004,21 @@ Thanks</textarea></div>
     }
     function fee(host, f, payer, side) {
       var node=row(host,f[0],-f[1],sheetFeeShareText(side,f,payer,models.length > 1),'fee');
+      if(feeLeadAccess()) {
+        if(sheetWireRequired(f)) {
+          var missing=!f.wire || f.wire.status!=='on-file';
+          var bank=el('button','rds-btn rds-btn--ghost rds-btn--icon rds-btn--sm sheet-wire-button'+(missing?' sheet-wire-missing':''));
+          bank.type='button';bank.setAttribute('aria-haspopup','dialog');
+          bank.setAttribute('aria-label','Wire instructions for '+f[0]+(missing?' — missing':''));bank.title=missing?'Wire instructions missing':'View wire instructions';
+          var bankIcon=el('i','ph ph-bank');bankIcon.setAttribute('aria-hidden','true');bank.appendChild(bankIcon);
+          bank.addEventListener('click',function(event){event.preventDefault();event.stopPropagation();openSheetFeeWire(side,f,bank);});
+          bank.addEventListener('keydown',function(event){event.stopPropagation();});
+          node.querySelector('.rds-item__title').appendChild(bank);
+        }
+        node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label','View details for '+f[0]);
+        node.addEventListener('click',function(){openSheetFeeDetails(side,f,payer,node);});
+        node.addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopImmediatePropagation();openSheetFeeDetails(side,f,payer,node);}});
+      }
       if (!canEditSheetFee(f)) return;
       attachFeeActions(node, sheetEditing, function(trigger) {
         if (canEditSheetFee(f)) openSheetExampleFee(side,f,trigger);
@@ -4986,6 +5046,12 @@ Thanks</textarea></div>
       button.addEventListener('click',function(){openSheetExampleFee(side,[key==='credit'?'Credit':'Referral',side[key]],button,key);});
     }
     root.className = 'tl-fee-details';
+    if(sheetEditing && feeLeadAccess()) {
+      var banner=el('div','sheet-edit-banner');banner.id='sheetEditBanner';banner.setAttribute('role','status');
+      banner.setAttribute('data-theme',screenEl.classList.contains('light')?'light':'dark');
+      decisionDockEl.prepend(banner);
+      window.mountRadiusFeeBanner(banner,function(){sheetEditing=false;renderSheetBreakdown();syncDockEdit();});
+    }
     row(root,'Sale price',500000);
     if(models.length>1) {
       visibleModels.slice().reverse().forEach(function(m){row(root,m.side.name === 'Listing side' ? 'List Side Award' : 'Buy Side Award',m.side.award+'%');});
@@ -5010,10 +5076,20 @@ Thanks</textarea></div>
     visibleModels.forEach(function(m,sideIndex){
       var body=disclosure(root,m.side.name,'Award '+m.side.award+'% · '+cur(m.side.gross),'side-'+sheetScenario+'-'+sideIndex,true);
       body.className += ' sheet-side-card';
+      if(role==='team_lead' && !isFinalizedStatus(status)) {
+        var addAgent=el('button','rds-btn sheet-add-agent','Add agent');addAgent.type='button';
+        addAgent.setAttribute('data-addagent',m.side.name);addAgent.setAttribute('data-agent-side','mine');
+        addAgent.setAttribute('aria-haspopup','dialog');
+        addAgent.sheetAgentSide=m.side;
+        addAgent.addEventListener('click',function(event){event.preventDefault();});
+        var sideHeader=body.querySelector('summary');
+        sideHeader.insertBefore(addAgent,sideHeader.querySelector('.sheet-disclosure-mark'));
+      }
       root.removeChild(body);
       var agentsWithPlans=visibleAgents(m).filter(function(a){return typeof a.source.split==='number' && Number.isFinite(a.source.split);});
       if(agentsWithPlans.length) {
-        var plans=el('section','sheet-summary-plans'); root.appendChild(plans);
+        var plans=el('section','sheet-summary-plans');
+        if(models.length>1) root.insertBefore(plans,grossRow); else root.appendChild(plans);
         agentsWithPlans.forEach(function(a){
           var planRow=el('div','sheet-agent-plan');
           var copy=el('span','agent-summary-copy',agentsWithPlans.length===1?'Commission plan':a.source.name);
@@ -5072,9 +5148,11 @@ Thanks</textarea></div>
           anchor.appendChild(select);anchor.appendChild(menu);planRow.appendChild(copy);planRow.appendChild(anchor);plans.appendChild(planRow);
         });
       }
-      var gross=el('section','sheet-summary-breakdown'); root.appendChild(gross); row(gross,'Gross commission',m.side.gross);
-      if(m.side.credit || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'credit');
-      if(m.side.referral || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'referral');
+      var gross=el('section','sheet-summary-breakdown');
+      (models.length>1 ? body : root).appendChild(gross);
+      if(models.length===1) row(gross,'Gross commission',m.side.gross);
+      if(m.side.credit)deduction(gross,m.side,'credit');
+      if(m.side.referral)deduction(gross,m.side,'referral');
       row(gross,'Gross after credits and referrals',m.basis,null,'total');
       root.appendChild(body);
       if (!personalOnly && !groupViewer) {
@@ -5085,12 +5163,12 @@ Thanks</textarea></div>
       (m.side.teamFees||[]).forEach(function(f){fee(team,f,'Team',m.side);});
       row(team,'Team Payout (net)',m.team,null,'total');
       }
-      var shared=section(body,'Agent & Group'); row(shared,'Commission basis',m.shared);
+      if(!personalOnly) { var shared=section(body,'Agent & Group'); row(shared,'Commission basis',m.shared); }
       visibleAgents(m).forEach(function(a,index){
         var agent=disclosure(body,a.source.name,cur(a.net)+' payout','agent-'+sheetScenario+'-'+sideIndex+'-'+index,true);
         row(agent,'Commission basis',a.basis,a.source.allocation+'% co-agent allocation');
         a.source.fees.filter(function(f){return f.stage==='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
-        row(agent,'Agent split '+a.source.split+'%',a.commission,'Group share: '+cur(a.group));
+        row(agent,'Agent split '+a.source.split+'%',a.commission,personalOnly?null:'Group share: '+cur(a.group));
         a.source.fees.filter(function(f){return f.stage!=='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
         row(agent,a.source.name==='Agent Ally'?'AA Payout (net)':'Agent Benny Payout (net)',a.net,null,'total');
       });
@@ -5106,8 +5184,8 @@ Thanks</textarea></div>
     });
     var teamTotal=models.reduce(function(sum,m){return sum+m.team;},0);
     var groupTotal=models.reduce(function(sum,m){return sum+m.group;},0);
-    if (models.length > 1 || (hasPersonal && !personalOnly)) {
-      var overall=section(root,models.length > 1 ? 'Commission Overview' : 'Your payouts');
+    if (!personalOnly || models.length > 1) {
+      var overall=section(root,personalOnly ? 'Commission Overview' : groupViewer ? 'Group commission' : 'Team commission');
       if (personalOnly) {
         visibleModels.forEach(function(m){visibleAgents(m).forEach(function(a){row(overall,m.side.name,a.net);});});
         row(overall,'Your payout',personalTotal,null,'total');
@@ -5148,8 +5226,12 @@ Thanks</textarea></div>
         if(!groupViewer)row(block,'Total disbursements',m.side.gross,null,'total');
       }
     });
-    if (!personalOnly) addSheetAgentAvatars(root);
+    if (!personalOnly) {
+      root.appendChild(overall);
+      addSheetAgentAvatars(root);
+    }
     var leadTotal = groupViewer ? groupTotal : teamTotal;
+    fitBar();
     document.getElementById('netFloatLabel').textContent=personalOnly?'Your payout':hasPersonal?'Personal + '+(groupViewer?'Group':'Team')+' payout':groupViewer?'Group payout':'Team payout';
     document.getElementById('netFloatValue').textContent=cur(personalOnly?personalTotal:leadTotal+(hasPersonal?personalTotal:0));
     document.getElementById('netFloatSub').textContent=visibleModels.map(function(m){return m.side.name;}).join(' + ');
@@ -6597,8 +6679,9 @@ Thanks</textarea></div>
   document.getElementById('teamLeadRowClose').addEventListener('click', function () { close(); });
   document.getElementById('teamLeadRowEdit').addEventListener('click', function () {
     var item = this.teamLeadDetail, trigger = lastFocus;
-    if (!item) return;
+    if (!item || !feeLeadAccess()) return;
     close(true);
+    if(item.detailType==='sheetFee'){openSheetExampleFee(item.sheetSide,item.sheetFee,trigger);return;}
     if (item.detailType === 'commission' || item.detailType === 'group') openAgentAllocation('mine', trigger);
     else if (item.editFee) openFee(item.editFee, trigger);
     else if (item.fee) openCommissionFee(item.fee, trigger);
@@ -6627,6 +6710,7 @@ Thanks</textarea></div>
   }
   document.getElementById('teamSplitAgentsClose').addEventListener('click', function () { close(); });
   function openFeePayerDetails(fee, trigger) {
+    if(!feeLeadAccess())return;
     var host = document.getElementById('feePayerRows');
     host.textContent = '';
     var splitData = feeSplitData(fee);
@@ -6824,6 +6908,7 @@ Thanks</textarea></div>
     };
   });
   function openFee(k, trigger) {
+    if(!feeLeadAccess())return;
     var m = FEEMETA[k]; if (!m) return;
     feeCtx = k;
     document.getElementById('feeSheetT').firstChild.textContent = m.t;
@@ -7009,7 +7094,8 @@ Thanks</textarea></div>
     screenEl.style.setProperty('--scrollpad', getComputedStyle(scrollEl).paddingTop);
   }
   function fitBar() {
-    var bh = decisionDockEl.offsetHeight;
+    var editBanner=document.getElementById('sheetEditBanner');
+    var bh = decisionDockEl.offsetHeight + (editBanner ? editBanner.offsetHeight + 8 : 0);
     if (bh > 0) screenEl.style.setProperty('--bar-h', bh + 'px');
   }
   /* at rest the header is pure glass over the hero wash — the hairline is
@@ -7482,6 +7568,7 @@ Thanks</textarea></div>
   }, true);
   function syncDockEdit() {
     var button = document.getElementById('dockEditBtn'), active = sheetViewActive() ? sheetEditing && !isFinalizedStatus(status) : detailPage && !detailPage.hidden ? detailEditing : ybdEditing;
+    button.hidden=!(usesLeadLayout() || agentFinancialView());
     button.setAttribute('aria-pressed', String(!!active));
     button.setAttribute('aria-label', active ? 'Done editing breakdown' : 'Edit breakdown');
     button.title = active ? 'Done editing breakdown' : 'Edit breakdown';
@@ -7704,7 +7791,7 @@ Thanks</textarea></div>
       detailPage.hidden = false;
       detailPage.setAttribute('role', 'region');
       detailPage.removeAttribute('aria-modal');
-      document.getElementById('detailEditBtn').hidden = false;
+      document.getElementById('detailEditBtn').hidden = !(usesLeadLayout() || agentFinancialView());
       setDefaultSideOpen();
       syncSideStack(true);
     } else {
@@ -8142,7 +8229,7 @@ Thanks</textarea></div>
     pendingAgentAddition = pending || null;
     agentAllocSide = side; agentAllocGross = side === 'mine' ? sideGross : otherGross;
     if (sheetAllocationSide) agentAllocGross = sheetSideMath(sheetAllocationSide).shared;
-    var list = sheetAllocationSide ? sheetAllocationSide.agents : pending ? pending.agents : AG[side], host = document.getElementById('agentAllocEditor'); host.textContent = '';
+    var list = pending ? pending.agents : sheetAllocationSide ? sheetAllocationSide.agents : AG[side], host = document.getElementById('agentAllocEditor'); host.textContent = '';
     agentAllocDraft = list.map(function (a) { return a.allocation == null ? 100 / list.length : a.allocation; });
     document.getElementById('agentAllocSub').textContent = 'Allocation of ' + (side === 'mine' ? myTitle : coopTitle).toLowerCase() + ' gross commission between agents.';
     if (sheetAllocationSide) document.getElementById('agentAllocSub').textContent = 'Agent allocation · ' + sheetAllocationSide.name;
@@ -8188,9 +8275,10 @@ Thanks</textarea></div>
   document.getElementById('agentAllocSave').addEventListener('click', function () {
     if (!syncAgentAllocation()) return;
     if (sheetAllocationSide) {
-      if (agentFinancialView() || !sheetEditing || isFinalizedStatus(status)) return;
+      if (isFinalizedStatus(status) || (pendingAgentAddition ? role!=='team_lead' : agentFinancialView() || !sheetEditing)) return;
+      if(pendingAgentAddition)sheetAllocationSide.agents=pendingAgentAddition.agents;
       sheetAllocationSide.agents.forEach(function(a,i){a.allocation=agentAllocDraft[i];});
-      sheetAllocationSide=null;close();renderSheetBreakdown();toast('Agent allocation saved — payouts recalculated.');return;
+      pendingAgentAddition=null;sheetAllocationSide=null;close();renderSheetBreakdown();toast('Agents and allocations saved — payouts recalculated.');return;
     }
     var pending = pendingAgentAddition;
     if (pending) {
@@ -8208,6 +8296,7 @@ Thanks</textarea></div>
   });
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-addagent]'); if (!b) return;
+    if(b.sheetAgentSide && (role!=='team_lead' || isFinalizedStatus(status)))return;
     agentTriggerRow = b;
     document.getElementById('agentSub').textContent = b.getAttribute('data-addagent');
     agentPick = [];
@@ -8231,6 +8320,7 @@ Thanks</textarea></div>
   var agentTriggerRow = null;
   /* who is already on the side the picker was opened from */
   function agentsOnSide() {
+    if(agentTriggerRow && agentTriggerRow.sheetAgentSide)return agentTriggerRow.sheetAgentSide.agents.map(function(a){return a.name;});
     var card = agentTriggerRow && agentTriggerRow.closest('.card.sides');
     if (!card) return [];
     return Array.prototype.map.call(card.querySelectorAll('.agentrow .ab b'), function (b) {
@@ -8748,6 +8838,18 @@ Thanks</textarea></div>
     (next || document.getElementById('agentQ')).focus();
   });
   document.getElementById('agentAdd').addEventListener('click', function () {
+    if(agentTriggerRow.sheetAgentSide) {
+      if(role!=='team_lead' || isFinalizedStatus(status))return;
+      var targetSide=agentTriggerRow.sheetAgentSide;
+      var typedExternal=document.getElementById('externalAgentName').value.trim();
+      var selectedNames=externalAgentMode ? externalDrafts.map(function(d){return d.name;}).concat(typedExternal?[typedExternal]:[]) : agentPick.slice();
+      selectedNames=Array.from(new Set(selectedNames)).filter(function(name){return name && !targetSide.agents.some(function(a){return a.name===name;});});
+      if(!selectedNames.length)return;
+      if(selectedNames.some(function(name){return !externalAgentMode && (!SCHED[name] || SCHED[name].flat!=null);})){toast('This side supports percentage plans. Choose an agent with a percentage plan.');return;}
+      var draftAgents=targetSide.agents.map(function(a){return Object.assign({},a);});
+      selectedNames.forEach(function(name){draftAgents.push({name:name,allocation:0,split:externalAgentMode?100:SCHED[name].split,fees:[]});});
+      openAgentAllocation('mine',agentTriggerRow,{agents:draftAgents,names:selectedNames,external:externalAgentMode},targetSide);return;
+    }
     var side = agentTriggerRow.getAttribute('data-agent-side'),
         extPending = document.getElementById('externalAgentName').value.trim(),
         extNames = externalAgentMode ? externalDrafts.map(function (d) { return d.name; }).concat(extPending ? [extPending] : []) : [],
@@ -9030,6 +9132,7 @@ Thanks</textarea></div>
     updatePreSplitFeeSave();
   }
   function openPreSplitFeeSheet(side, fee, trigger) {
+    if(!feeLeadAccess())return;
     preSplitFeeCtx = { side: side || 'mine', id: fee ? fee.id : null, isNew: !fee, mode: fee && fee.feeType === 'percentage' ? 'percentage' : 'flat', payer: fee && fee.p ? fee.p : 'Both', payTo: fee && fee.payTo ? fee.payTo : 'radius', template: 'create' };
     document.getElementById('psfName').value = fee ? fee.name : '';
     document.getElementById('psfAmount').value = fee ? String(fee.feeType === 'percentage' ? fee.rate : fee.amt) : '';
@@ -9310,6 +9413,7 @@ Thanks</textarea></div>
     }
   }
   function canEditCommissionFee(fee) {
+    if(!feeLeadAccess())return false;
     if (!fee || fee.editable === false || isFinalizedStatus(status)) return false;
     if (agentFinancialView()) {
       var viewer=breakdownAgent();
@@ -9319,7 +9423,7 @@ Thanks</textarea></div>
     return role !== 'team_lead' || fee.teamLeadEditable !== false;
   }
   function openCommissionFee(d, trigger) {
-    if (isFinalizedStatus(status)) return;
+    if (!feeLeadAccess() || isFinalizedStatus(status)) return;
     if (d && !canEditCommissionFee(d)) { toast('You cannot edit this fee.'); return; }
     if (d && !d.id) d.id = 'p' + (++postSeq);
     if (role === 'team_lead') {
@@ -9599,6 +9703,7 @@ Thanks</textarea></div>
     dedRemoveTrigger = null; pendingFeeDeletion = null;
   }
   function openDedRemoveDialog(trigger, onConfirm) {
+    if(!feeLeadAccess())return;
     if (!onConfirm && (!dedCtx || dedCtx.isNew)) return;
     pendingFeeDeletion = onConfirm || removeCurrentDeduction;
     var dialog = document.getElementById('dedRemoveDialog');
@@ -9658,6 +9763,8 @@ Thanks</textarea></div>
   /* ── wire detail ────────────────────────────────────── */
   var openWire = null;
   function openWireSheet(fee, amt, to, status, trigger) {
+    if(!feeLeadAccess())return;
+    sheetWireContext=null;
     openWire = fee;
     document.getElementById('wireSheetT').firstChild.textContent = fee;
     document.getElementById('wireSub').textContent = 'One set of wire instructions for this fee';
@@ -9669,7 +9776,7 @@ Thanks</textarea></div>
     document.getElementById('wireHint').textContent = onFile ? 'Verified by Radius auditing' : 'Needed before this fee can be disbursed';
     document.getElementById('wireForm').hidden = true;
     document.getElementById('wireAdd').textContent = 'Add wire instructions';
-    document.querySelector('#wireSheet .foot').hidden = onFile;
+    document.querySelector('#wireSheet .foot').hidden = onFile || isFinalizedStatus(status);
     open(document.getElementById('wireSheet'), trigger);
   }
   document.addEventListener('click', function (e) {
@@ -9685,6 +9792,7 @@ Thanks</textarea></div>
     openWireSheet(w.fee, w.amt, w.to || 'Payee not set yet', w.status, b);
   });
   document.getElementById('wireAdd').addEventListener('click', function () {
+    if(!feeLeadAccess() || isFinalizedStatus(status))return;
     var form = document.getElementById('wireForm');
     if (form.hidden) {
       form.hidden = false;
@@ -9697,6 +9805,13 @@ Thanks</textarea></div>
         routing = document.getElementById('wireRouting').value.trim(),
         account = document.getElementById('wireAccount').value.trim();
     if (!recipient || !routing || !account) { toast('Recipient, routing number, and account number required.'); return; }
+    if(sheetWireContext) {
+      var context=sheetWireContext;
+      sheetFeeEntries(context.side,context.fee).forEach(function(e){e.fee.wire={status:'on-file',to:recipient,routing:routing,account:account};});
+      sheetWireContext=null;close();renderSheetBreakdown();
+      document.getElementById('dockEditBtn').focus();
+      toast('Wire instructions added.');return;
+    }
     var w = WIRES.filter(function (x) { return x.fee === openWire; })[0];
     if (w) { w.status = 'on-file'; w.to = recipient; renderWires(); renderStatus(); }
     close();

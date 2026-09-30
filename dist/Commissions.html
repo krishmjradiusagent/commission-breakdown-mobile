@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="assets/commission-view-more.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All commissions — Radius</title>
@@ -9,6 +10,7 @@
 <style>
 .filter-btn { margin-left:auto; }
 .filter-btn.is-active::after { content:""; position:absolute; right:2px; top:2px; width:7px; height:7px; border:2px solid var(--background); border-radius:999px; background:var(--primary); }
+.commission-more { display:flex; justify-content:center; margin-top:12px; }
 .commission-list { display:flex; flex-direction:column; gap:10px; }
 .commission-row { display:flex; flex-direction:column; min-height:0; padding:12px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); box-shadow:var(--shadow-sm); color:inherit; }
 .commission-summary { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
@@ -144,6 +146,17 @@
 (function () {
   var rows = Array.from(document.querySelectorAll('.commission-row'));
   var groups = Array.from(document.querySelectorAll('.grp'));
+  var sectionLimits = new Map();
+  groups.forEach(function(group,index) {
+    var list=group.querySelector('.commission-list');list.id='commission-section-'+index;
+    var more=document.createElement('div');more.className='commission-more';more.hidden=true;group.appendChild(more);
+    window.mountCommissionMore(more,'View more '+group.querySelector('h2').textContent.toLowerCase()+' commissions',list.id,function(){
+      var previous=sectionLimits.get(group)||10;
+      sectionLimits.set(group,previous+10);applyFilters(false);
+      var visible=Array.from(group.querySelectorAll('.commission-row')).filter(function(row){return !row.hidden;});
+      var next=visible[previous];if(next)next.querySelector('.commission-view').focus();
+    });
+  });
   var empty = document.getElementById('commissionEmpty');
   var scroll = document.querySelector('.scroll');
   var filterOpen = document.getElementById('filterOpen');
@@ -199,7 +212,8 @@
   function activeFilterCount(filters) {
     return (filters.dateMode === 'any' ? 0 : 1) + filters.approval.length + filters.payment.length;
   }
-  function applyFilters() {
+  function applyFilters(resetLimits) {
+    if(resetLimits !== false)sectionLimits.clear();
     var shown = 0;
     rows.forEach(function (row) {
       var visible = matchesDate(row, applied) && matchesStatuses(row, applied);
@@ -211,6 +225,9 @@
       var visibleRows = groupRows.filter(function (row) { return !row.hidden; });
       group.hidden = visibleRows.length === 0;
       group.querySelector('.sec-head .n').textContent = visibleRows.length;
+      var limit=sectionLimits.get(group)||10;
+      visibleRows.forEach(function(row,index){row.hidden=index>=limit;});
+      group.querySelector('.commission-more').hidden=visibleRows.length<=limit;
     });
     empty.hidden = shown !== 0;
     var count = activeFilterCount(applied);
