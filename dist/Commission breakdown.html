@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mobile-no-hover>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,8 +133,8 @@
 /* closing is secondary — muted text, not a competing pill */
 .bn-close { flex:none; font:500 13px/1.3 var(--font); color:var(--muted-foreground); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .bn-btn i { font-size:20px; }
-.bn-btn:hover { background:rgba(255,255,255,.14); }
-.screen.light .bn-btn:hover { background:rgba(10,10,10,.09); }
+.bn-btn:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(255,255,255,.14); }
+.screen.light .bn-btn:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(10,10,10,.09); }
 .bn-btn:active { opacity:.72; }
 .bn-btn:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
 .substat { display:inline-flex; align-items:center; gap:6px; min-width:0; height:24px; margin:0; padding:0 9px;
@@ -753,7 +753,7 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .sheet .act.agent-pick[data-state="checked"] .lbl b { color:var(--foreground); }
 #agentList { display:flex; flex-direction:column; gap:2px; }
 .shadcn-checkbox { appearance:none; -webkit-appearance:none; flex:none; width:18px; height:18px; margin-left:auto; border:1.5px solid var(--input); border-radius:4px; background:var(--background); color:var(--primary-foreground); display:inline-grid; place-content:center; cursor:pointer; transition:background 150ms ease,border-color 150ms ease; }
-@media (hover:hover) { .shadcn-checkbox:hover { border-color:var(--primary); } }
+@media (hover:hover) { .shadcn-checkbox:hover:where(:root:not([data-mobile-no-hover]) *) { border-color:var(--primary); } }
 .shadcn-checkbox:checked { border-color:var(--primary); background:var(--primary); }
 .shadcn-checkbox:checked::after { content:''; width:9px; height:9px; background:currentColor; clip-path:polygon(14% 44%,0 65%,40% 100%,100% 16%,84% 0,39% 60%); }
 .shadcn-checkbox:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }
@@ -768,7 +768,7 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .sheet .foot .prim:focus-visible { outline:2px solid var(--ring); outline-offset:3px; }
 #feePayerSheet .foot .rds-btn#feePayerAssign, #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit { flex:1; min-height:46px; height:46px; padding:0 18px; border-radius:999px; border:1px solid rgba(255,255,255,.55); background:rgba(120,120,128,.14); -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%); box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 1px 2px rgba(0,0,0,.06); color:var(--foreground); font:600 15px/1 var(--font); }
 .screen[data-sheet-style="skiper22"] #feePayerSheet .foot .rds-btn#feePayerAssign, .screen[data-sheet-style="skiper22"] #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit { min-height:48px; height:48px; }
-#feePayerSheet .foot .rds-btn#feePayerAssign:hover, #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit:hover { background:rgba(120,120,128,.2); }
+#feePayerSheet .foot .rds-btn#feePayerAssign:hover:where(:root:not([data-mobile-no-hover]) *), #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(120,120,128,.2); }
 #feePayerSheet .foot .rds-btn#feePayerAssign:active, #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit:active { transform:scale(.98); }
 #feePayerSheet .foot .rds-btn#feePayerAssign:focus-visible, #teamLeadRowSheet .foot .rds-btn#teamLeadRowEdit:focus-visible { outline:2px solid var(--ring); outline-offset:3px; box-shadow:none; }
 .sheet .foot .full-link { flex:none; min-height:46px; padding:0 14px; border-radius:999px; border:1px solid var(--border); color:var(--foreground); text-decoration:none; display:inline-flex; align-items:center; justify-content:center; font:600 14px/1 var(--font); }
@@ -928,7 +928,7 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .dd.open .ddbtn { border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 18%,transparent); }
 .ddlist { padding:4px; }
 .ddlist button { justify-content:space-between; width:100%; min-height:36px; border:0; background:transparent; }
-.ddlist button:hover { background:var(--glass-hover); }
+.ddlist button:hover:where(:root:not([data-mobile-no-hover]) *) { background:var(--glass-hover); }
 .ddlist button i { opacity:0; color:var(--ring); font-size:16px; }
 .ddlist button[aria-selected="true"] { background:var(--accent); }
 .ddlist button[aria-selected="true"] i { opacity:1; }
@@ -952,7 +952,7 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 #clientCreditSheet .cc-select-list { position:absolute; z-index:3; right:0; left:0; top:calc(100% + 4px); padding:4px; border:1px solid var(--border); border-radius:var(--radius-input); background:var(--card); box-shadow:var(--shadow-md); }
 #clientCreditSheet #ccPayeeList { top:auto; bottom:calc(100% + 4px); }
 #clientCreditSheet .cc-select-list button { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:40px; padding:0 10px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#clientCreditSheet .cc-select-list button:hover, #clientCreditSheet .cc-select-list button[aria-selected="true"] { background:var(--muted); }
+#clientCreditSheet .cc-select-list button:hover:where(:root:not([data-mobile-no-hover]) *), #clientCreditSheet .cc-select-list button[aria-selected="true"] { background:var(--muted); }
 #clientCreditSheet .cc-payee-input { padding-right:42px; }
 #clientCreditSheet .cc-payee-toggle { position:absolute; top:0; right:0; display:flex; align-items:center; justify-content:center; width:40px; height:36px; border:0; background:transparent; color:var(--muted-foreground); cursor:pointer; }
 #clientCreditSheet .cc-payee-select { position:relative; }
@@ -966,7 +966,7 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 #preSplitFeeSheet .psf-select-btn:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
 #preSplitFeeSheet .psf-select-list { position:absolute; z-index:3; right:0; left:0; top:calc(100% + 4px); padding:4px; border:1px solid var(--border); border-radius:var(--radius-input); background:var(--card); box-shadow:var(--shadow-md); }
 #preSplitFeeSheet .psf-select-list button { display:flex; align-items:center; width:100%; min-height:40px; padding:0 10px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 var(--text-body)/var(--leading-body) var(--font); text-align:left; cursor:pointer; }
-#preSplitFeeSheet .psf-select-list button:hover, #preSplitFeeSheet .psf-select-list button[aria-selected="true"] { background:var(--muted); }
+#preSplitFeeSheet .psf-select-list button:hover:where(:root:not([data-mobile-no-hover]) *), #preSplitFeeSheet .psf-select-list button[aria-selected="true"] { background:var(--muted); }
 #preSplitFeeSheet .psf-grid { display:grid; grid-template-columns:1fr; gap:14px; }
 #preSplitFeeSheet .psf-choice-row { display:flex; flex-direction:column; gap:8px; padding:0; }
 #preSplitFeeSheet .psf-choice-row .rds-choice { display:flex; align-items:center; gap:var(--space-2); width:100%; min-height:44px; padding:0 2px; }
@@ -1217,7 +1217,7 @@ button.ybd-r:active { opacity:.7; }
   border:0; border-radius:var(--radius-sm); background:transparent; color:var(--foreground); text-align:left;
   font:500 14px/1.25 var(--font); cursor:pointer; }
 .plan-drop-list button:focus-visible { outline:0; background:var(--glass-hover); }
-@media (hover:hover) and (pointer:fine) { .plan-drop-list button:hover { background:var(--glass-hover); } }
+@media (hover:hover) and (pointer:fine) { .plan-drop-list button:hover:where(:root:not([data-mobile-no-hover]) *) { background:var(--glass-hover); } }
 .plan-drop-list button:active { background:var(--overlay-press); }
 .plan-drop-list button .plan-check { flex:none; width:18px; font-size:17px; color:var(--primary); opacity:0; }
 .plan-drop-list button[aria-selected="true"] { font-weight:600; }
@@ -1255,8 +1255,8 @@ button.ybd-r:active { opacity:.7; }
 .screen.light .fb-edit { background:rgba(10,10,10,.05); box-shadow:inset 0 0 0 1px rgba(10,10,10,.12); }
 .fb-edit i { font-size:15px; line-height:1; }
 .fb-edit::before { content:''; position:absolute; left:50%; top:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
-.fb-edit:hover { background:rgba(255,255,255,.16); }
-.screen.light .fb-edit:hover { background:rgba(10,10,10,.09); }
+.fb-edit:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(255,255,255,.16); }
+.screen.light .fb-edit:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(10,10,10,.09); }
 /* in edit mode the chip is the live control, so it fills instead of floating */
 .fb-edit[aria-pressed="true"] { background:var(--primary); color:var(--primary-foreground,#fff); box-shadow:none; }
 .screen.light .fb-edit[aria-pressed="true"] { background:var(--primary); color:#fff; box-shadow:none; }
@@ -1276,7 +1276,7 @@ button.ybd-r:active { opacity:.7; }
 .agent-detail-add-options button { display:flex; align-items:center; gap:10px; width:100%; min-height:44px; padding:0 10px; border:0; border-radius:10px; background:transparent;
   color:var(--foreground); font:600 15px/1 var(--font); text-align:left; cursor:pointer; }
 .agent-detail-add-options button i { flex:none; font-size:18px; color:var(--tint-indigo-fg); }
-.agent-detail-add-options button:hover, .agent-detail-add-options button:active { background:var(--overlay-press); }
+.agent-detail-add-options button:hover:where(:root:not([data-mobile-no-hover]) *), .agent-detail-add-options button:active { background:var(--overlay-press); }
 /* edit mode: only rows holding a number someone actually sets become targets.
    Derived and formula rows stay read-only with one quiet disabled cue. */
 .ybd-card.editing .ybd-det .d:not(button), .ybd-card.editing .ybd-r.lock { opacity:.46; }
@@ -1438,8 +1438,8 @@ button.ybd-r:active { opacity:.7; }
 .screen.light .ybd-sep { border-color:rgba(10,10,10,.10); background:rgba(10,10,10,.035); }
 .ybd-sep-action { display:inline-flex; align-items:center; justify-content:space-between; gap:8px; width:100%; color:inherit; }
 .ybd-sep-action i { font-size:15px; color:var(--muted-foreground); }
-.ybd-sep:hover { background:rgba(255,255,255,.085); }
-.screen.light .ybd-sep:hover { background:rgba(10,10,10,.06); }
+.ybd-sep:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(255,255,255,.085); }
+.screen.light .ybd-sep:hover:where(:root:not([data-mobile-no-hover]) *) { background:rgba(10,10,10,.06); }
 .ybd-sep:focus-visible { outline:2px solid var(--ring); outline-offset:2px; border-radius:var(--radius-sm); }
 .ybd-sep:active { opacity:.6; }
 /* Full-page detailed breakdown. It is moved under .screen at runtime so the
@@ -1476,7 +1476,7 @@ button.ybd-r:active { opacity:.7; }
 #dockAddMenu[hidden], #dockAddMenu button[hidden] { display:none; }
 .decision-dock .arow > #dockAddBtn[aria-expanded="true"] { background:#5A5FF2; color:#fff; border-color:#5A5FF2; box-shadow:none; }
 #dockAddMenu button { display:flex; align-items:center; width:100%; min-height:44px; padding:0 12px; border:0; border-radius:10px; background:transparent; color:var(--foreground); font:500 14px/1.3 var(--font); text-align:left; cursor:pointer; }
-#dockAddMenu button:hover, #dockAddMenu button:focus-visible { background:var(--muted); }
+#dockAddMenu button:hover:where(:root:not([data-mobile-no-hover]) *), #dockAddMenu button:focus-visible { background:var(--muted); }
 #dockAddMenu button { gap:10px; }
 #dockAddMenu button > i { flex:none; font-size:18px; line-height:1; color:var(--muted-foreground); }
 #dockAddMenu button > span { min-width:0; }
@@ -1922,7 +1922,7 @@ body { position:relative; gap:0; }
   border:1px solid #343439; border-radius:13px; background:#18181b; color:#FAFAFA;
   box-shadow:0 10px 30px rgba(0,0,0,.34); font:600 13px/1 var(--font); cursor:pointer; }
 .tweaks-trigger i { color:#F0A468; font-size:17px; }
-.tweaks-trigger:hover { background:#202024; }
+.tweaks-trigger:hover:where(:root:not([data-mobile-no-hover]) *) { background:#202024; }
 .tweaks-trigger[aria-expanded="true"] { border-color:rgba(240,164,104,.52); background:#202024; }
 .tweaks-trigger:focus-visible { outline:2px solid #F0A468; outline-offset:3px; }
 .tweaks-popover { position:absolute; top:calc(100% + 8px); left:0; width:286px; max-height:calc(100vh - 90px);
@@ -1937,7 +1937,7 @@ body { position:relative; gap:0; }
 .tweaks-popover .sp-t span { display:block; margin-top:5px; font:500 12px/1.45 var(--font); color:#A1A1A6; }
 .tweaks-close { flex:none; display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; padding:0;
   border:1px solid #2d2d32; border-radius:9px; background:transparent; color:#A1A1A6; cursor:pointer; }
-.tweaks-close:hover { color:#FAFAFA; background:#202024; }
+.tweaks-close:hover:where(:root:not([data-mobile-no-hover]) *) { color:#FAFAFA; background:#202024; }
 .tweaks-close:focus-visible { outline:2px solid #F0A468; outline-offset:2px; }
 .sp-grp { display:flex; flex-direction:column; gap:6px; }
 .sp-k { font:600 11px/1 var(--font); letter-spacing:.07em; text-transform:uppercase; color:#75757b; }
@@ -1948,7 +1948,7 @@ body { position:relative; gap:0; }
 .sp-role-copy { grid-column:2; min-width:0; display:flex; flex-direction:column; gap:2px; }
 .sp-role-name { color:inherit; font:500 14px/1.2 var(--font); }
 .sp-b[data-setrole] em { overflow:hidden; color:#A1A1A6; font:500 12px/1.25 var(--font); text-overflow:ellipsis; white-space:nowrap; }
-.sp-b:hover { background:#1F1F22; }
+.sp-b:hover:where(:root:not([data-mobile-no-hover]) *) { background:#1F1F22; }
 .sp-b[aria-pressed="true"] { background:rgba(90,95,242,.18); border-color:rgba(90,95,242,.55); color:#c3c6ff; }
 .sp-b[aria-pressed="true"] em { color:#9ea4f0; }
 .sp-b:focus-visible { outline:2px solid #5A5FF2; outline-offset:2px; }
@@ -2111,7 +2111,7 @@ body { position:relative; gap:0; }
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary { border-bottom:1px solid var(--border); }
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-body { padding:0 12px 4px; }
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-body > .d-fees { margin:0; }
-#commissionWallet.agent-flat #ybdFullDet .personal-fee-mark { display:flex; align-items:center; justify-content:center; flex:none; width:24px; font-size:24px; }
+
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-mark .ph-minus { display:none; }
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary .ph-minus { display:block; }
 #commissionWallet.agent-flat #ybdFullDet .personal-fee-card[open] > summary .ph-plus { display:none; }
@@ -2184,7 +2184,8 @@ body { position:relative; gap:0; }
 .screen #transactionSummary.agent-sale-summary .agent-summary-copy { display:flex; align-items:center; gap:8px; }
 .screen #transactionSummary.agent-sale-summary .agent-sale-icon { flex:none; font-size:18px; line-height:1; color:#c5b58e; }
 .screen.light #transactionSummary.agent-sale-summary .agent-sale-icon { color:#806b3f; }
-.screen #commissionWallet.agent-flat .agent-summary-value {
+.screen #commissionWallet.agent-flat .agent-summary-value,
+#sheetBreakdown .sheet-plan-trigger {
   min-height:32px; box-sizing:border-box; padding:5px 8px; border:1px solid var(--border);
   border-radius:var(--radius-input,8px); background:var(--control-surface); font-size:14px; line-height:20px;
 }
@@ -2302,8 +2303,8 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 #sheetBreakdown summary::-webkit-details-marker { display:none; }
 #sheetBreakdown summary > span:first-child { min-width:0; }
 #sheetBreakdown .fee-subtext { display:block; margin-top:var(--statement-unit); color:var(--muted-foreground); font:400 var(--text-caption)/var(--leading-caption) var(--font); }
-#sheetBreakdown .sheet-disclosure-mark { flex:none; display:flex; align-items:center; justify-content:center; width:32px; height:32px; }
-#sheetBreakdown .sheet-disclosure-mark > i { font-size:24px; line-height:1; }
+
+
 #sheetBreakdown .sheet-disclosure-mark > .ph-minus { display:none; }
 #sheetBreakdown details[open] > summary > .sheet-disclosure-mark > .ph-plus { display:none; }
 #sheetBreakdown details[open] > summary > .sheet-disclosure-mark > .ph-minus { display:block; }
@@ -2356,15 +2357,16 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 .sp-b[data-sheet-scenario] { min-height:44px; white-space:normal; text-align:left; line-height:1.4; }
 .sp-b:is([data-setrole="team_lead"], [data-setrole="group_lead"], [data-setrole="group_lead_agent"], [data-setrole="dual_role"]) em { white-space:normal; overflow-wrap:anywhere; }
 
-#sheetBreakdown .sheet-plan-anchor { flex:0 1 58%; min-width:0; }
-#sheetBreakdown .sheet-plan-trigger { height:auto; min-height:44px; font:500 12px/1.4 var(--font); background:var(--control-surface); color:var(--foreground); border:1px solid var(--input); border-radius:var(--radius-input); }
+#sheetBreakdown .sheet-plan-anchor { flex:0 1 auto; min-width:0; }
+#sheetBreakdown .sheet-plan-trigger { display:flex; align-items:center; gap:8px; width:auto; height:32px; font-family:var(--font); font-weight:500; color:var(--foreground); box-shadow:none; }
 #sheetBreakdown .sheet-plan-trigger > span { text-align:left; }
-#sheetBreakdown .sheet-plan-trigger > i { flex:none; font-size:16px; color:var(--muted-foreground); }
+#sheetBreakdown .sheet-plan-trigger > i { flex:none; font-size:14px; line-height:1; color:var(--muted-foreground); }
+#sheetBreakdown .sheet-plan-trigger > i[hidden] { display:none; }
 #sheetBreakdown .sheet-plan-trigger:disabled { cursor:default; color:var(--muted-foreground); opacity:1; }
 #sheetBreakdown .sheet-plan-menu { position:fixed; inset:auto; margin:0; padding:6px; max-height:148px; overflow:auto; box-sizing:border-box; border:1px solid var(--border); border-radius:16px; background:var(--card); color:var(--foreground); box-shadow:var(--shadow-md); }
 #sheetBreakdown .sheet-plan-menu:not(:popover-open) { display:none; }
 #sheetBreakdown .sheet-plan-menu .rds-command__item { appearance:none; display:flex; align-items:center; justify-content:flex-start; gap:10px; width:100%; min-height:44px; padding:0 12px; border:0; border-radius:10px; background:transparent; color:var(--foreground); box-shadow:none; font:500 14px/1.3 var(--font); text-align:left; cursor:pointer; }
-#sheetBreakdown .sheet-plan-menu .rds-command__item:hover,
+#sheetBreakdown .sheet-plan-menu .rds-command__item:hover:where(:root:not([data-mobile-no-hover]) *),
 #sheetBreakdown .sheet-plan-menu .rds-command__item:focus-visible { background:var(--muted); }
 #sheetBreakdown .sheet-plan-menu .rds-command__item > i { flex:none; font-size:18px; line-height:1; color:var(--muted-foreground); }
 #sheetBreakdown .sheet-plan-menu .rds-command__item > span { min-width:0; }
@@ -2384,16 +2386,91 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 
 .personal-side-mark { display:none; }
 .screen .personal-overview #sec-sides .sidechev { display:none; }
-.screen .personal-overview #sec-sides .personal-side-mark { display:flex; align-items:center; justify-content:center; flex:none; width:32px; height:32px; font-size:24px; }
+
 .screen .personal-overview #sec-sides .personal-side-mark .ph-minus { display:none; }
 .screen .personal-overview #sec-sides .side:has(.sgo[aria-expanded="true"]) .personal-side-mark .ph-minus { display:block; }
 .screen .personal-overview #sec-sides .side:has(.sgo[aria-expanded="true"]) .personal-side-mark .ph-plus { display:none; }
 
+/* Shared disclosure icons: Radius control size, identical across Fees and sides. */
+#commissionWallet.agent-flat #ybdFullDet .personal-fee-mark,
+#sheetBreakdown .sheet-disclosure-mark,
+.screen .personal-overview #sec-sides .personal-side-mark {
+  display:flex; align-items:center; justify-content:center; flex:none;
+  width:16px; height:16px; color:var(--muted-foreground);
+}
+#commissionWallet.agent-flat #ybdFullDet .personal-fee-mark > i,
+#sheetBreakdown .sheet-disclosure-mark > i,
+.screen .personal-overview #sec-sides .personal-side-mark > i {
+  font-size:16px; line-height:1;
+}
+
 /* Radius Item owns row geometry and typography across participant roles. */
-.screen .commission-item { font-family:var(--font-sans); color:var(--foreground); }
+.screen .commission-item { padding:var(--space-2) 0; font-family:var(--font-sans); color:var(--foreground); }
+/* Restore the established Team icon surface for both participant layouts. */
+.screen .commission-item .rds-item__media {
+  display:flex; align-items:center; justify-content:center;
+  width:32px; height:32px; border:1px solid var(--border);
+  border-radius:12px; background:var(--muted); color:var(--muted-foreground);
+}
 .screen .commission-item .rds-item__actions > b { font-size:var(--text-body); font-weight:var(--font-weight-medium); line-height:var(--leading-body); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .screen .commission-item--deduction .rds-item__actions > b { color:var(--tint-red-fg); }
 .screen .commission-item--addition .rds-item__actions > b { color:var(--tint-green-fg); }
+#sheetBreakdown .sheet-agent-identity { display:inline-flex; align-items:center; gap:var(--space-2); vertical-align:middle; }
+#sheetBreakdown .sheet-agent-identity .rds-avatar { background:var(--neutral-800); color:var(--neutral-200); }
+#sheetBreakdown .sheet-agent-identity .rds-avatar > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+#sheetBreakdown .sheet-agent-text { display:flex; flex-direction:column; min-width:0; }
+/* Shared compact summary rhythm: Agent is the reference for every role. */
+#sheetBreakdown .sheet-summary-plans,
+#sheetBreakdown .sheet-summary-breakdown { margin:0; }
+#sheetBreakdown .sheet-summary-plans .sheet-agent-plan {
+  display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center;
+  min-height:44px; box-sizing:border-box; padding:var(--space-2) 0; gap:var(--space-3); border-top:0;
+  font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans);
+}
+#sheetBreakdown .sheet-summary-plans .agent-summary-copy { color:var(--muted-foreground); }
+/* Match the plan label to the shared financial-row icon treatment. */
+.screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row { border-top:0; padding:var(--space-2) 0; }
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-copy,
+#sheetBreakdown .sheet-summary-plans .agent-summary-copy { display:flex; align-items:center; gap:var(--space-3); }
+.commission-plan-icon { display:inline-flex; align-items:center; justify-content:center; flex:none; width:32px; height:32px; border:1px solid var(--border); border-radius:12px; background:var(--muted); color:var(--muted-foreground); }
+.commission-plan-icon > i { font-size:16px; line-height:1; }
+/* Keep plan labels on one line beside the fixed icon and selector. */
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .commission-plan-label,
+#sheetBreakdown .sheet-summary-plans .commission-plan-label {
+  display:block; flex:none; white-space:nowrap;
+}
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .commission-plan-label > b { white-space:nowrap; }
+/* One compact selector width; only the selected value may truncate. */
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value,
+#sheetBreakdown .sheet-plan-trigger {
+  width:168px; max-width:168px; min-width:0; box-sizing:border-box;
+}
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value > span,
+#sheetBreakdown .sheet-plan-trigger > span {
+  display:block; flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+}
+.screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value > i { flex:none; }
+/* CDA Preview reuses side-card geometry for every role. */
+#sheetBreakdown .sheet-cda-preview > .sheet-section { margin:var(--space-2) var(--space-3); }
+#sheetBreakdown .sheet-cda-preview .sheet-heading { margin-bottom:var(--space-1); }
+/* Semantic icon colors; leave icon surfaces and amounts unchanged. */
+.screen .commission-item[data-icon-tone="income"] .rds-item__media > i { color:var(--tint-green-fg); }
+.screen .commission-item[data-icon-tone="deduction"] .rds-item__media > i { color:var(--tint-red-fg); }
+.screen .commission-item[data-icon-tone="neutral"] .rds-item__media > i { color:var(--primary); }
+/* Glyph colors are consistent across every role and financial context. */
+.screen .commission-item .rds-item__media > i:is(.ph-currency-dollar,.ph-wallet) { color:var(--tint-green-fg); }
+.screen .commission-item .rds-item__media > i.ph-receipt { color:var(--tint-red-fg); }
+.screen .commission-plan-icon > i { color:var(--primary); }
+/* Shared mobile fee actions; vertical scrolling retains priority. */
+.fee-action-shell { position:relative; overflow:hidden; }
+.fee-action-content { position:relative; z-index:1; touch-action:pan-y; background:var(--card)!important; }
+.fee-action-tray { position:absolute; right:0; top:0; bottom:0; display:flex; align-items:center; gap:var(--space-1); }
+.fee-action-tray > button { width:44px; height:44px; }
+.fee-action-tray i { font-size:16px; }
+.fee-action-tray .fee-action-edit { color:var(--primary); }
+.fee-action-tray .fee-action-delete { color:var(--tint-red-fg); }
+.fee-action-shell.editing .fee-action-tray { position:static; justify-content:flex-end; }
+.fee-action-shell.editing .fee-action-content { background:transparent!important; }
 </style>
 </head>
 <body>
@@ -2913,9 +2990,9 @@ Thanks</textarea></div>
 
     <div class="ios-alert-backdrop" id="dedRemoveDialog" hidden>
       <div class="ios-alert" role="alertdialog" aria-modal="true" aria-labelledby="dedRemoveTitle" aria-describedby="dedRemoveCopy">
-        <h2 id="dedRemoveTitle">Remove fee?</h2>
+        <h2 id="dedRemoveTitle">Delete fee?</h2>
         <p id="dedRemoveCopy">This fee will be removed from this commission breakdown.</p>
-        <div class="ios-alert-actions"><button type="button" id="dedRemoveCancel">Cancel</button><button class="destructive" type="button" id="dedRemoveConfirm">Remove</button></div>
+        <div class="ios-alert-actions"><button type="button" id="dedRemoveCancel">Cancel</button><button class="destructive" type="button" id="dedRemoveConfirm">Delete</button></div>
       </div>
     </div>
 
@@ -4710,12 +4787,54 @@ Thanks</textarea></div>
     return { side:side, basis:basis, teamSplit:teamSplit, radius:radius, team:round(teamSplit-radius-(side.teamFees||[]).reduce(function(s,f){return s+f[1];},0)), shared:shared,
       agents:agents, group:round(group-side.groupFees.reduce(function (sum,f) { return sum+f[1]; },0)) };
   }
+  function canEditSheetFee(fee) {
+    if (!fee || fee.editable === false || isFinalizedStatus(status)) return false;
+    if (agentFinancialView()) return fee.createdByAgent === (role === 'dual_role' ? 'Agent Ally' : sheetAgentName);
+    return role !== 'team_lead' || fee.teamLeadEditable !== false;
+  }
+  function attachFeeActions(row, editing, edit, remove, allowed, label) {
+    if (!allowed()) return;
+    // A shared tray keeps gestures separate from the existing fee editor.
+    var shell=document.createElement('div'); shell.className='fee-action-shell'+(editing?' editing':'');
+    row.replaceWith(shell); shell.appendChild(row); row.classList.add('fee-action-content');
+    var tray=document.createElement('div');tray.className='fee-action-tray';shell.appendChild(tray);
+    function button(kind, icon, handler) {
+      var b=document.createElement('button');b.type='button';b.className='rds-btn rds-btn--ghost rds-btn--icon fee-action-'+kind;
+      b.setAttribute('aria-label',(kind==='edit'?'Edit ':'Delete ')+label);b.title=kind==='edit'?'Edit fee':'Delete fee';
+      var i=document.createElement('i');i.className='ph '+icon;i.setAttribute('aria-hidden','true');b.appendChild(i);
+      b.addEventListener('click',function(e){e.stopPropagation();if(allowed())handler(b);});tray.appendChild(b);return b;
+    }
+    button('edit','ph-pencil-simple',edit);button('delete','ph-trash',remove);
+    var opened=editing, start=null, offset=0, dragging=false, suppress=false;
+    function show(open) { opened=open;row.style.transform=editing?'':'translateX('+(open?-96:0)+'px)';tray.inert=!open;tray.setAttribute('aria-hidden',String(!open)); }
+    show(editing);
+    if (editing) return;
+    row.tabIndex=0;row.setAttribute('aria-label',label+'; press Enter for fee actions');
+    row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(true);tray.firstChild.focus();}if(e.key==='Escape')show(false);});
+    shell.addEventListener('keydown',function(e){if(e.key==='Escape'){show(false);row.focus();}});
+    row.addEventListener('pointerdown',function(e){if(!e.isPrimary || e.button!==0 || !allowed())return;start={x:e.clientX,y:e.clientY,id:e.pointerId,base:opened?-96:0};dragging=false;});
+    row.addEventListener('pointermove',function(e){
+      if(!start || e.pointerId!==start.id)return;
+      var dx=e.clientX-start.x,dy=e.clientY-start.y;
+      if(!dragging){if(Math.abs(dy)>10 && Math.abs(dy)>Math.abs(dx)){start=null;return;}if(Math.abs(dx)<10)return;dragging=true;row.setPointerCapture(e.pointerId);}
+      e.preventDefault();offset=Math.max(-96,Math.min(0,start.base+dx));row.style.transform='translateX('+offset+'px)';
+    });
+    function finish(e){if(!start || e.pointerId!==start.id)return;suppress=dragging;show(e.type==='pointercancel'?opened:dragging?offset < -40:opened);start=null;dragging=false;}
+    row.addEventListener('pointerup',finish);row.addEventListener('pointercancel',finish);
+    row.addEventListener('click',function(e){if(suppress||opened){e.preventDefault();e.stopImmediatePropagation();if(!suppress)show(false);suppress=false;}},true);
+  }
   function sheetFeeShareText(side, selected, payer, dual) {
     // Sheet examples store each payer's amount, not a commission percentage.
     var fees = (side.groupFees || []).concat(side.teamFees || []);
     side.agents.forEach(function(agent){ fees = fees.concat(agent.fees); });
     var total = fees.reduce(function(sum, fee){ return sum + ((selected.feeId ? fee.feeId===selected.feeId : fee[0]===selected[0]) ? fee[1] : 0); }, 0);
     var percentage = total > 0 ? Math.round(selected[1] / total * 10000) / 100 : null;
+    // Agent fees already sit under the named agent disclosure in every role.
+    if (side.agents.some(function(agent) { return agent.name === payer; })) {
+      if (percentage === null) return 'Share not set';
+      return percentage + '%' + (/\s+to\s+group$/i.test(selected[0]) ? '' : ' of ' + cur(total));
+    }
+    if ((payer === 'Best Agents Ever' || payer === 'Group') && total > 0 && selected[1] === total) return 'Paid by Group';
     return payer + ' share · ' + (percentage === null ? 'No amount allocated' : percentage + '% of ' + cur(total)) + (dual ? ' · ' + side.name : '');
   }
   function sheetFeeEntries(side, selected) {
@@ -4791,12 +4910,21 @@ Thanks</textarea></div>
 
     function el(tag, cls, text) { var node=document.createElement(tag); node.className=cls||''; if(text!=null) node.textContent=text; return node; }
     function row(host, label, amount, sub, kind) {
+      var context = splitCommissionRowLabel(label, sub);
+      label = context.title; sub = context.description;
       var node=el('div','agent-fee-row sheet-row'+(kind==='total'?' sheet-total':'')+(kind==='fee'?' neg':''));
-      var icon=el('i','agent-fee-direction ph '+(kind==='fee'?'ph-receipt':kind==='total'?'ph-wallet':'ph-currency-dollar')); icon.setAttribute('aria-hidden','true');
+      var icon=el('i','agent-fee-direction ph '+commissionRowIcon(kind)); icon.setAttribute('aria-hidden','true');
       var copy=el('span','',label); if(sub) copy.appendChild(el('small','fee-subtext',sub));
-      node.appendChild(icon); node.appendChild(copy); var value=el('b','',typeof amount==='number'?cur(amount):amount); node.appendChild(value); applyRadiusItem(node,copy,value,icon); host.appendChild(node); return node;
+      node.appendChild(icon); node.appendChild(copy); var value=el('b','',typeof amount==='number'?(amount<0?neg(-amount):cur(amount)):amount); node.appendChild(value); applyRadiusItem(node,copy,value,icon); host.appendChild(node); return node;
     }
-    function section(host, title) { var block=el('section','sheet-section'); block.appendChild(el('h3','sheet-heading',title)); host.appendChild(block); return block; }
+    function section(host, title) {
+      var previous = host.lastElementChild;
+      if (previous && previous.classList.contains('sheet-section')) {
+        var separator = el('hr','rds-separator rds-separator--h');
+        host.appendChild(separator);
+      }
+      var block=el('section','sheet-section'); block.appendChild(el('h3','sheet-heading',title)); host.appendChild(block); return block;
+    }
     function disclosure(host,title,sub,key,open) {
       var box=el('details','sheet-disclosure'); box.open=Object.prototype.hasOwnProperty.call(sheetOpen,key)?sheetOpen[key]:!!open;
       var head=el('summary',''); var copy=el('span','',title); if(sub) copy.appendChild(el('small','fee-subtext',sub)); head.appendChild(copy);
@@ -4807,23 +4935,26 @@ Thanks</textarea></div>
     }
     function fee(host, f, payer, side) {
       var node=row(host,f[0],-f[1],sheetFeeShareText(side,f,payer,models.length > 1),'fee');
-      if (personalOnly) return;
-      var button=el('button',node.className+' rds-item--button');button.type='button';button.setAttribute('aria-haspopup','dialog');
-      var editable = sheetEditing && !isFinalizedStatus(status);
-      button.setAttribute('aria-label',(editable?'Edit ':'View ')+f[0]+' full amount and allocation');
-      if(editable) {
-        node.querySelector('i').className='ph ph-pencil-simple';
-        button.className += ' sheet-fee-editable';
-      }
-      while(node.firstChild)button.appendChild(node.firstChild);node.replaceWith(button);
-      button.addEventListener('click',function(){openSheetExampleFee(side,f,button);});
+      if (!canEditSheetFee(f)) return;
+      attachFeeActions(node, sheetEditing, function(trigger) {
+        if (canEditSheetFee(f)) openSheetExampleFee(side,f,trigger);
+      }, function(trigger) {
+        if (!canEditSheetFee(f)) return;
+        openDedRemoveDialog(trigger,function() {
+          if (!canEditSheetFee(f)) return;
+          sheetFeeEntries(side,f).forEach(function(entry) {
+            var index=entry.fees.indexOf(entry.fee); if(index>=0)entry.fees.splice(index,1);
+          });
+          renderSheetBreakdown(); toast(f[0]+' deleted — payout recalculated.');
+        });
+      }, function(){return canEditSheetFee(f);}, f[0]);
     }
     function deduction(host, side, key) {
       var label=key==='credit'?'Credit':'Referral';
-      if(key==='referral' && side.gross>0)label+=' ('+(Math.round(side.referral/side.gross*10000)/100)+'%)';
-      var node=row(host,label,-side[key],'Paid to '+(side[key+'Payee'] || (key==='credit'?'Buyer':'Keller Williams')),'fee');
+
+      var node=row(host,label,-side[key],null,'fee');
       if(role!=='team_lead' || !sheetEditing || isFinalizedStatus(status))return;
-      var button=el('button',node.className+' sheet-fee-editable');button.type='button';
+      var button=el('button',node.className+' rds-item--button sheet-fee-editable');button.type='button';
       button.setAttribute('aria-label','Edit '+(key==='credit'?'Credit':'Referral'));
       button.setAttribute('aria-haspopup','dialog');
       node.querySelector('i').className='ph ph-pencil-simple';
@@ -4840,19 +4971,22 @@ Thanks</textarea></div>
     visibleModels.forEach(function(m,sideIndex){
       var body=disclosure(root,m.side.name,'Award '+m.side.award+'% · '+cur(m.side.gross),'side-'+sheetScenario+'-'+sideIndex,true);
       body.className += ' sheet-side-card';
+      root.removeChild(body);
       var agentsWithPlans=visibleAgents(m).filter(function(a){return typeof a.source.split==='number' && Number.isFinite(a.source.split);});
       if(agentsWithPlans.length) {
-        var plans=section(body,'Commission plans');
+        var plans=el('section','sheet-summary-plans'); root.appendChild(plans);
         agentsWithPlans.forEach(function(a){
           var planRow=el('div','sheet-agent-plan');
-          var copy=el('span','',a.source.name);
+          var copy=el('span','agent-summary-copy',agentsWithPlans.length===1?'Commission plan':a.source.name);
+          addCommissionPlanIcon(copy);
           if(m.agents.length>1)copy.appendChild(el('small','fee-subtext',a.source.allocation+'% co-agent allocation'));
           var anchor=el('div','sheet-plan-anchor');
-          var select=el('button','rds-combobox__trigger sheet-plan-trigger');select.type='button';
+          var select=el('button','rds-combobox__trigger sheet-plan-trigger agent-summary-value');select.type='button';
           select.setAttribute('aria-label',a.source.name+' commission plan · '+m.side.name);
           select.setAttribute('aria-haspopup','listbox');select.setAttribute('aria-expanded','false');
           select.disabled=personalOnly || !sheetEditing || isFinalizedStatus(status);
-          select.appendChild(el('span','',a.source.split+'% Agent / '+(100-a.source.split)+'% Group'));
+          var lock=el('i','ph ph-lock-simple agent-plan-lock');lock.setAttribute('aria-hidden','true');lock.hidden=!select.disabled;select.appendChild(lock);
+          select.appendChild(el('span','',a.source.split+'/'+(100-a.source.split)+' Agent / Group'));
           var caret=el('i','ph ph-caret-down');caret.setAttribute('aria-hidden','true');select.appendChild(caret);
           var menu=el('div','rds-combobox__panel sheet-plan-menu');menu.setAttribute('popover','auto');menu.setAttribute('role','listbox');
           menu.id='sheetPlan-'+sideIndex+'-'+agentsWithPlans.indexOf(a);select.setAttribute('aria-controls',menu.id);
@@ -4889,24 +5023,25 @@ Thanks</textarea></div>
           anchor.appendChild(select);anchor.appendChild(menu);planRow.appendChild(copy);planRow.appendChild(anchor);plans.appendChild(planRow);
         });
       }
-      var gross=section(body,'Commission breakdown'); row(gross,'Gross commission',m.side.gross);
+      var gross=el('section','sheet-summary-breakdown'); root.appendChild(gross); row(gross,'Gross commission',m.side.gross);
       if(m.side.credit || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'credit');
       if(m.side.referral || (role==='team_lead' && sheetEditing))deduction(gross,m.side,'referral');
       row(gross,'Gross after credits and referrals',m.basis,null,'total');
+      root.appendChild(body);
       if (!personalOnly && !groupViewer) {
       var team=section(body,'Team commission');
-      row(team,'Teams Commission Basis',m.basis,'Master Plan · 90% Group / 10% Team');
+      row(team,'Teams Commission Basis',m.basis,'90% Group / 10% Team');
       row(team,'Team Split 10%',m.teamSplit);
       row(team,'Radius Fee 5%',-m.radius,'Paid by Team · 5% of '+cur(m.basis)+(models.length > 1 ? ' · '+m.side.name : ''),'fee');
       (m.side.teamFees||[]).forEach(function(f){fee(team,f,'Team',m.side);});
       row(team,'Team Payout (net)',m.team,null,'total');
       }
-      var shared=section(body,'Agent & Group'); row(shared,'Agent & Group Commission Basis',m.shared);
+      var shared=section(body,'Agent & Group'); row(shared,'Commission basis',m.shared);
       visibleAgents(m).forEach(function(a,index){
         var agent=disclosure(body,a.source.name,cur(a.net)+' payout','agent-'+sheetScenario+'-'+sideIndex+'-'+index,true);
         row(agent,'Commission basis',a.basis,a.source.allocation+'% co-agent allocation');
         a.source.fees.filter(function(f){return f.stage==='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
-        row(agent,'Agent split '+a.source.split+'%',a.commission,'Group share: '+cur(a.group)+' · Already excluded');
+        row(agent,'Agent split '+a.source.split+'%',a.commission,'Group share: '+cur(a.group));
         a.source.fees.filter(function(f){return f.stage!=='presplit';}).forEach(function(f){fee(agent,f,a.source.name,m.side);});
         row(agent,a.source.name==='Agent Ally'?'AA Payout (net)':'Agent Benny Payout (net)',a.net,null,'total');
       });
@@ -4944,6 +5079,7 @@ Thanks</textarea></div>
       }
     }
     var preview=disclosure(root,'CDA Preview','See payout amounts.','cda-'+sheetScenario+'-'+role,true);
+    preview.classList.add('sheet-side-card', 'sheet-cda-preview');
     visibleModels.forEach(function(m){
       var block=section(preview,m.side.name);
       if (!personalOnly && !groupViewer) {
@@ -4957,15 +5093,52 @@ Thanks</textarea></div>
         var external={};m.agents.forEach(function(a){a.source.fees.forEach(function(f){if(f[2]!=='group')external[f[0]]=(external[f[0]]||0)+f[1];});});
         m.side.groupFees.forEach(function(f){external[f[0]]=(external[f[0]]||0)+f[1];});
         if(!groupViewer)(m.side.teamFees||[]).forEach(function(f){external[f[0]]=(external[f[0]]||0)+f[1];});
-        Object.keys(external).forEach(function(name){row(block,name,external[name],'Recipient not supplied in sheet');});
+        // Prototype recipients for fees whose source sheet has no payee.
+        var mockRecipients = { 'TC Fee':'Alex Morgan', 'Home Warranty Fee':'Demo Home Warranty', 'Photography Fee':'Demo Property Photos' };
+        Object.keys(external).forEach(function(name){row(block,name,external[name],'Paid to '+(mockRecipients[name] || 'Demo Service Provider'));});
         if(!groupViewer)row(block,'Total disbursements',m.side.gross,null,'total');
       }
     });
+    if (!personalOnly) addSheetAgentAvatars(root);
     var leadTotal = groupViewer ? groupTotal : teamTotal;
     document.getElementById('netFloatLabel').textContent=personalOnly?'Your payout':hasPersonal?'Personal + '+(groupViewer?'Group':'Team')+' payout':groupViewer?'Group payout':'Team payout';
     document.getElementById('netFloatValue').textContent=cur(personalOnly?personalTotal:leadTotal+(hasPersonal?personalTotal:0));
     document.getElementById('netFloatSub').textContent=visibleModels.map(function(m){return m.side.name;}).join(' + ');
     return true;
+  }
+  function addSheetAgentAvatars(root) {
+    // Avatar belongs only to Ally's main participant disclosure heading.
+    root.querySelectorAll('details.sheet-disclosure > summary > span:first-child').forEach(function(copy) {
+      var text = copy.firstChild;
+      if (!text || text.nodeType !== 3 || text.nodeValue !== 'Agent Ally') return;
+      var identity = document.createElement('span'); identity.className = 'sheet-agent-identity';
+      var avatar = document.createElement('span'); avatar.className = 'rds-avatar rds-avatar--sm'; avatar.setAttribute('aria-hidden', 'true');
+      var initials = document.createElement('span'); initials.textContent = 'AA'; avatar.appendChild(initials);
+      var photo = document.createElement('img'); photo.alt = ''; photo.src = 'assets/clients/av1.jpg';
+      photo.addEventListener('error', function() { photo.remove(); }); avatar.appendChild(photo);
+      var name = document.createElement('span'); name.textContent = 'Agent Ally';
+      var textGroup = document.createElement('span'); textGroup.className = 'sheet-agent-text';
+      textGroup.appendChild(name);
+      var payout = copy.querySelector('.fee-subtext');
+      if (payout) textGroup.appendChild(payout);
+      identity.appendChild(avatar); identity.appendChild(textGroup); text.replaceWith(identity);
+    });
+  }
+  function splitCommissionRowLabel(label, sub) {
+    var match = /^(.*(?:fee|split))\s+(from|to)\s+(.+)$/i.exec(label);
+    if (!match) return { title:label, description:sub };
+    var direction = match[2].toLowerCase() === 'from' ? 'From ' : 'To ';
+    return { title:match[1], description:direction + match[3] + (sub ? ' · ' + sub : '') };
+  }
+  function addCommissionPlanIcon(copy) {
+    var text = document.createElement('span'); text.className = 'commission-plan-label';
+    while (copy.firstChild) text.appendChild(copy.firstChild);
+    var media = document.createElement('span'); media.className = 'commission-plan-icon'; media.setAttribute('aria-hidden','true');
+    var icon = document.createElement('i'); icon.className = 'ph ph-list-bullets'; media.appendChild(icon);
+    copy.appendChild(media); copy.appendChild(text);
+  }
+  function commissionRowIcon(kind) {
+    return kind === 'fee' ? 'ph-receipt' : kind === 'total' ? 'ph-wallet' : 'ph-currency-dollar';
   }
   // Vanilla DOM adapter for Radius components/data-display/Item.jsx.
   // Reuse its markup and shipped CSS; keep existing nodes and event handlers.
@@ -4973,6 +5146,9 @@ Thanks</textarea></div>
     var addition = row.classList.contains('agent-addition');
     var negative = row.classList.contains('neg');
     row.className = 'rds-item commission-item' + (row.tagName === 'BUTTON' ? ' rds-item--button' : '') + (addition ? ' commission-item--addition' : negative ? ' commission-item--deduction' : '');
+    var iconTone = addition ? 'income' : negative ? 'deduction'
+      : /payout|net commission|gross commission|^(?:agent|team|group) split/i.test(copy.textContent) ? 'income' : 'neutral';
+    row.setAttribute('data-icon-tone', iconTone);
     var content = document.createElement('span'); content.className = 'rds-item__content';
     var title = document.createElement('span'); title.className = 'rds-item__title'; title.style.display = 'block';
     var descriptions = [];
@@ -5840,6 +6016,7 @@ Thanks</textarea></div>
         valueWell.className = '';
         valueWell.style.cssText = 'display:flex;align-items:center;gap:8px';
         k.className = 'agent-summary-copy';
+        addCommissionPlanIcon(k);
         valueWell.className = 'agent-summary-value';
         var planLock = document.createElement('i');
         planLock.className = 'ph ph-lock-simple agent-plan-lock';
@@ -5930,7 +6107,13 @@ Thanks</textarea></div>
           var feeSubtext = document.createElement('span');
           feeSubtext.className = 'fee-subtext' + (r.post.teamShare ? ' team-share' : '');
           var feeSplit = r.post.feeMode && (r.payerDetails || agentFinancialView()) ? feeSplitData(r.post) : null;
-          if (feeSplit) {
+          if (usesPersonalAgentLayout()) {
+            var personalSplit = feeSplit || feeSplitData(r.post),
+                personalShare = personalSplit.rows.find(function (entry) { return entry.name === breakdownAgent().name; });
+            feeSubtext.textContent = personalSplit.complete && personalShare && personalShare.pct != null
+              ? splitPct(personalShare.pct) + (personalShare.pct > 0 && personalShare.pct < 100 ? ' · Shared fee' : '')
+              : 'Share not set';
+          } else if (feeSplit) {
             feeSubtext.className += ' split-subtext' + (feeSplit.complete ? '' : ' is-incomplete');
             appendSplitSummary(feeSubtext, feeSummaryData(r.post, feeSplit), function (e, link) { openFeePayerDetails(r.post, link); });
           } else if (r.post.p === 'Both') {
@@ -5977,10 +6160,11 @@ Thanks</textarea></div>
           var detailsLink = s.querySelector('.split-summary-link');
           if (detailsLink) detailsLink.textContent = 'View Details';
           var directionIcon = document.createElement('i');
-          directionIcon.className = 'agent-fee-direction ph ph-receipt';
+          var iconKind = r.underSplit || r.k === 'Credit' || r.k === 'Referral' ? 'fee'
+            : r.k === 'Commission basis' || r.cardk === 'Your commission before fees' ? 'total' : 'income';
+          directionIcon.className = 'agent-fee-direction ph ' + commissionRowIcon(iconKind);
           directionIcon.setAttribute('aria-hidden', 'true');
-          if (r.underSplit || r.k === 'Credit' || r.k === 'Referral') l.insertBefore(directionIcon, s);
-          else l.classList.add('agent-calculation-row');
+          l.insertBefore(directionIcon, s);
           var compactSummary = ['Gross commission', 'Credit', 'Referral', 'Commission basis'].indexOf(r.k) !== -1 || r.cardk === 'Your commission before fees';
           if (compactSummary) {
             l.classList.add('agent-compact-summary');
@@ -6034,6 +6218,14 @@ Thanks</textarea></div>
         }
         if (l.classList.contains('agent-fee-row')) applyRadiusItem(l,s,a,l.querySelector('.agent-fee-direction'));
         host.appendChild(l);
+        if (r.post && r.post.feeMode && r.post.id && canEditCommissionFee(r.post)) {
+          l.querySelectorAll('.fee-row-action').forEach(function(action){action.remove();});
+          attachFeeActions(l,ybdEditing,function(trigger){openCommissionFee(r.post,trigger);},function(trigger){
+            if(!canEditCommissionFee(r.post))return;
+            dedCtx={k:r.post.side==='other'?'other':'post',id:r.post.id,isNew:false,kind:'post'};
+            openDedRemoveDialog(trigger);
+          },function(){return canEditCommissionFee(r.post);},r.k);
+        }
       }
       /* the chain, bucketed: what stands on its own above the groups (the
          split), and the three fee groups the card collapses. */
@@ -6440,9 +6632,20 @@ Thanks</textarea></div>
     var flatAgent = role === 'team_lead' || usesPersonalAgentLayout();
     var saleSummary = document.getElementById('transactionSummary');
     saleSummary.classList.toggle('agent-sale-summary', flatAgent);
-    saleSummary.querySelector('.fin-row').innerHTML = flatAgent
+    var saleRow = saleSummary.querySelector('.fin-row, .commission-sale-row');
+    saleRow.className = 'fin-row';
+    saleRow.innerHTML = flatAgent
       ? '<span class="agent-summary-copy"><i class="ph ph-house-line agent-sale-icon" aria-hidden="true"></i><b>Sale price</b></span><b id="summaryPrice"></b>'
       : '<span><i class="ph ph-house-line fin-icon" aria-hidden="true"></i>Sale price</span><b id="summaryPrice"></b>';
+
+    if (usesPersonalAgentLayout()) {
+      var saleCopy = document.createElement('span'); saleCopy.textContent = 'Sale price';
+      var saleAmount = saleRow.querySelector('#summaryPrice');
+      var saleIcon = document.createElement('i'); saleIcon.className = 'ph ' + commissionRowIcon('income'); saleIcon.setAttribute('aria-hidden', 'true');
+      saleRow.replaceChildren(saleIcon, saleCopy, saleAmount);
+      applyRadiusItem(saleRow, saleCopy, saleAmount, saleIcon);
+      saleRow.classList.add('commission-sale-row');
+    }
 
     var c = ROLE[role], lad = document.getElementById('ybdLad'), ppl = document.getElementById('ybdPpl');
     /* Role, amount and edit changes rebuild this card. End any live disclosure
@@ -9044,7 +9247,8 @@ Thanks</textarea></div>
     if (!fee || fee.editable === false || isFinalizedStatus(status)) return false;
     if (agentFinancialView()) {
       var viewer=breakdownAgent();
-      return !!viewer && fee.createdByAgent === (viewer.id || viewer.name);
+      var viewerId=sheetViewActive() ? (role === 'dual_role' ? 'Agent Ally' : sheetAgentName) : viewer && (viewer.id || viewer.name);
+      return !!viewerId && fee.createdByAgent === viewerId;
     }
     return role !== 'team_lead' || fee.teamLeadEditable !== false;
   }
@@ -9320,19 +9524,21 @@ Thanks</textarea></div>
     item = DEDS[ctx.k].filter(function (d) { return d.id === ctx.id; })[0];
     return item ? item.name : 'fee';
   }
+  var pendingFeeDeletion = null;
   function closeDedRemoveDialog(restoreFocus) {
     var dialog = document.getElementById('dedRemoveDialog');
     dialog.hidden = true;
     document.getElementById('dedSheet').removeAttribute('aria-hidden');
     if (restoreFocus && dedRemoveTrigger) dedRemoveTrigger.focus();
-    dedRemoveTrigger = null;
+    dedRemoveTrigger = null; pendingFeeDeletion = null;
   }
-  function openDedRemoveDialog(trigger) {
-    if (!dedCtx || dedCtx.isNew) return;
-    var name = removalName(dedCtx), dialog = document.getElementById('dedRemoveDialog');
+  function openDedRemoveDialog(trigger, onConfirm) {
+    if (!onConfirm && (!dedCtx || dedCtx.isNew)) return;
+    pendingFeeDeletion = onConfirm || removeCurrentDeduction;
+    var dialog = document.getElementById('dedRemoveDialog');
     dedRemoveTrigger = trigger;
-    document.getElementById('dedRemoveTitle').textContent = 'Remove ' + name + '?';
-    document.getElementById('dedRemoveCopy').textContent = name + ' will be removed from this commission breakdown.';
+    document.getElementById('dedRemoveTitle').textContent = 'Delete fee?';
+    document.getElementById('dedRemoveCopy').textContent = 'This fee will be removed and payouts recalculated.';
     if (openSheetEl === document.getElementById('dedSheet')) document.getElementById('dedSheet').setAttribute('aria-hidden', 'true');
     dialog.hidden = false;
     document.getElementById('dedRemoveCancel').focus();
@@ -9367,10 +9573,16 @@ Thanks</textarea></div>
   });
   document.getElementById('dedRemoveCancel').addEventListener('click', function () { closeDedRemoveDialog(true); });
   document.getElementById('dedRemoveConfirm').addEventListener('click', function () {
+    var deletion = pendingFeeDeletion;
     closeDedRemoveDialog(false);
-    removeCurrentDeduction();
+    if (deletion && !isFinalizedStatus(status)) deletion();
   });
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab' && !document.getElementById('dedRemoveDialog').hidden) {
+      e.preventDefault();
+      var cancel = document.getElementById('dedRemoveCancel'), confirm = document.getElementById('dedRemoveConfirm');
+      (document.activeElement === cancel ? confirm : cancel).focus();
+    }
     if (e.key === 'Escape' && !document.getElementById('dedRemoveDialog').hidden) {
       e.preventDefault();
       closeDedRemoveDialog(true);
