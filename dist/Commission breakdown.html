@@ -4967,7 +4967,22 @@ Thanks</textarea></div>
     if(models.length>1) {
       visibleModels.slice().reverse().forEach(function(m){row(root,m.side.name === 'Listing side' ? 'List Side Award' : 'Buy Side Award',m.side.award+'%');});
       if (!personalOnly || visibleModels.length > 1) row(root,'Total Award',models.reduce(function(sum,m){return sum+m.side.award;},0)+'%');
-      row(root,'Gross commission',models.reduce(function(sum,m){return sum+m.side.gross;},0));
+      var grossTotal=models.reduce(function(sum,m){return sum+m.side.gross;},0);
+      var grossRow=row(root,'Gross commission',grossTotal,'Listing + Buying');
+      var grossSub=grossRow.querySelector('.rds-item__desc');
+      var grossLink=el('button','rds-btn rds-btn--link','Listing + Buying');grossLink.type='button';
+      grossLink.setAttribute('aria-label','View Listing and Buying gross commission');grossLink.setAttribute('aria-haspopup','dialog');
+      var grossChevron=el('i','ph ph-caret-right');grossChevron.setAttribute('aria-hidden','true');grossLink.appendChild(grossChevron);
+      grossSub.textContent='';grossSub.appendChild(grossLink);
+      grossLink.addEventListener('click',function(){
+        var entries=models.slice().sort(function(a,b){return a.side.name==='Listing side'?-1:b.side.name==='Listing side'?1:0;}).map(function(m){
+          return {name:m.side.name,value:cur(m.side.gross)};
+        });
+        entries.push({name:'Total gross commission',value:cur(grossTotal)});
+        openTeamLeadRowDetails({k:'Gross commission',detailRows:entries},grossLink);
+        document.getElementById('teamLeadRowSheetSub').textContent='Listing + Buying';
+        document.getElementById('teamLeadRowEdit').hidden=true;
+      });
     } else row(root,'Award',models[0].side.award+'%');
     visibleModels.forEach(function(m,sideIndex){
       var body=disclosure(root,m.side.name,'Award '+m.side.award+'% · '+cur(m.side.gross),'side-'+sheetScenario+'-'+sideIndex,true);
