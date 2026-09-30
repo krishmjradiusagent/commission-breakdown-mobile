@@ -2440,6 +2440,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
   display:block; flex:none; white-space:nowrap;
 }
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .commission-plan-label > b { white-space:nowrap; }
+#sheetBreakdown .commission-plan-label > .fee-subtext { display:block; }
 /* One compact selector width; only the selected value may truncate. */
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value,
 #sheetBreakdown .sheet-plan-trigger {
@@ -4978,8 +4979,17 @@ Thanks</textarea></div>
         agentsWithPlans.forEach(function(a){
           var planRow=el('div','sheet-agent-plan');
           var copy=el('span','agent-summary-copy',agentsWithPlans.length===1?'Commission plan':a.source.name);
+          if(m.agents.length>1) {
+            var allocationNote=el('small','fee-subtext',a.source.allocation+'% allocation');
+            if(!personalOnly && sheetEditing && !isFinalizedStatus(status)) {
+              var allocationButton=el('button','rds-btn rds-btn--link',a.source.allocation+'% allocation');
+              allocationButton.type='button';allocationButton.setAttribute('aria-label','Edit agent allocations · '+m.side.name);
+              allocationButton.addEventListener('click',function(){openAgentAllocation('mine',allocationButton,null,m.side);});
+              allocationNote.textContent='';allocationNote.appendChild(allocationButton);
+            }
+            copy.appendChild(allocationNote);
+          }
           addCommissionPlanIcon(copy);
-          if(m.agents.length>1)copy.appendChild(el('small','fee-subtext',a.source.allocation+'% co-agent allocation'));
           var anchor=el('div','sheet-plan-anchor');
           var select=el('button','rds-combobox__trigger sheet-plan-trigger agent-summary-value');select.type='button';
           select.setAttribute('aria-label',a.source.name+' commission plan · '+m.side.name);
@@ -8055,7 +8065,7 @@ Thanks</textarea></div>
   });
 
   /* per-agent allocation: supports arbitrary precision; total must equal 100 */
-  var agentAllocSide = 'mine', agentAllocDraft = [], agentAllocGross = 0, pendingAgentAddition = null;
+  var agentAllocSide = 'mine', agentAllocDraft = [], agentAllocGross = 0, pendingAgentAddition = null, sheetAllocationSide = null;
   function allocationMoney(amount) { return amount.toLocaleString('en-US', { style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:2 }); }
   function syncAgentAllocation(active) {
     var total = agentAllocDraft.reduce(function (sum, n) { return sum + n; }, 0),
@@ -8079,12 +8089,15 @@ Thanks</textarea></div>
     document.getElementById('agentAllocError').hidden = valid;
     return valid;
   }
-  function openAgentAllocation(side, trigger, pending) {
+  function openAgentAllocation(side, trigger, pending, sheetSide) {
+    sheetAllocationSide = sheetSide || null;
     pendingAgentAddition = pending || null;
     agentAllocSide = side; agentAllocGross = side === 'mine' ? sideGross : otherGross;
-    var list = pending ? pending.agents : AG[side], host = document.getElementById('agentAllocEditor'); host.textContent = '';
+    if (sheetAllocationSide) agentAllocGross = sheetSideMath(sheetAllocationSide).shared;
+    var list = sheetAllocationSide ? sheetAllocationSide.agents : pending ? pending.agents : AG[side], host = document.getElementById('agentAllocEditor'); host.textContent = '';
     agentAllocDraft = list.map(function (a) { return a.allocation == null ? 100 / list.length : a.allocation; });
     document.getElementById('agentAllocSub').textContent = 'Allocation of ' + (side === 'mine' ? myTitle : coopTitle).toLowerCase() + ' gross commission between agents.';
+    if (sheetAllocationSide) document.getElementById('agentAllocSub').textContent = 'Agent allocation · ' + sheetAllocationSide.name;
     document.getElementById('agentAllocCancel').textContent = pending ? 'Back' : 'Cancel';
     document.getElementById('agentAllocHint').textContent = pending ? 'Enter each co-agent’s percentage or amount. The primary agent receives the remaining balance of ' + allocationMoney(agentAllocGross) + '.' : list.length === 2 ? 'Enter either agent’s percentage or amount. The other receives the remainder of ' + allocationMoney(agentAllocGross) + '.' : 'Set each agent’s percentage or amount. Shares must total ' + allocationMoney(agentAllocGross) + ' (100%).';
     list.forEach(function (a, i) {
@@ -8126,6 +8139,11 @@ Thanks</textarea></div>
   });
   document.getElementById('agentAllocSave').addEventListener('click', function () {
     if (!syncAgentAllocation()) return;
+    if (sheetAllocationSide) {
+      if (agentFinancialView() || !sheetEditing || isFinalizedStatus(status)) return;
+      sheetAllocationSide.agents.forEach(function(a,i){a.allocation=agentAllocDraft[i];});
+      sheetAllocationSide=null;close();renderSheetBreakdown();toast('Agent allocation saved — payouts recalculated.');return;
+    }
     var pending = pendingAgentAddition;
     if (pending) {
       AG[agentAllocSide] = pending.agents;
