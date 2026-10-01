@@ -2481,6 +2481,33 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
   display:block; flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
 }
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-value > i { flex:none; }
+/* The Agent plan uses the same disclosure card as the lead plan summary:
+   one relationship row, with its existing plan selector kept in place. */
+#commissionWallet.agent-flat .agent-plan-summary-card {
+  margin:var(--space-4) 0; border:1px solid var(--border); border-radius:var(--radius-card);
+  background:var(--card); overflow:visible;
+}
+#commissionWallet.agent-flat .agent-plan-summary-heading {
+  display:flex; align-items:center; justify-content:space-between; gap:var(--space-3);
+  min-height:var(--control-h-lg); padding:var(--space-3); cursor:pointer; list-style:none;
+  color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans);
+}
+#commissionWallet.agent-flat .agent-plan-summary-heading::-webkit-details-marker { display:none; }
+#commissionWallet.agent-flat .agent-plan-summary-card[open] > .agent-plan-summary-heading { border-bottom:1px solid var(--border); }
+#commissionWallet.agent-flat .agent-plan-summary-mark { display:inline-flex; align-items:center; justify-content:center; flex:none; color:var(--muted-foreground); }
+#commissionWallet.agent-flat .agent-plan-summary-mark > .ph-minus { display:none; }
+#commissionWallet.agent-flat .agent-plan-summary-card[open] .agent-plan-summary-mark > .ph-plus { display:none; }
+#commissionWallet.agent-flat .agent-plan-summary-card[open] .agent-plan-summary-mark > .ph-minus { display:block; }
+#commissionWallet.agent-flat .agent-plan-summary-heading:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; }
+#commissionWallet.agent-flat .agent-plan-summary-body { padding:var(--space-3); }
+#commissionWallet.agent-flat .agent-plan-summary-card .ybd-plan-anchor { min-width:0; }
+#commissionWallet.agent-flat .agent-plan-summary-card .agent-summary-row {
+  min-height:56px; padding:0; border-top:0; grid-template-columns:minmax(0,1fr) minmax(132px,56%);
+}
+#commissionWallet.agent-flat .agent-plan-summary-copy { min-width:0; text-align:left; }
+#commissionWallet.agent-flat .agent-plan-summary-copy > b { display:block; color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans); }
+#commissionWallet.agent-flat .agent-plan-summary-copy > small { display:block; margin-top:var(--space-1); color:var(--muted-foreground); font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans); }
+#commissionWallet.agent-flat .agent-plan-summary-card .agent-summary-value { width:100%; max-width:none; min-height:var(--control-h-lg); justify-content:space-between; padding:0 var(--space-3); }
 /* CDA Preview reuses side-card geometry for every role. */
 #sheetBreakdown .sheet-cda-preview > .sheet-section { margin:var(--space-2) var(--space-3); }
 #sheetBreakdown .sheet-cda-preview .sheet-heading { margin-bottom:var(--space-1); }
@@ -5782,6 +5809,7 @@ Thanks</textarea></div>
   /* which fee groups are open, kept across re-renders so editing a fee does
      not fold the list you were reading */
   var ybdFull = true, ybdPost = false, ybdAsm = false, ybdEditing = false,
+      personalCommissionPlanOpen = true,
       ybdGrp = { basis: false, pre: true, plan: true, post: true, radius: true, commissions: false, groupMembers: false },
       ybdTeamPeopleCount = null, ybdGroupMemberCount = null,
       ybdMotion = { frame:0, card:null, det:null, row:null, chev:null,
@@ -6271,8 +6299,12 @@ Thanks</textarea></div>
         k.className = ''; valueNode.className = '';
         valueWell.className = '';
         valueWell.style.cssText = 'display:flex;align-items:center;gap:8px';
-        k.className = 'agent-summary-copy';
-        addCommissionPlanIcon(k);
+        k.className = 'agent-plan-summary-copy';
+        k.textContent = '';
+        var planLabel = document.createElement('b'); planLabel.textContent = 'Agent → Group';
+        var planSplit = document.createElement('small'), splitMatch = /^(\d+)\s*\/\s*(\d+)/.exec(o.v || '');
+        planSplit.textContent = splitMatch ? splitMatch[1] + '% agent / ' + splitMatch[2] + '% group' : 'Your agent to group plan';
+        k.appendChild(planLabel); k.appendChild(planSplit);
         valueWell.className = 'agent-summary-value';
         var planLock = document.createElement('i');
         planLock.className = 'ph ph-lock-simple agent-plan-lock';
@@ -6310,7 +6342,20 @@ Thanks</textarea></div>
       scrollRail.appendChild(document.createElement('span'));
       listShell.appendChild(planList); listShell.appendChild(scrollRail);
       menu.appendChild(listShell); menu.appendChild(empty);
-      anchor.appendChild(row); anchor.appendChild(menu); wrap.appendChild(anchor); return wrap;
+      anchor.appendChild(row); anchor.appendChild(menu);
+      if (usesPersonalAgentLayout()) {
+        var planCard = document.createElement('details'); planCard.className = 'agent-plan-summary-card'; planCard.open = personalCommissionPlanOpen;
+        var planSummary = document.createElement('summary'); planSummary.className = 'agent-plan-summary-heading';
+        var planTitle = document.createElement('span'); planTitle.textContent = 'Commission plans';
+        var planMark = document.createElement('span'); planMark.className = 'agent-plan-summary-mark'; planMark.setAttribute('aria-hidden', 'true');
+        ['ph-plus','ph-minus'].forEach(function(name){ var icon = document.createElement('i'); icon.className = 'ph ' + name; planMark.appendChild(icon); });
+        var planBody = document.createElement('div'); planBody.className = 'agent-plan-summary-body';
+        planSummary.appendChild(planTitle); planSummary.appendChild(planMark); planBody.appendChild(anchor);
+        planCard.appendChild(planSummary); planCard.appendChild(planBody);
+        planCard.addEventListener('toggle', function(){ personalCommissionPlanOpen = planCard.open; });
+        wrap.appendChild(planCard); return wrap;
+      }
+      wrap.appendChild(anchor); return wrap;
     }
     if (o.nav === 'fee') { row.setAttribute('data-editfee', o.fee); wrap.appendChild(row); return wrap; }
     if (o.nav === 'split') { row.setAttribute('data-editsplit', '1'); wrap.appendChild(row); return wrap; }
