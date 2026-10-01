@@ -2300,6 +2300,9 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 #sheetBreakdown .sheet-section { margin-block:var(--statement-section); }
 #sheetBreakdown .sheet-heading { margin:0 0 calc(var(--statement-unit) * 2); font:600 var(--text-body)/var(--leading-body) var(--font); }
 #sheetBreakdown .sheet-row { padding-block:var(--statement-gap); gap:var(--statement-gap); }
+#sheetBreakdown .sheet-commission-header { min-height:44px; padding-block:var(--statement-gap); }
+#sheetBreakdown .sheet-commission-header .rds-item__title { color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans); }
+#sheetBreakdown .sheet-commission-header .rds-item__actions { color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans); font-variant-numeric:tabular-nums; white-space:nowrap; }
 #sheetBreakdown .sheet-fee-editable > .agent-fee-direction { color:var(--primary); border-color:var(--primary); }
 #sheetBreakdown .sheet-row > span { font-size:12px; overflow-wrap:anywhere; }
 #sheetBreakdown .sheet-row > b { font-size:14px; font-variant-numeric:tabular-nums; }
@@ -5064,6 +5067,13 @@ Thanks</textarea></div>
       }
       var block=el('section','sheet-section'); block.appendChild(el('h3','sheet-heading',title)); host.appendChild(block); return block;
     }
+    function commissionHeader(host, label, amount) {
+      var node=el('div','rds-item sheet-commission-header');
+      var content=el('span','rds-item__content');
+      var title=el('span','rds-item__title',label); title.style.display='block'; content.appendChild(title);
+      var actions=el('span','rds-item__actions'); actions.appendChild(el('b','rds-num',typeof amount==='number'?cur(amount):amount));
+      node.appendChild(content); node.appendChild(actions); host.appendChild(node); return node;
+    }
     function disclosure(host,title,sub,key,open) {
       var box=el('details','sheet-disclosure'); box.open=Object.prototype.hasOwnProperty.call(sheetOpen,key)?sheetOpen[key]:!!open;
       var head=el('summary',''); var copy=el('span','',title); if(sub) copy.appendChild(el('small','fee-subtext',sub)); head.appendChild(copy);
@@ -5274,7 +5284,7 @@ Thanks</textarea></div>
       (m.side.teamFees||[]).forEach(function(f){fee(team,f,'Team',m.side);});
       row(team,'Team Payout (net)',m.team,null,'total');
       }
-      if(!personalOnly) { var shared=section(body,'Agent & Group'); row(shared,'Commission basis',m.shared); }
+      if(!personalOnly) commissionHeader(body,'Agent & Group commission basis',m.shared);
       visibleAgents(m).forEach(function(a,index){
         var leadView=role === 'team_lead' || role === 'group_lead';
         var agent=disclosure(body,a.source.name,leadView?null:cur(a.net)+' payout','agent-'+sheetScenario+'-'+sideIndex+'-'+index,true);
