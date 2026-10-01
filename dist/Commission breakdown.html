@@ -2451,15 +2451,18 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 #sheetBreakdown .sheet-summary-plans .sheet-plan-card-trigger { width:100%; max-width:none; height:var(--control-h-lg); min-height:var(--control-h-lg); padding:0 var(--space-3); }
 #sheetBreakdown .sheet-summary-plans .sheet-plan-card-copy { flex:1; min-width:0; color:var(--foreground); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 #sheetBreakdown .sheet-summary-plans .sheet-plan-card-value { flex:0 1 56%; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; text-align:right; }
-#sheetBreakdown .sheet-plan-summary-card { margin-block:var(--space-4); }
-#sheetBreakdown .sheet-side-card > .sheet-plan-summary-card { margin:var(--space-3); }
-#sheetBreakdown .sheet-plan-summary-card > .sheet-summary-plans { margin:var(--space-3); }
-#sheetBreakdown .sheet-summary-plans .sheet-group-plan-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(132px,56%); align-items:center; gap:var(--space-3); min-height:56px; padding:var(--space-3) 0; border-top:1px solid var(--border); }
+#sheetBreakdown .sheet-plan-summary { margin:var(--space-3); }
+#sheetBreakdown .sheet-plan-summary .sheet-heading { margin-bottom:var(--space-2); }
+#sheetBreakdown .sheet-summary-plans .sheet-group-plan-row { display:block; min-height:0; padding:var(--space-3) 0; border-top:1px solid var(--border); }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-row:first-child { border-top:0; }
-#sheetBreakdown .sheet-summary-plans .sheet-group-plan-copy { min-width:0; color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans); }
+#sheetBreakdown .sheet-summary-plans .sheet-group-plan-copy { display:block; min-width:0; margin-bottom:var(--space-2); color:var(--foreground); font:var(--font-weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans); }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-copy .fee-subtext { margin-top:var(--space-1); white-space:normal; }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-row .sheet-plan-anchor { display:block; min-width:0; }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-trigger { width:100%; max-width:none; height:var(--control-h-lg); min-height:var(--control-h-lg); padding:0 var(--space-3); }
+#sheetBreakdown .sheet-summary-plans .sheet-agent-plan { display:block; min-height:0; padding:var(--space-3) 0; border-top:1px solid var(--border); }
+#sheetBreakdown .sheet-summary-plans .sheet-agent-plan:first-child { border-top:0; }
+#sheetBreakdown .sheet-summary-plans .sheet-agent-plan-card + .sheet-agent-plan-card { margin-top:0; }
+#sheetBreakdown .sheet-summary-plans .sheet-agent-plan-card .sheet-plan-card-copy { display:block; margin-bottom:var(--space-2); }
 /* Match the plan label to the shared financial-row icon treatment. */
 .screen #commissionWallet.agent-flat .ybd-plan-anchor > .agent-summary-row { border-top:0; padding:var(--space-2) 0; }
 .screen #commissionWallet.agent-flat .ybd-plan-anchor .agent-summary-copy,
@@ -5171,9 +5174,8 @@ Thanks</textarea></div>
       var groupPlanLead=(role === 'team_lead' || role === 'group_lead') && m.agents.some(function(a){return a.group>0;});
       var showPlanSummary=groupPlanLead || models.length>1 || agentsWithPlans.length>1 || (role !== 'team_lead' && role !== 'group_lead');
       if(showPlanSummary) {
-        var planTitle='Commission plans';
-        var planCard=disclosure(body,planTitle,null,'plans-'+sheetScenario+'-'+sideIndex,true);
-        planCard.className += ' sheet-side-card sheet-plan-summary-card';
+        var planCard=section(body,'Commission plans');
+        planCard.className += ' sheet-plan-summary';
         var plans=el('section','sheet-summary-plans');
         planCard.appendChild(plans);
         function groupPlanRow(label, sub, selected, options, update, key) {
