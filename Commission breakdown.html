@@ -2452,6 +2452,7 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 #sheetBreakdown .sheet-summary-plans .sheet-plan-card-copy { flex:1; min-width:0; color:var(--foreground); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 #sheetBreakdown .sheet-summary-plans .sheet-plan-card-value { flex:0 1 56%; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; text-align:right; }
 #sheetBreakdown .sheet-plan-summary-card { margin-block:var(--space-4); }
+#sheetBreakdown .sheet-side-card > .sheet-plan-summary-card { margin:var(--space-3); }
 #sheetBreakdown .sheet-plan-summary-card > .sheet-summary-plans { margin:var(--space-3); }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(132px,56%); align-items:center; gap:var(--space-3); min-height:56px; padding:var(--space-3) 0; border-top:1px solid var(--border); }
 #sheetBreakdown .sheet-summary-plans .sheet-group-plan-row:first-child { border-top:0; }
@@ -5170,12 +5171,11 @@ Thanks</textarea></div>
       var groupPlanLead=(role === 'team_lead' || role === 'group_lead') && m.agents.some(function(a){return a.group>0;});
       var showPlanSummary=groupPlanLead || models.length>1 || agentsWithPlans.length>1 || (role !== 'team_lead' && role !== 'group_lead');
       if(showPlanSummary) {
-        var planTitle=models.length>1?m.side.name+' commission plans':'Commission plans';
-        var planCard=disclosure(root,planTitle,null,'plans-'+sheetScenario+'-'+sideIndex,true);
+        var planTitle='Commission plans';
+        var planCard=disclosure(body,planTitle,null,'plans-'+sheetScenario+'-'+sideIndex,true);
         planCard.className += ' sheet-side-card sheet-plan-summary-card';
         var plans=el('section','sheet-summary-plans');
         planCard.appendChild(plans);
-        if(models.length>1) root.insertBefore(planCard,grossRow);
         function groupPlanRow(label, sub, selected, options, update, key) {
           var planRow=el('div','sheet-group-plan-row');
           var copy=el('span','sheet-group-plan-copy',label); copy.appendChild(el('small','fee-subtext',sub));
