@@ -1,0 +1,67 @@
+{
+  "title": "118 Maple St",
+  "status": "Agent pending",
+  "viewerID": "ally",
+  "personal": false,
+  "finalized": false,
+  "canConfirm": true,
+  "sideGross": [],
+  "payout": "$19,000",
+  "sections": [
+    {
+      "id": "team",
+      "title": "Team Commission",
+      "rows": [
+        {
+          "id": "ally",
+          "title": "Agent Ally commission",
+          "value": "$10,000",
+          "subtitle": "20% split · Listing side",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "benny",
+          "title": "Agent Benny commission",
+          "value": "$10,000",
+          "subtitle": "30% split · Buying side",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "office",
+          "title": "Agent Ally Office Fee",
+          "value": "$5,000",
+          "subtitle": "Listing side",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "radius",
+          "title": "Radius Split",
+          "value": "−$1,500",
+          "subtitle": "Listing + Buying",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null
+        },
+        {
+          "id": "team-net",
+          "title": "Team Net Commission",
+          "value": "$19,000",
+          "subtitle": "Summit Realty Team",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "payout"
+        }
+      ]
+    }
+  ]
+}

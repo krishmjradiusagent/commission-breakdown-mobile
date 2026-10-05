@@ -1,0 +1,21 @@
+/* Radius UI — Corner radius tokens
+   Soft geometry: do NOT use one radius for everything.
+   Semantic scale (Biju hard rule): badge 6 · input 8 · button/dropdown 10 · card 14. */
+:root {
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
+  --radius-3xl: 22px;
+  --radius-4xl: 26px;
+  --radius-full: 9999px;
+
+  /* Semantic aliases */
+  --radius-badge: var(--radius-sm);     /* 6 */
+  --radius-input: var(--radius-md);     /* 8 */
+  --radius-button: var(--radius-lg);    /* 10 */
+  --radius-dropdown: var(--radius-lg);  /* 10 */
+  --radius-card: var(--radius-xl);      /* 14 */
+}

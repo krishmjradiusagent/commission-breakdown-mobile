@@ -1,0 +1,28 @@
+/* Radius UI — base defaults
+   Quiet chrome, strong content. Body 14px Inter, neutral foreground on white. */
+:root {
+  color-scheme: light;
+  --font-body: var(--font-sans);
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Links — indigo is used with intent; links are foreground with subtle affordance.
+   Defined so user-added links never fall back to browser blue. */
+a { color: var(--foreground); text-decoration: none; text-underline-offset: 2px; }
+a:hover { text-decoration: underline; text-decoration-color: var(--muted-foreground); }
+
+/* Numbers for comparison use the mono stack. */
+.rds-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+::selection { background: color-mix(in srgb, var(--brand-indigo) 22%, transparent); }

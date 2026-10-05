@@ -1,0 +1,83 @@
+/* Radius UI — Color tokens.
+   1:1 with the Figma Variable collections (TailwindCSS primitives + Theme/Mode
+   semantics). Semantic primary is neutral-900 exactly as the source defines it
+   (--colors-primary-light -> --tailwind-colors-neutral-900). The indigo #5A5FF2
+   is the source's custom --tailwind-colors-base-primary primitive, kept for the
+   Mel AI identity and marketing surfaces — it is NOT wired to the semantic primary. */
+:root {
+  /* --- Neutral primitives (Tailwind neutral scale) --- */
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* --- Radius brand primitives (source: base-primary + Mel gradient stops) --- */
+  --brand-indigo: #5a5ff2;      /* --tailwind-colors-base-primary */
+  --brand-periwinkle: #7b7ff5;  /* Mel gradient */
+  --brand-coral: #f08068;       /* Mel gradient */
+  --brand-peach: #f0a468;       /* Mel gradient */
+
+  /* --- Semantic surfaces & text (Theme/Mode, light) --- */
+  --background: var(--white);              /* colors-background-light */
+  --foreground: var(--neutral-950);        /* colors-foreground-light */
+  --card: var(--white);
+  --card-foreground: var(--neutral-950);
+  --popover: var(--white);
+  --popover-foreground: var(--neutral-950);
+
+  --primary: var(--neutral-900);           /* colors-primary-light */
+  --primary-foreground: var(--neutral-50); /* colors-primary-foreground-light */
+  --primary-hover: color-mix(in srgb, var(--primary) 90%, transparent);
+  --secondary: var(--neutral-100);
+  --secondary-foreground: var(--neutral-900);
+  --muted: var(--neutral-100);
+  --muted-foreground: var(--neutral-500);  /* colors-muted-foreground-light */
+  --accent: var(--neutral-100);
+  --accent-foreground: var(--neutral-900);
+  --destructive: #dc2626;                  /* red-600 */
+  --destructive-foreground: #fef2f2;       /* red-50 */
+
+  --border: var(--neutral-200);            /* colors-border-light */
+  --input: var(--neutral-200);
+  --ring: var(--neutral-400);              /* colors-ring-light */
+
+  /* --- Sidebar (light) --- */
+  --sidebar: var(--neutral-50);
+  --sidebar-foreground: var(--neutral-950);
+  --sidebar-primary: var(--neutral-900);
+  --sidebar-primary-foreground: var(--neutral-50);
+  --sidebar-accent: var(--neutral-100);
+  --sidebar-accent-foreground: var(--neutral-900);
+  --sidebar-border: var(--neutral-200);
+  --sidebar-ring: var(--neutral-400);
+
+  /* --- Status (dialed down, no neon) --- */
+  --status-blue: #2563eb;
+  --status-green: #6da544;
+  --status-yellow: #ffda44;
+  --status-orange: #ea580c;
+  --status-red: #dc2626;
+
+  /* --- Badge tints (pale bg + dark fg, same hue) --- */
+  --tint-green-bg: #dcfce7;   --tint-green-fg: #166534;
+  --tint-blue-bg: #dbeafe;    --tint-blue-fg: #1d4ed8;
+  --tint-amber-bg: #fef9c3;   --tint-amber-fg: #854d0e;
+  --tint-red-bg: #fee2e2;     --tint-red-fg: #991b1b;
+  --tint-indigo-bg: #e0e7ff;  --tint-indigo-fg: #3730a3;
+
+  /* --- Charts (light mode, from Mode collection) --- */
+  --chart-1: #ea580c;   /* orange-600 */
+  --chart-2: #0d9488;   /* teal-600 */
+  --chart-3: #164e63;   /* cyan-900 */
+  --chart-4: #fbbf24;   /* amber-400 */
+  --chart-5: #f59e0b;   /* amber-500 */
+}

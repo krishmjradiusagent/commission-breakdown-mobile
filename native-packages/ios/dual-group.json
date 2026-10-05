@@ -1,0 +1,108 @@
+{
+  "title": "118 Maple St",
+  "status": "Agent pending",
+  "viewerID": "ally",
+  "personal": false,
+  "finalized": false,
+  "canConfirm": true,
+  "sideGross": [],
+  "payout": "$1,480",
+  "sections": [
+    {
+      "id": "buying",
+      "title": "Buying side",
+      "rows": [
+        {
+          "id": "ally-group",
+          "title": "Group split",
+          "value": "$360",
+          "subtitle": "From Agent Ally · 80/20 plan",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "benny-group",
+          "title": "Group split",
+          "value": "$540",
+          "subtitle": "From Agent Benny · 70/30 plan",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "office",
+          "title": "Office Fee",
+          "value": "$400",
+          "subtitle": "To Group · Agent Ally",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "photo-buy",
+          "title": "Photography Fee",
+          "value": "−$400",
+          "subtitle": "Paid by Group",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null
+        }
+      ]
+    },
+    {
+      "id": "listing",
+      "title": "Listing side",
+      "rows": [
+        {
+          "id": "ally-group-list",
+          "title": "Group split",
+          "value": "$1,080",
+          "subtitle": "From Agent Ally · 80/20 plan",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "income"
+        },
+        {
+          "id": "photo-list",
+          "title": "Photography Fee",
+          "value": "−$500",
+          "subtitle": "Best Agents Ever share · 50% of $1,000",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null
+        }
+      ]
+    },
+    {
+      "id": "group-totals",
+      "title": "Group Commission",
+      "rows": [
+        {
+          "id": "group-net",
+          "title": "Group Net Commission",
+          "value": "$1,480",
+          "subtitle": "Best Agents Ever",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "payout"
+        },
+        {
+          "id": "personal-net",
+          "title": "Personal payout",
+          "value": "$4,310",
+          "subtitle": "Agent Ally",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "payout"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commission breakdown — Radius</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="_ds/radius-ui-design-system-c7220bb1-3534-4549-94e9-dd1c4d80b981/tokens/fonts.css">
+<link rel="stylesheet" href="assets/list-page.css">
+<style>
+.scroll.st-scroll { padding-top:12px; }
+.st-grp { margin-bottom:18px; }
+.st-row { position:relative; display:flex; align-items:center; gap:12px; width:100%; min-height:52px; padding:13px 4px; border:0; border-top:1px solid var(--border); background:transparent; color:inherit; font:inherit; text-align:left; text-decoration:none; cursor:pointer; transition:transform 160ms cubic-bezier(0.23,1,0.32,1); }
+.st-row:first-child { border-top:0; }
+.st-row:active { transform:scale(0.99); background:var(--muted); }
+.st-label { flex:1; min-width:0; font:500 16px/1.3 var(--font); letter-spacing:var(--tracking-tight); }
+.st-value { flex:none; font:400 15px/1.2 var(--font); color:var(--muted-foreground); margin-right:2px; }
+.st-chev { flex:none; font-size:17px; color:var(--muted-foreground); opacity:.7; }
+.st-row:focus-visible { outline:2px solid var(--ring); outline-offset:-2px; border-radius:var(--radius-sm); }
+.st-row:not(a) { cursor:default; }
+.st-row:not(a):active { transform:none; background:transparent; }
+.st-pill { flex:none; min-width:20px; height:20px; padding:0 6px; border-radius:999px; background:var(--warning); color:#fff; font:700 12px/20px var(--font); text-align:center; }
+.pg-titlewrap { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.pg-subtitle { font:400 13px/1.4 var(--font); color:var(--muted-foreground); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pg-head { position:relative; }
+.agent-note { display:flex; gap:10px; align-items:flex-start; padding:14px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--muted); margin-bottom:18px; }
+.agent-note i { color:var(--muted-foreground); font-size:18px; flex:none; margin-top:1px; }
+.agent-note p { margin:0; font:400 13px/1.5 var(--font); color:var(--muted-foreground); }
+/* ── out-of-canvas prototype switcher (not part of the app) ── */
+body { gap:22px; flex-wrap:wrap; }
+.sidepanel { width:238px; flex:none; display:flex; flex-direction:column; gap:18px; padding:18px; border-radius:18px; background:#141416; border:1px solid #26262A; color:#FAFAFA; font-family:var(--font); }
+.sidepanel .sp-t { font:600 14px/1.2 var(--font); letter-spacing:-.01em; }
+.sidepanel .sp-t span { display:block; margin-top:5px; font:500 12px/1.45 var(--font); color:#A1A1A6; }
+.sp-grp { display:flex; flex-direction:column; gap:6px; }
+.sp-k { font:600 11px/1 var(--font); letter-spacing:.07em; text-transform:uppercase; color:#75757b; }
+.sp-b { position:relative; display:flex; align-items:center; gap:8px; min-height:36px; padding:0 11px; border:1px solid #26262A; border-radius:10px; background:transparent; color:#FAFAFA; font:500 13px/1.3 var(--font); text-align:left; cursor:pointer; }
+.sp-b em { font-style:normal; color:#A1A1A6; font-size:12px; }
+.sp-b:hover { background:#1F1F22; }
+.sp-b[aria-pressed="true"] { background:rgba(90,95,242,.18); border-color:rgba(90,95,242,.55); color:#c3c6ff; }
+.sp-b[aria-pressed="true"] em { color:#9ea4f0; }
+.sp-b:focus-visible { outline:2px solid #5A5FF2; outline-offset:2px; }
+
+.screen.light { --background:#ffffff; --foreground:#0a0a0a; --card:#ffffff; --muted:#f5f5f5; --muted-foreground:#737373; --border:#e5e5e5; --input:#e5e5e5; --ring:#a3a3a3; --warning:#d97706; --success:#059669; --destructive:#dc2626; }
+.screen.light .pg-head { background:linear-gradient(to bottom, rgba(255,255,255,.86), rgba(255,255,255,.62)); box-shadow:inset 0 -1px 0 rgba(10,10,10,.08); }
+.screen.light .back-btn { background:rgba(10,10,10,.05); box-shadow:inset 0 0 0 1px rgba(10,10,10,.12), inset 0 1px 0 rgba(255,255,255,.6); }
+.screen.light .back-btn:hover { background:rgba(10,10,10,.08); }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="screen" data-screen-label="CDA Settings">
+    <div class="statusbar"><span>9:41</span>
+      <div class="sb-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="4.5" y="5" width="3" height="7" rx="1"/><rect x="9" y="2.5" width="3" height="9.5" rx="1"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.7"/></svg>
+        <svg width="20" height="12" viewBox="0 0 22 12" fill="none" stroke="currentColor"><rect x="1" y="1" width="17" height="10" rx="3"/><rect x="3" y="3" width="11" height="6" rx="1.5" fill="currentColor" stroke="none"/><path d="M20 4v4" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="pg-head">
+      <a href="Implemented Home.html" class="back-btn" aria-label="Back to home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+      <div class="pg-titlewrap">
+        <h1>Commission breakdown</h1>
+        <div class="pg-subtitle">Commission rules, plans, fees &amp; payments.</div>
+      </div>
+    </div>
+
+    <div class="scroll st-scroll">
+      <div class="agent-note" id="agentNote" hidden><i class="ph ph-info"></i><p>Commission plans and fees are managed by your Team Lead. You can still view and update your own wiring payment details below.</p></div>
+      <div class="st-grp gcard">
+        <div class="st-row" data-roles="teamlead">
+          <span class="st-label">Group Lead Plan Creation</span>
+          <i class="ph ph-caret-right st-chev" aria-hidden="true"></i>
+        </div>
+        <div class="st-row" data-roles="teamlead,grouplead">
+          <span class="st-label">Commission Plan</span>
+          <i class="ph ph-caret-right st-chev" aria-hidden="true"></i>
+        </div>
+        <div class="st-row" data-roles="teamlead,grouplead">
+          <span class="st-label">Fee Type</span>
+          <i class="ph ph-caret-right st-chev" aria-hidden="true"></i>
+        </div>
+        <div class="st-row" data-roles="teamlead,grouplead">
+          <span class="st-label">Post Cap Plan</span>
+          <i class="ph ph-caret-right st-chev" aria-hidden="true"></i>
+        </div>
+        <div class="st-row" data-roles="teamlead,grouplead,agent">
+          <span class="st-label">Wiring Payment</span>
+          <i class="ph ph-caret-right st-chev" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<aside class="sidepanel" aria-label="Prototype switcher">
+  <div class="sp-t">Prototype switcher<span>Outside the app. Each role sees a different set of settings.</span></div>
+  <div class="sp-grp">
+    <span class="sp-k">View as</span>
+    <button class="sp-b" type="button" data-setrole="teamlead" aria-pressed="true"><i class="ph ph-users-three" aria-hidden="true"></i>Team Lead</button>
+    <button class="sp-b" type="button" data-setrole="grouplead" aria-pressed="false"><i class="ph ph-user-circle" aria-hidden="true"></i>Group Lead</button>
+    <button class="sp-b" type="button" data-setrole="agent" aria-pressed="false"><i class="ph ph-user" aria-hidden="true"></i>Agent <em>/ Associate</em></button>
+  </div>
+  <div class="sp-grp">
+    <span class="sp-k">Theme</span>
+    <button class="sp-b" type="button" id="themeToggle" aria-pressed="false"><i class="ph ph-moon" aria-hidden="true"></i>Dark</button>
+  </div>
+</aside>
+
+<script>
+var currentRole = 'teamlead';
+document.querySelectorAll('[data-setrole]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    currentRole = this.getAttribute('data-setrole');
+    document.querySelectorAll('[data-setrole]').forEach(function(b){ b.setAttribute('aria-pressed', String(b === btn)); });
+    applyRole();
+  });
+});
+function applyRole(){
+  document.querySelectorAll('.st-row[data-roles]').forEach(function(row){
+    var roles = row.getAttribute('data-roles').split(',');
+    row.style.display = roles.indexOf(currentRole) >= 0 ? '' : 'none';
+  });
+  document.getElementById('agentNote').hidden = currentRole !== 'agent';
+}
+applyRole();
+var themeBtn=document.getElementById('themeToggle'), screenEl=document.querySelector('.screen');
+themeBtn.addEventListener('click', function(){
+  var light=screenEl.classList.toggle('light');
+  themeBtn.innerHTML = light ? '<i class="ph ph-sun" aria-hidden="true"></i>Light' : '<i class="ph ph-moon" aria-hidden="true"></i>Dark';
+  themeBtn.setAttribute('aria-pressed', String(light));
+});
+</script>
+</body>
+</html>

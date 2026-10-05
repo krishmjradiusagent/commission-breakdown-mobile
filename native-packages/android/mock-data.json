@@ -1,0 +1,70 @@
+{
+  "title": "118 Maple St",
+  "status": "Agent pending",
+  "payout": "$4,980",
+  "viewerID": "ally",
+  "personal": true,
+  "finalized": false,
+  "canConfirm": true,
+  "sections": [
+    {
+      "id": "basis",
+      "title": "Commission basis",
+      "rows": [
+        {
+          "id": "gross",
+          "title": "Gross commission",
+          "subtitle": null,
+          "value": "$12,500",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null
+        }
+      ]
+    },
+    {
+      "id": "ally",
+      "title": "Agent Ally",
+      "rows": [
+        {
+          "id": "tc",
+          "title": "TC Fee",
+          "subtitle": "100% of $700",
+          "value": "−$700",
+          "editable": true,
+          "deletable": true,
+          "creatorID": "ally"
+        },
+        {
+          "id": "warranty",
+          "title": "Home Warranty Fee",
+          "subtitle": "100% of $400",
+          "value": "−$400",
+          "editable": false,
+          "deletable": false,
+          "creatorID": "team"
+        },
+        {
+          "id": "office",
+          "title": "Office Fee",
+          "subtitle": "To Group · 100%",
+          "value": "−$400",
+          "editable": false,
+          "deletable": false,
+          "creatorID": "group"
+        },
+        {
+          "id": "net",
+          "title": "Net Payout",
+          "subtitle": "Agent Ally",
+          "value": "$4,980",
+          "editable": false,
+          "deletable": false,
+          "creatorID": null,
+          "style": "payout"
+        }
+      ]
+    }
+  ],
+  "sideGross": []
+}
