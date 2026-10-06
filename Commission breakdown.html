@@ -974,7 +974,6 @@ button.pv.edit:focus-visible { outline:2px solid var(--ring); outline-offset:3px
 .danger-secondary { flex:1; min-height:46px; border:1px solid color-mix(in srgb,var(--tint-red-fg) 48%,transparent); border-radius:999px; background:transparent; color:var(--tint-red-fg); font:600 15px/1 var(--font); cursor:pointer; }
 .danger-secondary:focus-visible { outline:2px solid var(--ring); outline-offset:3px; }
 .seg { display:flex; gap:var(--space-1); margin:2px 10px 8px; padding:var(--space-1); background:var(--muted); border-radius:var(--radius-lg); }
-#fFeeStage > .seg { margin-inline:0; }
 .seg button { position:relative; flex:1; min-width:0; height:32px; border:0; background:transparent; border-radius:var(--radius-md); color:var(--muted-foreground); font:500 13px/1 var(--font); cursor:pointer; }
 .seg button::before { content:''; position:absolute; left:0; right:0; top:50%; height:44px; transform:translateY(-50%); }
 .seg button[aria-selected="true"], .seg button[aria-checked="true"] { background:var(--elevated); color:var(--foreground); font-weight:600; box-shadow:inset 0 0 0 1px var(--elevated-border), 0 1px 2px rgba(0,0,0,.35); }
@@ -2704,17 +2703,26 @@ button.tl-line:focus-visible { outline:2px solid var(--ring); outline-offset:-2p
 
 /* Fee editor composes Radius primitives; only layout and upward placement are local. */
 .fee-person-fields { display:flex; flex-direction:column; gap:var(--space-3); }
-#dedSheet .fee-person-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,100px); align-items:center; gap:var(--space-3); }
+#dedSheet .fee-person-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,76px) 16px minmax(0,92px); align-items:center; gap:var(--space-2); }
 .fee-person-copy { display:flex; flex-direction:column; gap:var(--space-1); min-width:0; font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans); }
 .fee-editor-hint,.fee-person-copy small { color:var(--muted-foreground); font:var(--font-weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans); }
+#dedSheet .fee-person-row .rds-input-group { min-width:0; }
+#dedSheet .fee-person-row .rds-input-group > input { padding-inline:var(--space-2); text-align:right; font-variant-numeric:tabular-nums; }
+#dedSheet .fee-person-row .rds-input-group__addon { padding-inline:var(--space-2); }
+.fee-person-sync { color:var(--muted-foreground); font-size:16px; line-height:1; text-align:center; }
+@media (max-width:390px) {
+  #dedSheet .fee-person-row { grid-template-columns:minmax(0,1fr) minmax(0,70px) 14px minmax(0,82px); gap:var(--space-1-5); }
+  #dedSheet .fee-person-row .rds-input-group > input { padding-inline:var(--space-1-5); }
+  #dedSheet .fee-person-row .rds-input-group__addon { padding-inline:var(--space-1-5); }
+}
 .fee-tier { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-2); padding-block:var(--space-3); border-top:1px solid var(--border); }
 .fee-tier label.rds-field { display:flex; flex-direction:column; gap:var(--space-1-5); min-width:0; font:var(--font-weight-medium) var(--text-body)/var(--leading-body) var(--font-sans); color:var(--foreground); }
 /* Requested dark off-state: Radius Switch currently hardcodes its light track. */
 .screen:not(.light) #feeSliding.rds-switch:not(:checked) { background:var(--neutral-700); }
 #feeSlidingField label.rds-choice { display:inline-flex; align-items:center; gap:var(--space-2); font:var(--font-weight-regular) var(--text-body)/var(--leading-body) var(--font-sans); color:var(--foreground); }
 .fee-tier button { align-self:end; }
-#ddFeePayerList,#feeCoAgentList { top:auto; bottom:calc(100% + var(--space-1-5)); overflow-y:auto; overscroll-behavior:contain; }
-.screen.light :is(#ddFeePayerList,#feeCoAgentList) { --popover:var(--white); --popover-foreground:var(--neutral-950); --foreground:var(--popover-foreground); --accent:var(--neutral-100); }
+#ddFeePayerList { top:auto; bottom:calc(100% + var(--space-1-5)); overflow-y:auto; overscroll-behavior:contain; }
+.screen.light #ddFeePayerList { --popover:var(--white); --popover-foreground:var(--neutral-950); --foreground:var(--popover-foreground); --accent:var(--neutral-100); }
 #ddFeePayerList .rds-command__item { justify-content:flex-start; }
 #ddFeePayerList .rds-command__item span { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 #ddFeePayerList .rds-command__item svg { margin-left:auto; flex-shrink:0; }
@@ -3141,19 +3149,7 @@ Thanks</textarea></div>
           <div class="rds-item rds-item--bordered" id="feeSplitSummary" aria-live="polite"><span class="rds-item__content"><span class="rds-item__title" style="display:block">Total shares</span></span><span class="rds-item__actions"><span class="rds-item__title" id="feeSplitTotal">100%</span></span></div>
           <input id="feeAgentPct" type="hidden"><input id="feeTeamPct" type="hidden"><input id="feeGroupPct" type="hidden">
         </div>
-        <div id="feeCoAgentField" class="rds-field" hidden><label id="feeCoAgentLabel">Co-agent splits</label>
-          <div class="dd rds-combobox" id="ddFeeCoAgent">
-            <button type="button" class="ddbtn rds-combobox__trigger" aria-labelledby="feeCoAgentLabel" aria-haspopup="listbox" aria-expanded="false" aria-controls="feeCoAgentList"><span id="feeCoAgentValue">Split equally</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
-            <div id="feeCoAgentList" class="ddlist rds-combobox__panel" role="listbox" aria-labelledby="feeCoAgentLabel" hidden>
-              <button class="rds-command__item" type="button" role="option" data-fee-distribution="each">Each agent pays</button>
-              <button class="rds-command__item" type="button" role="option" data-fee-distribution="equal">Split equally</button>
-              <button class="rds-command__item" type="button" role="option" data-fee-distribution="allocation">Proportionate to allocation</button>
-            </div>
-          </div>
-          <small id="feeCoAgentHint" hidden></small>
-        </div>
         <div class="fld rds-field" id="fFeeSide" hidden><label for="feeDealSide">Deal side</label><select class="rds-input" id="feeDealSide"><option id="feeSideMine" value="mine">Listing side</option><option id="feeSideOther" value="other">Buying side</option></select></div>
-        <div class="fld rds-field" id="fFeeStage" hidden><span>Apply fee</span><div class="seg" role="radiogroup" aria-label="Fee stage"><button type="button" role="radio" data-feestage="presplit" aria-checked="false">Pre-split</button><button type="button" role="radio" data-feestage="postsplit" aria-checked="true">Post-split</button></div></div>
         <div class="fld rds-field" id="fPayTo"><span id="dedPayToLbl">Payable to</span>
           <div class="dd" id="ddPayTo">
             <button type="button" class="ddbtn rds-combobox__trigger" id="ddPayToBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="ddPayToList" aria-labelledby="dedPayToLbl"><span id="ddPayToVal">Select</span><i class="ph ph-caret-down" aria-hidden="true"></i></button>
@@ -10021,7 +10017,7 @@ Thanks</textarea></div>
     dd.classList.add('open');
     dd.querySelector('.ddbtn').setAttribute('aria-expanded', 'true');
     dd.querySelector('.ddlist').hidden = false;
-    if(dd.id==='ddFeePayer' || dd.id==='ddFeeCoAgent')positionFeeDropdown(dd);
+    if(dd.id==='ddFeePayer')positionFeeDropdown(dd);
     if (focusOption) {
       var selected = dd.querySelector('[role="option"][aria-selected="true"]') || dd.querySelector('[role="option"]');
       if (selected) selected.focus();
@@ -10121,6 +10117,23 @@ Thanks</textarea></div>
   function feeInputValue(payer) {
     return Math.max(0, Number(document.getElementById('fee' + payer + 'Pct').value) || 0) / 100;
   }
+  function feeEditorAmount() {
+    return Math.max(0, Number(String(document.getElementById('dedAmt').value).replace(/[^0-9.]/g, '')) || 0);
+  }
+  function feeShareAmount(person) {
+    return feeEditorAmount() * Math.max(0, Number(person.pct) || 0) / 100;
+  }
+  function formatFeeShareAmount(amount) {
+    return amount > 0 ? amount.toFixed(2) : '0.00';
+  }
+  function syncFeeShareAmounts(skipIndex) {
+    var total=feeEditorAmount();
+    document.querySelectorAll('[data-person-fee]').forEach(function(input){
+      var index=Number(input.dataset.personFee), person=dedCtx && dedCtx.people && dedCtx.people[index];
+      input.disabled=total<=0;
+      if(person && index!==skipIndex)input.value=total>0?formatFeeShareAmount(feeShareAmount(person)):'';
+    });
+  }
   function draftFeeTotalAmount() {
     var amount = Math.max(0, Number(String(document.getElementById('dedAmt').value).replace(/[^0-9.]/g, '')) || 0),
         payers = feePayers(dedCtx && dedCtx.p), mode = dedCtx && dedCtx.agentDistribution;
@@ -10164,12 +10177,13 @@ Thanks</textarea></div>
     });
     syncFeePeople();renderFeePeople();
   }
-  function syncFeePeople() {
+  function syncFeePeople(skipAmountIndex) {
     var sums={Agent:0,Team:0,Group:0}, selected=feeSelectedPeople(), roles=[];
     selected.forEach(function(p){var k=p.role==='Agent'?'Agent':p.key;sums[k]+=Number(p.pct)||0;if(roles.indexOf(k)<0)roles.push(k);});
     dedCtx.p=['Agent','Team','Group'].filter(function(k){return roles.indexOf(k)>=0;}).join(' + ');
     Object.keys(sums).forEach(function(k){document.getElementById('fee'+k+'Pct').value=String(sums[k]);});
     updateFeeSplitSummary();
+    syncFeeShareAmounts(skipAmountIndex);
     document.getElementById('dedSave').disabled=!selected.length || selected.some(function(p){return p.pct==='' || !Number.isFinite(Number(p.pct)) || Number(p.pct)<=0 || Number(p.pct)>100;}) || Math.abs(selected.reduce(function(n,p){return n+(Number(p.pct)||0);},0)-100)>0.001;
   }
   function renderFeePeople() {
@@ -10184,20 +10198,22 @@ Thanks</textarea></div>
       }
       if(!p.selected)return;
       var label=document.createElement('label');label.className='fee-person-row';
-      var copy=document.createElement('span');copy.className='fee-person-copy';copy.textContent=p.name;
+      var copy=document.createElement('span');copy.className='fee-person-copy';
+      var name=document.createElement('span');name.textContent=p.name;
+      var role=document.createElement('small');role.textContent=p.role;
+      copy.append(name,role);
       label.appendChild(copy);
-      var group=document.createElement('span');group.className='rds-input-group';
-      var input=document.createElement('input');input.type='text';input.inputMode='decimal';input.value=p.pct;input.placeholder='0';input.setAttribute('aria-label',p.name+' '+p.role+' percentage');input.setAttribute('data-person-share',index);
-      var unit=document.createElement('span');unit.className='rds-input-group__addon';unit.textContent='%';group.append(input,unit);label.appendChild(group);fields.appendChild(label);
+      var percentGroup=document.createElement('span');percentGroup.className='rds-input-group';
+      var percentInput=document.createElement('input');percentInput.type='text';percentInput.inputMode='decimal';percentInput.value=p.pct;percentInput.placeholder='0';percentInput.setAttribute('aria-label',p.name+' '+p.role+' percentage');percentInput.setAttribute('data-person-share',index);
+      var percentUnit=document.createElement('span');percentUnit.className='rds-input-group__addon';percentUnit.textContent='%';percentGroup.append(percentInput,percentUnit);label.appendChild(percentGroup);
+      var syncIcon=document.createElement('i');syncIcon.className='ph ph-arrows-left-right fee-person-sync';syncIcon.setAttribute('aria-hidden','true');label.appendChild(syncIcon);
+      var amountGroup=document.createElement('span');amountGroup.className='rds-input-group';
+      var amountUnit=document.createElement('span');amountUnit.className='rds-input-group__addon';amountUnit.textContent='$';
+      var amountInput=document.createElement('input');amountInput.type='text';amountInput.inputMode='decimal';amountInput.value=feeEditorAmount()>0?formatFeeShareAmount(feeShareAmount(p)):'';amountInput.placeholder='0.00';amountInput.disabled=feeEditorAmount()<=0;amountInput.setAttribute('aria-label',p.name+' '+p.role+' fee amount');amountInput.setAttribute('data-person-fee',index);
+      amountGroup.append(amountUnit,amountInput);label.appendChild(amountGroup);fields.appendChild(label);
     });
     if(!list.children.length){var empty=document.createElement('div');empty.className='rds-command__empty';empty.textContent='No people found';list.appendChild(empty);}
     document.getElementById('feeSharesSection').hidden=false;fields.hidden=false;
-    var count=feeSelectedPeople().filter(function(p){return p.role==='Agent';}).length;
-    document.getElementById('feeCoAgentField').hidden=count<2;
-    var mode=dedCtx.agentDistribution || 'equal', labels={each:'Each agent pays',equal:'Split equally',allocation:'Proportionate to allocation'};
-    document.getElementById('feeCoAgentValue').textContent=labels[mode];
-    document.querySelectorAll('[data-fee-distribution]').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.feeDistribution===mode));});
-    document.getElementById('feeCoAgentHint').hidden=true;
     updateFeeSplitSummary();
   }
   function setFeePayer(p) {
@@ -10229,20 +10245,26 @@ Thanks</textarea></div>
   }
   document.getElementById('ddFeePayerBtn').addEventListener('input',function(){if(!dedCtx || dedCtx.kind!=='fee')return;renderFeePeople();openDD(document.getElementById('ddFeePayer'),false);});
   document.getElementById('ddFeePayerBtn').addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();closeDD(document.getElementById('ddFeePayer'));}});
-  document.getElementById('fFeeShares').addEventListener('input',function(e){if(!e.target.hasAttribute('data-person-share'))return;dedCtx.people[Number(e.target.dataset.personShare)].pct=e.target.value;syncFeePeople();});
+  document.getElementById('fFeeShares').addEventListener('input',function(e){
+    var index;
+    if(e.target.hasAttribute('data-person-share')){index=Number(e.target.dataset.personShare);dedCtx.people[index].pct=e.target.value;syncFeePeople();return;}
+    if(!e.target.hasAttribute('data-person-fee'))return;
+    index=Number(e.target.dataset.personFee);
+    var total=feeEditorAmount();
+    if(total<=0)return;
+    dedCtx.people[index].pct=String(Math.max(0,Number(String(e.target.value).replace(/[^0-9.]/g,''))||0)/total*100);
+    syncFeePeople(index);
+    var percentInput=document.querySelector('[data-person-share="'+index+'"]');
+    if(percentInput)percentInput.value=(Math.round(Number(dedCtx.people[index].pct)*100)/100).toString();
+  });
+  document.getElementById('fFeeShares').addEventListener('change',function(e){if(!e.target.hasAttribute('data-person-fee'))return;var index=Number(e.target.dataset.personFee), person=dedCtx.people[index];e.target.value=feeEditorAmount()>0?formatFeeShareAmount(feeShareAmount(person)):'';});
   document.getElementById('feeSliding').addEventListener('change',function(){dedCtx.slidingScale=this.checked;if(this.checked && !dedCtx.tiers.length)dedCtx.tiers.push({from:'0',to:'',value:''});renderFeeTiers();});
   document.getElementById('feeAddTier').addEventListener('click',function(){var last=dedCtx.tiers[dedCtx.tiers.length-1];dedCtx.tiers.push({from:last?last.to:'0',to:'',value:''});sheetDirty=true;renderFeeTiers();});
   document.getElementById('feeTierRows').addEventListener('input',function(e){if(e.target.dataset.tierField)dedCtx.tiers[Number(e.target.dataset.tierIndex)][e.target.dataset.tierField]=e.target.value;});
   document.getElementById('feeTierRows').addEventListener('click',function(e){var b=e.target.closest('[data-remove-tier]');if(b){dedCtx.tiers.splice(Number(b.dataset.removeTier),1);sheetDirty=true;renderFeeTiers();}});
   document.addEventListener('click',function(e){
-    var person=e.target.closest('[data-person-index]'), distribution=e.target.closest('[data-fee-distribution]');
+    var person=e.target.closest('[data-person-index]');
     if(person){var p=dedCtx.people[Number(person.dataset.personIndex)];p.selected=!p.selected;sheetDirty=true;syncFeePeople();renderFeePeople();positionFeeDropdown(document.getElementById('ddFeePayer'));document.getElementById('ddFeePayerBtn').focus();}
-    if(distribution){
-      dedCtx.agentDistribution=distribution.dataset.feeDistribution;
-      var agents=feeSelectedPeople().filter(function(p){return p.role==='Agent';}), sum=agents.reduce(function(n,p){return n+(Number(p.pct)||0);},0), weight=agents.reduce(function(n,p){return n+(Number(p.allocation)||0);},0), used=0;
-      if(dedCtx.agentDistribution!=='each')agents.forEach(function(p,i){var value=i===agents.length-1?sum-used:Math.round(sum*(dedCtx.agentDistribution==='allocation'&&weight?(Number(p.allocation)||0)/weight:1/agents.length)*100)/100;p.pct=String(Math.round(value*100)/100);used+=value;});
-      sheetDirty=true;syncFeePeople();renderFeePeople();closeDD(document.getElementById('ddFeeCoAgent'));
-    }
   });
   document.getElementById('feeDealSide').addEventListener('change',function(){if(!dedCtx || dedCtx.kind!=='fee')return;dedCtx.side=this.value;initFeePeople(null);});
   function setFeeStage(stage) {
@@ -10258,7 +10280,8 @@ Thanks</textarea></div>
     if (fp) { setFeePayer(fp.getAttribute('data-feepayer')); closeDD(document.getElementById('ddFeePayer')); }
     if (fs) setFeeStage(fs.getAttribute('data-feestage'));
   });
-  ['dedAmt', 'feeAgentPct', 'feeTeamPct', 'feeGroupPct'].forEach(function (id) {
+  document.getElementById('dedAmt').addEventListener('input', function(){updateFeeSplitSummary();syncFeeShareAmounts();});
+  ['feeAgentPct', 'feeTeamPct', 'feeGroupPct'].forEach(function (id) {
     document.getElementById(id).addEventListener('input', updateFeeSplitSummary);
   });
   /* fees after the split: same sheet, name + amount only (paid-by is fixed by the fee) */
@@ -10282,7 +10305,6 @@ Thanks</textarea></div>
     document.getElementById('feeSharesSection').hidden = true;
     document.getElementById('fFeeShares').hidden = true;
     document.getElementById('feeSplitSummary').hidden = true;
-    document.getElementById('fFeeStage').hidden = true;
     document.getElementById('dedWireAction').hidden = true;
     document.getElementById('fContributes').hidden = false;
     document.getElementById('fPrivate').hidden = false;
@@ -10336,7 +10358,6 @@ Thanks</textarea></div>
     document.getElementById('fType').hidden = true;
     document.getElementById('fName').hidden = false;
     document.getElementById('fFeePayer').hidden = false;
-    document.getElementById('fFeeStage').hidden = false;
     document.getElementById('fFeeSide').hidden = !(role === 'dual_role' || role === 'team_lead' && dualRoleSeed);
     document.getElementById('feeSideMine').textContent = myTitle;
     document.getElementById('feeSideOther').textContent = coopTitle;
@@ -10456,7 +10477,7 @@ Thanks</textarea></div>
       : 'These fees are deducted before your share is calculated. Examples: E&O, transaction coordinator, and title fees.';
     document.getElementById('fType').hidden = !isCr;
     document.getElementById('fName').hidden = isCr;
-    document.getElementById('feeTotalPreview').hidden=true;document.getElementById('feeCoAgentField').hidden=true;document.getElementById('feeSlidingField').hidden=true;document.getElementById('dedSave').disabled=false;
+    document.getElementById('feeTotalPreview').hidden=true;document.getElementById('feeSlidingField').hidden=true;document.getElementById('dedSave').disabled=false;
     document.getElementById('fFeePayer').hidden = true;
     document.getElementById('feeSharesSection').hidden = true;
     document.getElementById('fFeeShares').hidden = true;
